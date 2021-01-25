@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Method Not Allowed 405 for registration and login</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Method Not Allowed 405 for registration and login</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/593_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">emanmks</div>
+          <div class="post_content">
+<p>Hi there,</p>
+<p>I have a complete implementation of self-service using Kratos. All working on local, unfortunately, there are some I believe misconfiguration on our staging that becomes a blocker now.</p>
+<p>Behind the Nginx, I’m using Oathkeeper as a proxy, and we have a lot of services:</p>
+<blockquote>
+<pre><code>-
+  id: "ory:kratos:public"
+  upstream:
+    preserve_host: true
+    url: "http://kratos:4433"
+    strip_path: /ory/kratos/public
+  match:
+    url: "http://www.domain.com/ory/kratos/public/&lt;.*&gt;"
+    methods:
+      - GET
+      - POST
+      - PUT
+      - DELETE
+      - PATCH
+  authenticators:
+    -
+      handler: noop
+  authorizer:
+    handler: allow
+  mutators:
+    - handler: noop
+-
+  id: "ory:login:public"
+  upstream:
+    preserve_host: true
+    url: "http://login:4435"
+    strip_path: /ory
+  match:
+    url: "http://www.domain.com/ory/&lt;(?!settings|kratos/public).*&gt;"
+    methods:
+      - GET
+  authenticators:
+    - handler: anonymous
+  authorizer:
+    handler: allow
+  mutators:
+    - handler: noop
+-
+  id: "ory:login:protected"
+  upstream:
+    preserve_host: true
+    url: "http://login:4435"
+    strip_path: /ory
+  match:
+    url: "http://www.domain.com/ory/&lt;(settings).*&gt;"
+    methods:
+      - GET
+  authenticators:
+    - handler: cookie_session
+  authorizer:
+    handler: allow
+  mutators:
+    - handler: id_token
+  errors:
+    - handler: redirect
+      config:
+        to: http://www.domain.com/auth
+</code></pre>
+</blockquote>
+<p>The URL matching using regexp.</p>
+<p>The strange thing is when login, register instead of sending a POST method, it is sending a GET method, which is why I believe I constantlyu get a  <code>Method Not Allowed</code> error seen in the browser and in the kratos log I got this:</p>
+<blockquote>
+<p>time=2020-11-30T04:53:22Z level=info msg=started handling request <a href="http://func=github.com/ory/x/reqlog.(*Middleware" rel="noopener nofollow ugc">func=github.com/ory/x/reqlog.(*Middleware</a>).ServeHTTP file=/go/pkg/mod/github.com/ory/x@v0.0.153/reqlog/middleware.go:131 method=GET name=public#<a href="http://www.domain.com/ory/kratos/public/" rel="noopener nofollow ugc">http://www.domain.com/ory/kratos/public/</a> remote=10.0.1.4:55478 request=/self-service/login/methods/password?flow=db251993-7507-49ca-9985-ab686fb3d911<br/>
+time=2020-11-30T04:53:22Z level=info msg=completed handling request <a href="http://func=github.com/ory/x/reqlog.(*Middleware" rel="noopener nofollow ugc">func=github.com/ory/x/reqlog.(*Middleware</a>).ServeHTTP file=/go/pkg/mod/github.com/ory/x@v0.0.153/reqlog/middleware.go:139 method=GET name=public#<a href="http://www.domain.com/ory/kratos/public/" rel="noopener nofollow ugc">http://www.domain.com/ory/kratos/public/</a> remote=10.0.1.4:55478 request=/self-service/login/methods/password?flow=db251993-7507-49ca-9985-ab686fb3d911 status=405 text_status=Method Not Allowed took=94.414µs</p>
+</blockquote>
+<p>And seem nothing wrong in the rendered form, copy-pasted from browser inspection:</p>
+<blockquote>
+<p>action=“<a href="http://www.domain.com/ory/kratos/public/self-service/login/methods/password?flow=db251993-7507-49ca-9985-ab686fb3d911" rel="noopener nofollow ugc">http://www.domain.com/ory/kratos/public/self-service/login/methods/password?flow=db251993-7507-49ca-9985-ab686fb3d911</a>” method=“POST”</p>
+</blockquote>
+<p>As I said, nothing wrong with local, this only happens on the staging server.</p>
+<p>Technical Requirements:</p>
+<ul>
+<li>Kratos version 0.5.3-alpha.1</li>
+<li>Database MySQL</li>
+<li>Local: docker-compose almost similar to quickstart</li>
+<li>Staging: docker swarm mode</li>
+</ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/593_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">emanmks</div>
+          <div class="post_content">
+<p>Turns out the behaviour of the POST method becomes GET is not by Kratos or Oathkeeper. And I want to keep this forum focus on Ory environment, so I will only share the Ory approach to fix this issue if one of you encounter the same problem.</p>
+<p>It is simply changing this block:</p>
+<blockquote>
+<pre><code>-
+  id: "ory:kratos:public"
+  upstream:
+    preserve_host: true
+    url: "http://kratos:4433"
+    strip_path: /ory/kratos/public
+  match:
+    url: "http://www.domain.com/ory/kratos/public/&lt;.*&gt;"
+    ...
+</code></pre>
+</blockquote>
+<p>into this:</p>
+<blockquote>
+<pre><code>-
+  id: "ory:kratos:public"
+  upstream:
+    preserve_host: true
+    url: "http://kratos:4433"
+    strip_path: /ory/kratos/public
+  match:
+    url: "&lt;http|https&gt;://www.domain.com/ory/kratos/public/&lt;.*&gt;"
+    ...
+</code></pre>
+</blockquote>
+<p>Yeah the difference is only in the <code>&lt;http|https&gt;</code> pattern</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

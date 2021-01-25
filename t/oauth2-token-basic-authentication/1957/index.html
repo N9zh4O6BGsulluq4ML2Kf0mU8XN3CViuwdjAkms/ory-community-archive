@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Oauth2/token basic authentication</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Oauth2/token basic authentication</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">notNeo</div>
+          <div class="post_content">
+<p>I get a token in return encoding the client credentials and the grant type into the request, by setting<br/>
+the client_auth_method to secret_post.</p>
+<p>But I can’t seem to be able to reach it on basic authentication</p>
+<p>my header</p>
+<blockquote>
+<p>Authorization: Basic ImFOZXdDbGllbnQ6c2VjcmV0Ig==;<br/>
+Accept: application/json;<br/>
+content-type: application/x-www-form-urlencoded</p>
+</blockquote>
+<p>body:</p>
+<blockquote>
+<p>grant_type: “client_credentials”</p>
+</blockquote>
+<p>error:</p>
+<blockquote>
+<p>{“error”:“invalid_client”,“error_description”:“Client authentication failed (e.g., unknown client, no client authentication included, or unsupported authentication method)”,“status_code”:401}</p>
+</blockquote>
+<p>I am not sure what I am doing wrong at this point.</p>
+<p>I tried:</p>
+<ul>
+<li>adding additional variables mentioned in the docs</li>
+<li>instead of url encoded data I passed entries in the url ( as soon as I am leaving out the post body, it tells me this should not be empty though)</li>
+<li>accepting * as response</li>
+<li>with the secret_post auth method it works flawlessly</li>
+</ul>
+<p>EDIT:<br/>
+I am using</p>
+<blockquote>
+<p>git clone <a href="https://github.com/ory/hydra.git" rel="nofollow noopener">https://github.com/ory/hydra.git</a><br/>
+docker-compose -f quickstart.yml -f quickstart-mysql.yml up --build</p>
+</blockquote>
+<p>from the 5 minute tutorial to start and configure the server</p>
+<p>the client looks like this:</p>
+<blockquote>
+<p>HydraClient(<br/>
+client_id: “aNewClient”,<br/>
+client_name: “”,<br/>
+client_secret: nil,<br/>
+redirect_uris: [],<br/>
+grant_types: [“client_credentials”],<br/>
+response_types: [“code”],<br/>
+scope: “offline_access offline openid”,<br/>
+audience: [],<br/>
+owner: “”,<br/>
+policy_uri: “”,<br/>
+allowed_cors_origins: [],<br/>
+tos_uri: “”,<br/>
+client_uri: “”,<br/>
+logo_uri: “”,<br/>
+contacts: [],<br/>
+client_secret_expires_at: 0,<br/>
+subject_type: “public”,<br/>
+jwks: {},<br/>
+token_endpoint_auth_method: “client_secret_basic”,<br/>
+userinfo_signed_response_alg: “none”,<br/>
+created_at: “2020-07-06T09:20:18Z”,<br/>
+updated_at: “2020-07-06T09:22:17Z”,<br/>
+metadata: {}</p>
+</blockquote>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Pretty sure the <code>;</code> in <code>Authorization: Basic ImFOZXdDbGllbnQ6c2VjcmV0Ig==;</code> doesn’t belong there. We recommend using an OAuth2 library to perform these flows</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">notNeo</div>
+          <div class="post_content">
+<p>this is just to underline an end of a line. the semicolon isn’t in the actual string<br/>
+just as there is no “application/json;”</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Ok, but the client ID and secret are quoted, base64decoding the string gives:</p>
+<pre><code class="lang-auto">"aNewClient:secret"
+</code></pre>
+<p>Quoting is not required/supported here</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">notNeo</div>
+          <div class="post_content">
+<p>thx I am back from vacations and the first thing I see is a solution.</p>
+<p>it seems my encoder was adding double quotes automatically.</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

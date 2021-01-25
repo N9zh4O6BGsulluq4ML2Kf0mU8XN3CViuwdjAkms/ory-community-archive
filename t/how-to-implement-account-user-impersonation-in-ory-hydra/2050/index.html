@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>How to implement Account / User Impersonation in ORY Hydra</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">How to implement Account / User Impersonation in ORY Hydra</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/535_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">neil.clarke</div>
+          <div class="post_content">
+<p>Hi there</p>
+<p>Our application has a front-end for regular customers, who authenticate by providing an email address and password. We have successfully integrated Hydra and Oathkeeper into our stack to handle this (using authorization code flow), and have been very happy with the results.</p>
+<p>We also have an Admin Portal, whereby Support Agents (who are authenticated via Active Directory) are able to look up customer profiles, and then ‘become’ them (effectively signing into the main site as that customer).</p>
+<p>My question is: how would one implement that a Hydra Access + ID Token would be issued for these Support Agents masquerading as customers, when there is only 1 configurable Login + Consent endpoint in Hydra?</p>
+<p>Should we implement different behaviour when encountering the request coming from the Admin Portal Client ID, or is it possible to run 2 separate Hydra instances (each configured with a different Login + Consent handler) but share the database + secrets to ensure that tokens issued by one Hydra are interchangeable with tokens from another?</p>
+<p>Thank you.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<aside class="quote no-group" data-post="1" data-topic="2050" data-username="neil.clarke">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" class="avatar" height="20" src="../../../images/535_2.png" width="20"/> neil.clarke:</div>
+<blockquote>
+<p>Our application has a front-end for regular customers, who authenticate by providing an email address and password. We have successfully integrated Hydra and Oathkeeper into our stack to handle this (using authorization code flow), and have been very happy with the results.</p>
+</blockquote>
+</aside>
+<p>First of all, congratulations <img alt=":slight_smile:" class="emoji" src="../../../images/slight_smile.png" title=":slight_smile:"/></p>
+<aside class="quote no-group" data-post="1" data-topic="2050" data-username="neil.clarke">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" class="avatar" height="20" src="../../../images/535_2.png" width="20"/> neil.clarke:</div>
+<blockquote>
+<p>We also have an Admin Portal, whereby Support Agents (who are authenticated via Active Directory) are able to look up customer profiles, and then ‘become’ them (effectively signing into the main site as that customer).</p>
+</blockquote>
+</aside>
+<p>What you describe here is impersonation, so basically what you want is that your support staff impersonates a user. This may be helpful in scenarios such as service desk / help desk.</p>
+<p>This is not natively implemented in ORY Hydra as it has many security implications and can easily be misused.</p>
+<p>The best way to implement account impersonation on top of OAuth2 is probably to add a custom claim to your Access and/or ID Token called e.g. <code>impersonating_subject</code> which contains the ID of the subject you impersonate.</p>
+<p>This allows you to:</p>
+<ol>
+<li>Trace who impersonated the user</li>
+<li>What actions the impersonator performed in the user’s account</li>
+<li>Keep a logical separation between impersonated and “normal” sessions.</li>
+</ol>
+<p>While this is a bit of extra work (you have to identify and handle <code>impersonateing_subject</code>) it allows you to easily distinguish between these two use cases. If you want, you could also use <code>impersonating_subject</code> in ORY Oathkeeper’s ID Token Mutator to make it the <code>subject</code> field. But this would then make it quite difficult to trace who did what when and where.</p>
+<p>So, as so often in software, this depends on your use case and context and security considerations. But generally, this is the way to go in my opinion!</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

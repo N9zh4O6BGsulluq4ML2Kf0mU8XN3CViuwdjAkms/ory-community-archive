@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Possible to require Hydra Oauth2 client to use Google SSO?</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Possible to require Hydra Oauth2 client to use Google SSO?</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">lkvposs</div>
+          <div class="post_content">
+<p>Hi! I’m new to Hydra/ORY/Oauth2 and am trying to discern if it is possible to create and configure an Oauth2 client that I create in Hydra to somehow enforce using the Google SSO flow? My current understanding is that this is not possible and that all sign in-related behavior is dealt with by ORY Kratos, but I was wondering if there was someway to potentially configure a client’s callback URL to point to Google SSO?</p>
+<p>Our use case is that we want all users that authenticate via one of our Oauth2 clients to sign in via Google SSO. If I am obviously conflating 2 separate auth flows, calling that out is helpful too!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>So you want an OAuth2 flow which uses Google as the “identity source”? Do you need your own profile management and stuff, or do you not really care about that?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">lkvposs</div>
+          <div class="post_content">
+<p>Yeah, Google would be the identity source. Not sure what you mean by profile management. It also feels weird to me in my original suggestion of how I was thinking of setting things up since I would be making use of 2 Oauth clients, just one of those clients would be managed by Google. Seems excessive</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Hm not sure, maybe <a href="https://github.com/kratos">https://github.com/kratos</a> is a better fit for you?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">lkvposs</div>
+          <div class="post_content">
+<p>I was thinking the same, thanks!</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

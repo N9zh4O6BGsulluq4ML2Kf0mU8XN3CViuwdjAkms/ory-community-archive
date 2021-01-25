@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Failed to unmarshal updated_at for generic OIDC provider (Auth0)</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Failed to unmarshal updated_at for generic OIDC provider (Auth0)</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/370_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">davidthor</div>
+          <div class="post_content">
+<p>Hi there,</p>
+<p>I’m currently testing out Kratos’ generic OIDC provider integration, but am getting stuck parsing the token payload with a confusing error:</p>
+<blockquote>
+<p>The request was malformed or contained invalid parameters reason:json: cannot unmarshal string into Go struct field Claims.updated_at of type int64</p>
+</blockquote>
+<p>My OIDC provider (auth0) logs a successful code exchange so I believe this is occuring when trying to parse the token payloads that come back. It’s also worth noting that the provider struct seems to expect an int64, but Auth0’s <code>updated_at</code> field is a timestamp (e.g. <code>2020-07-23T19:45:32.614Z</code>), but I still find this confusing because I haven’t asserted any mappings of the updated_at field in my jsonnet mapping file. Can anyone shed any light on why this might be happening?</p>
+<p>Kratos Version: <strong>v0.4.6-alpha.1</strong></p>
+<p><em>Note: I also experienced the issue on v0.3, and upgrading didn’t seem to solve the problem.</em></p>
+<p>Thanks in advance!</p>
+<h3>Kratos config</h3>
+<pre><code class="lang-auto">hashers:
+  argon2:
+    parallelism: 1
+    memory: 131072
+    iterations: 2
+    salt_length: 16
+    key_length: 16
+
+identity:
+  default_schema_url: file:///etc/config/kratos/identity.schema.json
+
+selfservice:
+  flows:
+    settings:
+      privileged_session_max_age: 1m
+      after:
+        profile:
+          hooks:
+            - hook: verify
+
+    login:
+      request_lifespan: 10m
+
+    verification:
+      enabled: true
+
+    registration:
+      request_lifespan: 10m
+      after:
+        password:
+          hooks:
+            - hook: session
+        oidc:
+          hooks:
+            - hook: session
+
+  strategies:
+    password:
+      enabled: true
+    oidc:
+      enabled: true
+      config:
+        providers:
+          - id: auth0
+            provider: generic
+            mapper_url: file:///etc/config/kratos/auth0.mapper.jsonnet
+            client_id: &lt;redacted&gt;
+            client_secret: &lt;redacted&gt;
+            scope:
+              - email
+              - profile
+              - openid
+            issuer_url: https://&lt;auth0-domain&gt;/
+            auth_url: https://&lt;auth0-domain&gt;/authorize
+            token_url: https://&lt;auth0-domain&gt;/oauth/token
+</code></pre>
+<h3>Identity schema</h3>
+<pre><code class="lang-json">{
+  "$id": "https://architect.io/v1/identity.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "User",
+  "type": "object",
+  "properties": {
+    "email": {
+      "type": "string",
+      "format": "email",
+      "title": "E-Mail",
+      "minLength": 3,
+      "ory.sh/kratos": {
+        "credentials": {
+          "password": {
+            "identifier": true
+          }
+        },
+        "verification": {
+          "via": "email"
+        }
+      }
+    },
+    "username": {
+      "type": "string",
+      "title": "Username",
+      "ory.sh/kratos": {
+        "credentials": {
+          "password": {
+            "identifier": true
+          }
+        }
+      }
+    }
+  },
+  "required": ["email", "username"],
+  "additionalProperties": false
+}
+</code></pre>
+<h3>Auth0 jsonnet mapper</h3>
+<pre><code class="lang-auto">local claims = std.extVar('claims');
+
+{
+  identity: {
+    traits: {
+      email: claims.email,
+      username: claims.username,
+    },
+  },
+}
+</code></pre>
+<h3>Logs</h3>
+<pre><code class="lang-auto">time=2020-07-23T19:45:30Z level=info msg=started handling request method=POST name=public#http://auth.localhost:80/.kratos/ remote=172.19.0.1 request=/self-service/browser/flows/strategies/oidc/auth/877190ea-925a-4f63-9aba-80336b8e3c49
+time=2020-07-23T19:45:32Z level=info msg=completed handling request method=POST name=public#http://auth.localhost:80/.kratos/ remote=172.19.0.1 request=/self-service/browser/flows/strategies/oidc/auth/877190ea-925a-4f63-9aba-80336b8e3c49 status=302 text_status=Found took=1.6935514s
+time=2020-07-23T19:45:32Z level=info msg=started handling request method=GET name=public#http://auth.localhost:80/.kratos/ remote=172.19.0.1 request=/self-service/browser/flows/strategies/oidc/callback/auth0?code=LlhoyghUnz1f1aiB&amp;state=c385f9c7-0282-4b96-84f8-8b25eb3d5f55
+time=2020-07-23T19:45:33Z level=info msg=Encountered self-service request error. audience=audit error=map[debug: message:The request was malformed or contained invalid parameters reason:json: cannot unmarshal string into Go struct field Claims.updated_at of type int64 status:Bad Request status_code:400] http_request=map[headers:map[accept:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9 accept-encoding:gzip, deflate, br accept-language:en-US,en;q=0.9 cache-control:max-age=0 cookie:Value is sensitive and has been redacted. To see the value set config key "log.leak_sensitive_values = true" or environment variable "LOG_LEAK_SENSITIVE_VALUES=true". referer:http://auth.localhost/registration?request=877190ea-925a-4f63-9aba-80336b8e3c49 user-agent:Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36 x-forwarded-for:172.19.0.1 x-forwarded-proto:http] host:david.ory-oauth-server.kratos.latest:4433 method:GET path:/self-service/browser/flows/strategies/oidc/callback/auth0 query:Value is sensitive and has been redacted. To see the value set config key "log.leak_sensitive_values = true" or environment variable "LOG_LEAK_SENSITIVE_VALUES=true". remote:172.19.0.8:42644 scheme:http] registration_request=&amp;{877190ea-925a-4f63-9aba-80336b8e3c49 2020-07-23 19:55:25.433198 +0000 UTC 2020-07-23 19:45:25.433216 +0000 UTC http://david.ory-oauth-server.kratos.latest:4433/self-service/browser/flows/registration  [] map[oidc:0xc00046f5e0 password:0xc00046f570] [] 2020-07-23 19:45:25.434723 +0000 UTC 2020-07-23 19:45:25.434751 +0000 UTC OKnzNKgrkFuWStPENHm3GQtJOsfEVx5hZ4WuqLw/5WLJeINeDj4eubSKSEU/KQtvktkL6QAwEiFp6+DFv0xVQA==} service_name=ORY Kratos service_version=v0.4.6-alpha.1
+</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Sorry about the late reply! It looks like we probably shouldn’t enforce any typing in the claims except for <code>username</code>. I’ve created an issue based on your post in kratos: <a href="https://github.com/ory/kratos/issues/609">https://github.com/ory/kratos/issues/609</a></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/616_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">ismailbaskin</div>
+          <div class="post_content">
+<p>This Auth0 rule can be helpful as a workaround. <a href="https://github.com/mozilla-iam/auth0-deploy/blob/a68af4ec9d613b2276b55fb4a9b395fb4f33f943/rules/temporary-workaround-updatedat.js#L14" rel="noopener nofollow ugc">https://github.com/mozilla-iam/auth0-deploy/blob/a68af4ec9d613b2276b55fb4a9b395fb4f33f943/rules/temporary-workaround-updatedat.js#L14</a></p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

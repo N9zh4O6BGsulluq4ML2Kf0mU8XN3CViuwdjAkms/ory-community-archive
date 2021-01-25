@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Migration failed</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Migration failed</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/382_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">not-a-Master</div>
+          <div class="post_content">
+<p>I deployed hydra with k8s, but the following problems occasionally occur. What causes this? Thank you<br/>
+<div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/4hTWPajQ2jpXSoosBcgurN3GElp.png?dl=1" href="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/original/1X/1e0ec2be11753699ea736f2c819f68ccba3e844f.png" rel="nofollow noopener" title="1111"><img alt="1111" data-base62-sha1="4hTWPajQ2jpXSoosBcgurN3GElp" data-small-upload="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/1e0ec2be11753699ea736f2c819f68ccba3e844f_2_10x10.png" height="28" src="../../../images/1e0ec2be11753699ea736f2c819f68ccba3e844f.png" width="690"/><div class="meta"><svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use xlink:href="#far-image"></use></svg><span class="filename">1111</span><span class="informations">1131×46 2.96 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use xlink:href="#discourse-expand"></use></svg></div></a></div></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/669_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">vinckr</div>
+          <div class="post_content">
+<p>Hey,<br/>
+Can you provide some additional information such as what were you trying to do when the error occurred, additional log files, the software version, your configuration or other pieces of the puzzle?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/382_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">not-a-Master</div>
+          <div class="post_content">
+<p>hydra: v1.1.0 (now in my service)<br/>
+database: mysql<br/>
+k8s log:  init containers(hydra-automigrate)  migration failed<br/>
+hydra waiting to start<br/>
+chart: <a href="https://k8s.ory.sh/helm/hydra.html" rel="nofollow noopener">https://k8s.ory.sh/helm/hydra.html</a><br/>
+<img alt="qqqq" data-base62-sha1="cw5xCYiWpgSynuS2lt6V9Xjf1E9" height="22" src="../../../images/57bab325d02fa0e52c1244089effa3e5d582f8d5.png" width="554"/><br/>
+<div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/nwTJjBd6p6TxO2EgjBwlN4OiqRl.png?dl=1" href="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/original/1X/a4ea09ecd10734094663b28850672bdbedbeef23.png" rel="nofollow noopener" title="eee"><img alt="eee" data-base62-sha1="nwTJjBd6p6TxO2EgjBwlN4OiqRl" data-small-upload="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/a4ea09ecd10734094663b28850672bdbedbeef23_2_10x10.png" height="15" src="../../../images/a4ea09ecd10734094663b28850672bdbedbeef23.png" width="690"/><div class="meta"><svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use xlink:href="#far-image"></use></svg><span class="filename">eee</span><span class="informations">1205×27 3.24 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use xlink:href="#discourse-expand"></use></svg></div></a></div><br/>
+sufficient disk space<br/>
+use ‘helm install’ to deploy hydra<br/>
+migration failure is not often<br/>
+should I increase the hydra version or any other suggestions</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Please provide at least some information on your set up, configuration, and so on. You are upgrading, but from which version to which other version? How is one supposed to help if the information provided is only the error message?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/382_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">not-a-Master</div>
+          <div class="post_content">
+<p><div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/71gaAOxeN8pLGhHBAMwH417sU4n.png?dl=1" href="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/original/1X/3133b42a3f9834b732f6f6d96fd8abcb13792cdf.png" rel="nofollow noopener" title="image"><img alt="image" data-base62-sha1="71gaAOxeN8pLGhHBAMwH417sU4n" data-small-upload="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/3133b42a3f9834b732f6f6d96fd8abcb13792cdf_2_10x10.png" height="76" src="../../../images/3133b42a3f9834b732f6f6d96fd8abcb13792cdf_2_690x76.png" srcset="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/3133b42a3f9834b732f6f6d96fd8abcb13792cdf_2_690x76.png, //ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/3133b42a3f9834b732f6f6d96fd8abcb13792cdf_2_1035x114.png 1.5x, //ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/original/1X/3133b42a3f9834b732f6f6d96fd8abcb13792cdf.png 2x" width="690"/><div class="meta"><svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use xlink:href="#far-image"></use></svg><span class="filename">image</span><span class="informations">1278×142 12.5 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use xlink:href="#discourse-expand"></use></svg></div></a></div><br/>
+<img alt="image" data-base62-sha1="2l4Cq8Z3rhmhWfiqfDud22tmqAN" height="180" src="../../../images/106635503bdb96d2ee2ad53923b020100e58d831.png" width="546"/><br/>
+I modified the chart to specify the nodeport port number<br/>
+Only did these<br/>
+Then when my service is installed, hydra will be deployed with a script</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

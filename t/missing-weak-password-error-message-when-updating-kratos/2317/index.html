@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Missing weak password error message when updating Kratos</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Missing weak password error message when updating Kratos</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/635_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">flusflas</div>
+          <div class="post_content">
+<p>Hi! I was using Kratos v0.4.6-alpha.1 and I’m trying to get up to date with the last few versions, specifically 0.5.0-alpha.1, which made a lot of changes…</p>
+<p>Following the <a href="https://www.ory.sh/kratos/docs/reference/api/#complete-registration-flow-with-usernameemail-password-method" rel="noopener nofollow ugc">Registration Flow with Username/Email Password Method</a>, the error messages (e.g. user already taken) no longer comes directly in the response but in the <a href="https://www.ory.sh/kratos/docs/reference/api/#get-registration-flow" rel="noopener nofollow ugc">registration context</a>. However, when you type a weak password (e.g. <code>password</code>), the registration fails but I’m not getting the error details (given by argon2, I guess) in either the response or the context, and I cannot give any feedback to the user. Am I missing anything? Is this information still available?</p>
+<p>Thanks!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Hm, these error messages should be included. Can you provide a bit more details (payloads for example)? We have tests that cover this so I would expect this to work.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/635_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">flusflas</div>
+          <div class="post_content">
+<p>Ok, this is embarrassing… I was looking at a higher level in the response structure. I was just examining the raw context response (<code>RegistrationFlow</code>) to post it here and I saw the error message in <code>methods.password.config.fields</code>. I’ll need to make some more changes in my code <img alt=":slight_smile:" class="emoji" src="../../../images/slight_smile.png" title=":slight_smile:"/></p>
+<pre><code class="lang-json">{
+    "id": "7aaff080-26ab-4244-94c6-53053def0ff4",
+    "type": "browser",
+    "expires_at": "2020-11-16T13:27:57.602835Z",
+    "issued_at": "2020-11-16T13:17:57.602835Z",
+    "request_url": "http://127.0.0.1:4433/self-service/registration/browser",
+    "active": "password",
+    "messages": null,
+    "methods": {
+        "password": {
+            "method": "password",
+            "config": {
+                "action": "http://kratos:4433/self-service/registration/methods/password?flow=7aaff080-26ab-4244-94c6-53053def0ff4",
+                "method": "POST",
+                "fields": [
+                    {
+                        "name": "csrf_token",
+                        "type": "hidden",
+                        "required": true,
+                        "value": "ajueQgxl4iriGDxNTz2yRdZWZakXU2rOVLBoqcgrgWm6Bti0D8xChQO8D2ZSFJ3wv4ighB0Ll526E7hlb9pY9Q=="
+                    },
+                    {
+                        "name": "password",
+                        "type": "password",
+                        "required": true,
+                        "messages": [
+                            {
+                                "id": 4000005,
+                                "text": "The password can not be used because the password has been found in at least 3759315 data breaches and must no longer be used..",
+                                "type": "error",
+                                "context": {
+                                    "reason": "the password has been found in at least 3759315 data breaches and must no longer be used."
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "name": "traits.username",
+                        "type": "text",
+                        "pattern": "^[a-z][a-z0-9]*$",
+                        "value": "foobar"
+                    },
+                    {
+                        "name": "traits.email",
+                        "type": "email",
+                        "value": "foobar@foobar.com"
+                    },
+                    {
+                        "name": "traits.name",
+                        "type": "text"
+                    },
+                    {
+                        "name": "traits.last_name",
+                        "type": "text"
+                    }
+                ]
+            }
+        }
+    }
+}
+</code></pre>
+<p>Sorry for bothering and thank you!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Any time!</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

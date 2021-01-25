@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>How can oathkeeper validate token</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">How can oathkeeper validate token</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/656_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">Ksael</div>
+          <div class="post_content">
+<p>Hello. Now I am studying a bunch of hydra + oath. And I have a question. Suppose a client received a token from hydra, sent a request with it to oathkeeper.</p>
+<p>Can oathkeeper validate the token on its own? (For example, check it for freshness, etc.)</p>
+<p>Or should I set introspection_url and validate the token on the Hydra side?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/669_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">vinckr</div>
+          <div class="post_content">
+<p>Hey,<br/>
+I think Oathkeeper would check if your token is valid, and then either fulfill the request or deny it.</p>
+<p>So I would say you have to do the authorization part in Hydra for example.<br/>
+Correct me if I am wrong here <span class="mention">@hackerman</span></p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

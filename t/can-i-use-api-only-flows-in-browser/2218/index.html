@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Can I use API-only flows in browser</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Can I use API-only flows in browser</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">ToughGuy</div>
+          <div class="post_content">
+<p>Hi there.</p>
+<p>Thanks for the amazing work on the ORY stack which I find very coherent compared to other solutions. Especially the “pick what you need, we build small, lightweight and open-source blocks” aspect is very appealing to me and I am very grateful for this contribution to the OSS community <img alt=":+1:" class="emoji" src="../../../images/+1.png" title=":+1:"/>.</p>
+<p>I’m starting a new project that will probably use Kratos as primary identity provider. In order to save some development efforts at the beginning, I’ll probably use some native development framework for both web and native (mobile) apps. Therefore, I’d prefer to only rely on the upcoming API flows rather than the browser flows (as I’ll have to use the API flows for native apps anyways). Also, I prefer API-only flows in general because I find them easier to understand in the context of a single-page app, and they avoid some HTTP requests and redirections that happen in traditional back-end applications.</p>
+<p>My first question: Is it fine to do so? Is there any security implication that I should be aware of?</p>
+<p>My second question: I’ve tried to do so, but wasn’t able to. I can perform the initiation request to the <code>/self-service/login/api</code> endpoint, but then Kratos rejects the POST request to <code>/self-service/login/methods/password</code> complaining about a missing or invalid CSRF. It works fine with bare curl so I assume Kratos gets confused with the CSRF cookie sent by the browser. Is this a bug of the current version on master or is it the actual intended behavior?</p>
+<p>Thanks.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">asaf000</div>
+          <div class="post_content">
+<p>Don’t do this, you should use each endpoint for the right cause – if your client is a user agent you should use the browser flow as it protects you from CSRF attacks.</p>
+<p>CSRF is preserved through cookie so make sure Kratos and your app are on the same domain (or proxy to Kratos via your app using some kind of a proxy)</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">ToughGuy</div>
+          <div class="post_content">
+<p>Makes sense. Thank you.</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

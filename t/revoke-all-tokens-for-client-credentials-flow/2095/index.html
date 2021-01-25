@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Revoke all tokens for client credentials flow</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Revoke all tokens for client credentials flow</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">surfman</div>
+          <div class="post_content">
+<p>Hi all. My question is related to Client Credentials flow only.<br/>
+So we have CLIENT_ID and CLIENT_SECRET only.<br/>
+If we change CLIENT_SECRET, all existing access tokens remain valid and active. My goal is to make such tokens inactive.<br/>
+Seems like it doesn’t happen automatically on CLIENT_SECRET change, so I was looking for special <code>revoke all tokens</code> endpoint but it looks like it doesn’t fit Client Credentials flow. Am I missing something?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/669_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">vinckr</div>
+          <div class="post_content">
+<p>Hey surfman,<br/>
+Is this what you are looking for?<br/>
+</p><aside class="onebox allowlistedgeneric">
+<header class="source">
+<img class="site-icon" data-small-upload="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/f7dbb79e0119eda4ffea81b3b681c6363ba05bb3_2_10x10.png" height="500" src="../../../images/f7dbb79e0119eda4ffea81b3b681c6363ba05bb3_2_499x500.png" srcset="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/f7dbb79e0119eda4ffea81b3b681c6363ba05bb3_2_499x500.png, //ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/f7dbb79e0119eda4ffea81b3b681c6363ba05bb3_2_748x750.png 1.5x, //ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/f7dbb79e0119eda4ffea81b3b681c6363ba05bb3_2_998x1000.png 2x" width="499"/>
+<a href="https://www.ory.sh/hydra/docs/reference/api/#revoke-oauth2-tokens" rel="noopener" target="_blank">ory.sh</a>
+</header>
+<article class="onebox-body">
+<img class="thumbnail" height="" src="../../../images/missing_image.png" width=""/>
+<h3><a href="https://www.ory.sh/hydra/docs/reference/api/#revoke-oauth2-tokens" rel="noopener" target="_blank">REST API | ORY Hydra</a></h3>
+<p>Welcome to the ORY Hydra HTTP API documentation. You will find documentation for all HTTP APIs here.</p>
+</article>
+<div class="onebox-metadata">
+</div>
+<div style="clear: both"></div>
+</aside>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">surfman</div>
+          <div class="post_content">
+<p>Thanks <span class="mention">@vinckr</span> but I’m not quite sure that it can help.<br/>
+I need to know the exact token in order to revoke it, right? I mean, if I change the CLIENT_SECRET, I don’t know tokens that are already in use.<br/>
+Is there any way to get a list of all active tokens per Client, so I can revoke them?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>This is currently only possible by deleting and re-creating the client with a new secret. Changing the secret does not invalidate the tokens as it could be a routine such as rotating secrets.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">surfman</div>
+          <div class="post_content">
+<p>Thanks a lot, <span class="mention">@hackerman</span>. That’s exactly what we’ve figured.</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

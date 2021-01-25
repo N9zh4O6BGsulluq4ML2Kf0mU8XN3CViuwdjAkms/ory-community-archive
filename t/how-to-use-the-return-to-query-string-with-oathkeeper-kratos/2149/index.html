@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>How to use the return_to query string with Oathkeeper + kratos?</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">How to use the return_to query string with Oathkeeper + kratos?</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">marcin</div>
+          <div class="post_content">
+<p>Hi,</p>
+<p>I see in documentation, that self service login flows support a return_to query string, but I am really not sure how/where to use it.</p>
+<p>I use the ory example self service node app with Oathkeeper, and I have a “protected” route. I’d love to be redirected after the sign in to the page I wanted to reach, not the settings. Where should I squeeze in the return_to argument? In oathkeeper rules? Or somehow in the self service app?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>When calling the flow init endpoints (e.g. login init)!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">marcin</div>
+          <div class="post_content">
+<p>What I don’t understand is this:</p>
+<ol>
+<li>
+<p>Browser tries to access /protected/too</p>
+</li>
+<li>
+<p>Oathkeeper notices this user is not signed in, redirects to /auth/login in node self service app</p>
+</li>
+<li>
+<p>I guess the node app should pass return_to in first call to kratos (when it gets the request I’d and form fields)</p>
+</li>
+<li>
+<p>After successful sign-in POST to kratos, it will redirect to return_to address.</p>
+</li>
+</ol>
+<p>Question: The node app does not receive the address from Oathkeeper. Oathkeeper saw it, but redirected the browser to /auth/login, so we loose track. Is there a way to pass this URL from Oathkeeper ? Maybe there is a variable I could use in rules file?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>I think an option is missing in Oathkeeper to set the return_to address when it redirects to the login endpoint currently! Would probably male sense to add such a functionality. Would you be open to contribute that?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">marcin</div>
+          <div class="post_content">
+<p>I have never written a line of Go in my life but it’s just another language so I could try.<br/>
+By pls give me tips on where to put this architecturally (making error handlers URL templetable? Making rules config templetable? Which files handle it? Or should it be another place?)</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">marcin</div>
+          <div class="post_content">
+<p>Hi <span class="mention">@hackerman</span>, I have created a work-in-progress PR here <img alt=":tada:" class="emoji" src="../../../images/tada.png" title=":tada:"/>: <a href="https://github.com/ory/oathkeeper/pull/511/files" rel="nofollow noopener">https://github.com/ory/oathkeeper/pull/511/files</a></p>
+<p>I am not sure if this approach is best <img alt=":thinking:" class="emoji" src="../../../images/thinking.png" title=":thinking:"/>:</p>
+<ul>
+<li>Is the <code>url_param</code> config option a good name?</li>
+<li>Shouldn’t the <code>ErrorRedirectConfig</code> store a parsed <code>to</code> as <code>url.URL</code>? This way if <code>url_param</code> is set, we would not have to <code>url.Parse</code> it every time. On the other hand, we would have to run <code>to.String()</code> on it every time. Not sure what would be best.</li>
+<li>I’ve created a <code>RedirectUrl</code> method. Not sure if it should be public or private.</li>
+<li>The json schema contains pattern to limit allowed characters for <code>url_param</code>. I did it based on allowed unescaped/unreserved characters for a query string param.</li>
+</ul>
+<p>Tell me what you think!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">marcin</div>
+          <div class="post_content">
+<p>Related topic: Now this return_to parameter must be handled by kratos client library.<br/>
+I <em>guess</em> the return_to must be passed in this call: <a href="https://github.com/ory/sdk/blob/master/clients/kratos/typescript/api/adminApi.ts#L374" rel="nofollow noopener">https://github.com/ory/sdk/blob/master/clients/kratos/typescript/api/adminApi.ts#L374</a> ?<br/>
+But unfortunately this API does not allow passing of query string. Oh no! <img alt=":cry:" class="emoji" src="../../../images/cry.png" title=":cry:"/></p>
+<p>Added an issue here: <a href="https://github.com/ory/sdk/issues/36" rel="nofollow noopener">https://github.com/ory/sdk/issues/36</a></p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

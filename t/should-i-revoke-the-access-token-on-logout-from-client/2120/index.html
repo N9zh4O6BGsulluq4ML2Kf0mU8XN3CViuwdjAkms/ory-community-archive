@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Should I revoke the access token on logout from client</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Should I revoke the access token on logout from client</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/568_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">GriNick</div>
+          <div class="post_content">
+<p>Before asking this question I tried to find out the solution by myself and indeed there is similar question<br/>
+<a href="https://github.com/ory/hydra/issues/1651" rel="nofollow noopener">https://github.com/ory/hydra/issues/1651</a> but the problem is that I didn’t catch the idea of the given answer. I followed the recommended link, then to one to read first: <a href="https://www.ory.sh/hydra/docs/concepts/logout" rel="nofollow noopener">https://www.ory.sh/hydra/docs/concepts/logout</a> and I saw there the phrase:<br/>
+<strong>This endpoint does not remove any Access/Refresh Tokens.</strong>.<br/>
+So I’m still a little confused, that’s why I decided to ask again.</p>
+<p>What we have are - a simple SPA client and a Rest server. To authorize a user we use ory Hydra. We use authorization code flow and to certain moment everything works as expected. But what we would like to achieve and don’t fully understand how to do it are:</p>
+<ol>
+<li>When some user log out from the client, next time he must go throw login procedure again (including providing his credentials in log in window). This part is more or less clear- it seems to be enough to go through log out flow from the link above.</li>
+<li>User must be unable to use his previously given token once he has logged out. But as far as I understood from documentation and playing with different flows the token is not automatically revoked neither on creating a new token no even after successful completing log out flow.</li>
+</ol>
+<p>So I would be very grateful for pointing me in right direction. What is the right place and time to revoke an old access token? Do we really need to do it ourselves at some moment of log out flow? And if yes, what is the reason why it isn’t done by ory Hydra itself?</p>
+<p>Thanks in advance.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/669_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">vinckr</div>
+          <div class="post_content">
+<p>from an older thread:</p>
+<p>Invalidating OAuth2 Tokens when you log out (or update credentials) is not something that’s intended by the protocol. You would never get logged out of e.g. CircleCI when you log out of GitHub, this is true for all of the “Sign in with Google/…” flows. That just doesn’t happen because they are separate companies/systems/developers/…</p>
+<p>What you’re looking for is probably more something along OpenID Connect Front/Backchannel logout, which is implemented in Hydra.</p>
+<p>If you want to revoke access to a certain application, use the API linked below, it invalidates all tokens.</p>
+<p>Everything else is completely abusing an Access Token (proof of authorization) as something that is a “login session” (which is what we have OpenID Connect for)</p>
+<p>You can revoke a refresh token using OAuth2 Token Revokation ( <a href="https://www.ory.sh/docs/hydra/sdk/api#revoke-oauth2-tokens">https://www.ory.sh/docs/hydra/sdk/api#revoke-oauth2-tokens </a> ) which will revoke the whole chain of tokens (all issued access tokens, all issued refresh tokens) for that specific authorization grant.</p>
+<p>If an OAuth2 Client is compromised, you can revoke all tokens for that client (or for the user in general) via: <a href="https://www.ory.sh/docs/hydra/sdk/api#revokes-consent-sessions-of-a-subject-for-a-specific-oauth-20-client">https://www.ory.sh/docs/hydra/sdk/api#revokes-consent-sessions-of-a-subject-for-a-specific-oauth-20-client </a></p>
+<p>Please let me know if that helped <img alt=":slight_smile:" class="emoji" src="../../../images/slight_smile.png" title=":slight_smile:"/></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/568_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">GriNick</div>
+          <div class="post_content">
+<p>vinckr, thanks a lot for your explination! At least now I can make a conclusion, that I shouldn’t try to revoke a token on logout  and instead just implementing the logout flow is an optimal strategy for my situation.</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Angular with Firebase as frontend and Hasura as backend. What do i need from Ory?</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Angular with Firebase as frontend and Hasura as backend. What do i need from Ory?</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">Bastian</div>
+          <div class="post_content">
+<p>Hello,<br/>
+im a little confused about all these products from ory. Actually i have a relative simple setup:<br/>
+Im using Firebase in Angular for Login/Register to get a JWToken with customclaims “<a href="mailto:X-Hasura-User-Id=xyz@abc.de">X-Hasura-User-Id=xyz@abc.de</a>” and “X-Hasura-User-Roles=user” which Hasura needs to authorize the request.</p>
+<p>Serverside i’m also using Caddy as proxy for Letsencrypt-Certificates in front of Hasura.</p>
+<p>Now i want to get rid of Firebase for Authentication and want to replace it with i think OathKeeper.</p>
+<p>What i need is the following:<br/>
+An API to login/register/password-reset/etc to get an JWT-Token with custom claims to handle requests to hasura.</p>
+<p>Am i right that it would be as following:<br/>
+Login/Register with an API from OathKeeper which gives me back a cookie.<br/>
+The Hasura-Requests from the frontend then are made with this cookie to OathKeeper, which are forwarded with a JWT to Hasura?</p>
+<p>And can i use Caddy in this scenario in front of OathKeeper?</p>
+<p>I am a bit confused if this is the right direction.</p>
+<p>Thanks in advance for a short help!!!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">asaf000</div>
+          <div class="post_content">
+<p>Hey,</p>
+<p>OauthKeeper is just a proxy and does not store users &amp; credentials.</p>
+<p>If you want to manage Identity-Lifecycle (login/register/pass reset) then you should use Kratos for that.</p>
+<p>You can use OauthKeeper (in conjunction with Kratos) to check if user is authenticated and if so  propagate the required header to your protected services)</p>
+<p>So:</p>
+<ul>
+<li>User register &amp; login to Kratos (which maintain credentials in its own DB)</li>
+<li>Put OauthKeeper in front of Kratos to check auth state and propagate the auth header you need for your services.</li>
+</ul>
+<p>Best.</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Error: request_unauthorized on access token introspection</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Error: request_unauthorized on access token introspection</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">churcho</div>
+          <div class="post_content">
+<p>Having obtained my access_token, I would like to verify it’s status from within my resource provider. I am running into errors:</p>
+<p><code>msg=An error occurred while handling a request code=401 debug= details=map[] error=request_unauthorized reason=Check that you provided valid credentials in the right format.</code></p>
+<p>My client has <code> "token_endpoint_auth_method": "none"</code> so my assumption is that I do not need to supply header information. If I do, what should be the format of the same?</p>
+<p>I am using an Elixir Client to perform these calls and not a CURL or direct HTTP call to the service.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Thank you for contributing to this repository by creating an issue!</p>
+<p>Unfortunately, your issue lacks vital information, such as log files, the error message, the software version, your configuration or other pieces of the puzzle.</p>
+<p>Please also ensure that your issue is appropriately formatted. If you do not know how to write markdown, you can find help <a href="https://guides.github.com/features/mastering-markdown/">here</a>.</p>
+<p>Helping you with your problem is only possible if you share this information, and it will save a lot of time of back and forth on your as well as our end!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">churcho</div>
+          <div class="post_content">
+<p>The log simply shows this:</p>
+<pre><code>time=2020-08-14T09:12:45Z level=info msg=started handling request http_request=map[headers:map[accept:application/x-www-form-urlencoded accept-encoding:gzip authorization:Value is sensitive and has been redacted. To see the value set config key "log.leak_sensitive_values = true" or environment variable "LOG_LEAK_SENSITIVE_VALUES=true". user-agent:hackney/1.16.0 x-forwarded-for:10.0.0.2 x-forwarded-proto:https] host:auth.myapp.com method:POST path:/oauth2/introspect query:&lt;nil&gt; remote:10.0.1.8:38474 scheme:http]
+time=2020-08-14T09:12:45Z level=error msg=An error occurred audience=application error=map[message:request_unauthorized reason:Check that you provided valid credentials in the right format. status:Unauthorized status_code:401] service_name= service_version=</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Well, how are you calling the introspection endpoint? Give me a reproducible case or at least some details to work with.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">churcho</div>
+          <div class="post_content">
+<p>I am making the call using an OAuth2 client.</p>
+<pre><code>%OAuth2.Client{
+  authorize_url: "https://auth.myapp.com/public/oauth2/auth",
+  client_id: "7DFA3C17A46FA",
+  client_secret: "GfdnUngQVyBVkxvx0hOTU+8jR5zTVUR4LLx97/xJghvH7fwdyCrWzom3Lg35Fp4J",
+  headers: [
+    {"authorization",
+     "Basic N0RGQTNDMTdBNDZGQTpHZmRuVW5nUVZ5QlZreHZ4MGhPVFUrOGpSNXpUVlVSNExMeDk3L3hKZ2h2SDdmd2R5Q3JXem9tM0xnMzVGcDRK"}
+  ],
+  params: %{},
+  redirect_uri: "http://localhost:4000/auth/callback",
+  ref: nil,
+  request_opts: [],
+  serializers: %{"application/json" =&gt; Jason},
+  site: "https://auth.myapp.com/public/",
+  strategy: Auth.Strategy,
+  token: nil,
+  token_method: :post,
+  token_url: "https://auth.myapp.com/public/oauth2/token"
+}
+</code></pre>
+<p>That is then piped into a function that makes the post request.</p>
+<p>The <code>public</code> part allows me to match the routes in traefik and allows me to push to either 4444 | 4445 based on that.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">churcho</div>
+          <div class="post_content">
+<p>Is there a way to enable the logs to provide more info so I can show you exactly what comes in and which format it’s in?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">churcho</div>
+          <div class="post_content">
+<p><span class="mention">@hackerman</span> any input on this?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">notNeo</div>
+          <div class="post_content">
+<p><span class="mention">@churcho</span> maybe post the raw request, instead of forcing recipients to guess how its gonna look.</p>
+<p>from the first look your base64 encoded basic authorisation does not seem right<br/>
+so the error message is on point telling you it can’t do with the credentials given</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

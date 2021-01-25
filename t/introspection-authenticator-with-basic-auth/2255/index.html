@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Introspection Authenticator with basic auth</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Introspection Authenticator with basic auth</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/607_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">daastek</div>
+          <div class="post_content">
+<p>Our introspection endpoint is protected with basic authentication.<br/>
+Is it possible to configure a basic authentication to oauth2_introspection authenticator ?</p>
+<p>/Daastek</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>What would you expect that to look like? Would Oathkeeper store the credentials?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/607_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">daastek</div>
+          <div class="post_content">
+<p>Yes, it will be ideal if we can add a client_id and client_secret to the the configuration of oauth_introspection authenticator.<br/>
+Every introspection request will get this client_id and secret added as basic auth header.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>So there is <code>oauth2_client_credentials</code> which might do what you’re looking for. If not happy to explore other options <img alt=":slight_smile:" class="emoji" src="../../../images/slight_smile.png" title=":slight_smile:"/></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/607_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">daastek</div>
+          <div class="post_content">
+<p>oauth2_client_credentials does not work in this case, since the client is sending only the token as a bearer token. It is just that our introspection endpoint has a basic auth and currently no way to send the credentials from oathkeeper.</p>
+<p>Regarding other options, Do you have any suggestions <img alt=":smile:" class="emoji" src="../../../images/smile.png" title=":smile:"/></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Oh, I completely misread your opening post then! Sorry about the confusion! You can configure the <a href="https://www.ory.sh/oathkeeper/docs/pipeline/authn/#configuration-5">introspection handler to handle pre-authorization</a> (sending client_id and client_secret to the introspection endpoint)</p>
+<pre><code class="lang-auto">authenticators:
+  oauth2_introspection:
+    enabled: true
+    config:
+      pre_authorization:
+        enabled: true
+        client_id: some_id
+        client_secret: some_secret
+        scope:
+          - introspect
+        token_url: https://my-website.com/oauth2/token
+</code></pre>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

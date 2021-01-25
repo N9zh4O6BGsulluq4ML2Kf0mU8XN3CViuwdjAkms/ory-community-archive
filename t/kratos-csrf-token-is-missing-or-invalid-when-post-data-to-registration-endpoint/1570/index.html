@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>[Kratos] CSRF token is missing or invalid when post data to registration endpoint</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">[Kratos] CSRF token is missing or invalid when post data to registration endpoint</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">duytruong</div>
+          <div class="post_content">
+<p>Hi, I’m implementing a self-service for Kratos but in Java, I can get data from kratos for rendering form. But when I post data to register new identity, I got a error below</p>
+<blockquote>
+<p>{“error”:{“code”:400,“status”:“Bad Request”,“reason”:“CSRF token is missing or invalid.”,“message”:“The request was malformed or contained invalid parameters”}}</p>
+</blockquote>
+<p>When I check the requests in browser, csrf token is similar, <strong>but in kratos logs, expected and actual token are different.</strong></p>
+<p>Below is registration data from kratos admin api<br/>
+<div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/6ifEJo5FIKtzf1B9xAF9Fx6GymY.png?dl=1" href="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/original/1X/2c1d3da97a0afdd614760fad926fe0a755f9f3c8.png" rel="nofollow noopener" title="Screen Shot 2020-03-23 at 23.12.08"><img alt="Screen Shot 2020-03-23 at 23.12.08" data-base62-sha1="6ifEJo5FIKtzf1B9xAF9Fx6GymY" data-small-upload="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/2c1d3da97a0afdd614760fad926fe0a755f9f3c8_2_10x10.png" height="165" src="../../../images/2c1d3da97a0afdd614760fad926fe0a755f9f3c8_2_690x165.png" srcset="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/2c1d3da97a0afdd614760fad926fe0a755f9f3c8_2_690x165.png, //ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/2c1d3da97a0afdd614760fad926fe0a755f9f3c8_2_1035x247.png 1.5x, //ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/2c1d3da97a0afdd614760fad926fe0a755f9f3c8_2_1380x330.png 2x" width="690"/><div class="meta"><svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use xlink:href="#far-image"></use></svg><span class="filename">Screen Shot 2020-03-23 at 23.12.08</span><span class="informations">2554×614 129 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use xlink:href="#discourse-expand"></use></svg></div></a></div></p>
+<p>And request data when do a post to complete registration<br/>
+<div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/f5DkPT0zUw1ddDId2dSSEyBKNiD.png?dl=1" href="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/original/1X/69c3a934ed7d35c90a7908e6df6f57a4d140d5e7.png" rel="nofollow noopener" title="Screen Shot 2020-03-23 at 23.13.18"><img alt="Screen Shot 2020-03-23 at 23.13.18" data-base62-sha1="f5DkPT0zUw1ddDId2dSSEyBKNiD" data-small-upload="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/69c3a934ed7d35c90a7908e6df6f57a4d140d5e7_2_10x10.png" height="144" src="../../../images/69c3a934ed7d35c90a7908e6df6f57a4d140d5e7_2_690x144.png" srcset="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/69c3a934ed7d35c90a7908e6df6f57a4d140d5e7_2_690x144.png, //ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/69c3a934ed7d35c90a7908e6df6f57a4d140d5e7_2_1035x216.png 1.5x, //ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/69c3a934ed7d35c90a7908e6df6f57a4d140d5e7_2_1380x288.png 2x" width="690"/><div class="meta"><svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use xlink:href="#far-image"></use></svg><span class="filename">Screen Shot 2020-03-23 at 23.13.18</span><span class="informations">2548×534 145 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use xlink:href="#discourse-expand"></use></svg></div></a></div></p>
+<p>Kratos log</p>
+<blockquote>
+<pre><code>oathkeeper_1 | [cors] 2020/03/23 16:11:37 Handler: Actual request
+oathkeeper_1 | [cors] 2020/03/23 16:11:37 Actual response added headers: map[Access-Control-Allow-Credentials:[true] Access-Control-Allow-Origin:[*] Access-Control-Expose-Headers:[Content-Type] Vary:[Origin]]
+oathkeeper_1 | {"level":"info","method":"GET","msg":"started handling request","remote":"172.23.0.1:56288","request":"/auth/registration","time":"2020-03-23T16:11:37Z"}
+oathkeeper_1 | {"granted":true,"http_host":"127.0.0.1:4455","http_method":"GET","http_url":"[http://host.docker.internal:8088/auth/registration](https://slack-redir.net/link?url=http%3A%2F%2Fhost.docker.internal%3A8088%2Fauth%2Fregistration&amp;v=3)","http_user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:74.0) Gecko/20100101 Firefox/74.0","level":"warning","msg":"Access request granted","subject":"guest","time":"2020-03-23T16:11:37Z"}
+oathkeeper_1 | {"level":"info","measure#oathkeeper-proxy.latency":37000200,"method":"GET","msg":"completed handling request","remote":"172.23.0.1:56288","request":"/auth/registration","status":302,"text_status":"Found","time":"2020-03-23T16:11:37Z","took":37000200}
+oathkeeper_1 | [cors] 2020/03/23 16:11:37 Handler: Actual request
+oathkeeper_1 | [cors] 2020/03/23 16:11:37 Actual response added headers: map[Access-Control-Allow-Credentials:[true] Access-Control-Allow-Origin:[*] Access-Control-Expose-Headers:[Content-Type] Vary:[Origin]]
+oathkeeper_1 | {"level":"info","method":"GET","msg":"started handling request","remote":"172.23.0.1:56288","request":"/.ory/kratos/public/self-service/browser/flows/registration","time":"2020-03-23T16:11:37Z"}
+kratos_1 | time="2020-03-23T16:11:37Z" level=info msg="started handling request" method=GET name="public#[http://127.0.0.1:4455/.ory/kratos/public/](https://slack-redir.net/link?url=http%3A%2F%2F127.0.0.1%3A4455%2F.ory%2Fkratos%2Fpublic%2F&amp;v=3)" remote="172.23.0.7:39566" request=/self-service/browser/flows/registration
+kratos_1 | time="2020-03-23T16:11:37Z" level=info msg="completed handling request" method=GET name="public#[http://127.0.0.1:4455/.ory/kratos/public/](https://slack-redir.net/link?url=http%3A%2F%2F127.0.0.1%3A4455%2F.ory%2Fkratos%2Fpublic%2F&amp;v=3)" remote="172.23.0.7:39566" request=/self-service/browser/flows/registration status=302 text_status=Found took=43.5578ms
+oathkeeper_1 | {"granted":true,"http_host":"127.0.0.1:4455","http_method":"GET","http_url":"[http://kratos:4433/self-service/browser/flows/registration](https://slack-redir.net/link?url=http%3A%2F%2Fkratos%3A4433%2Fself-service%2Fbrowser%2Fflows%2Fregistration&amp;v=3)","http_user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:74.0) Gecko/20100101 Firefox/74.0","level":"warning","msg":"Access request granted","subject":"","time":"2020-03-23T16:11:37Z"}
+oathkeeper_1 | {"level":"info","measure#oathkeeper-proxy.latency":50985800,"method":"GET","msg":"completed handling request","remote":"172.23.0.1:56288","request":"/.ory/kratos/public/self-service/browser/flows/registration","status":302,"text_status":"Found","time":"2020-03-23T16:11:37Z","took":50985800}
+oathkeeper_1 | [cors] 2020/03/23 16:11:37 Handler: Actual request
+oathkeeper_1 | [cors] 2020/03/23 16:11:37 Actual response added headers: map[Access-Control-Allow-Credentials:[true] Access-Control-Allow-Origin:[*] Access-Control-Expose-Headers:[Content-Type] Vary:[Origin]]
+oathkeeper_1 | {"level":"info","method":"GET","msg":"started handling request","remote":"172.23.0.1:56288","request":"/auth/registration?request=e136e899-7cbb-4068-8181-054005c2812f","time":"2020-03-23T16:11:37Z"}
+kratos_1 | time="2020-03-23T16:11:37Z" level=info msg="started handling request" method=GET name="admin#[http://kratos:4434/](https://slack-redir.net/link?url=http%3A%2F%2Fkratos%3A4434%2F&amp;v=3)" remote="172.23.0.1:58716" request="//self-service/browser/flows/requests/registration?request=e136e899-7cbb-4068-8181-054005c2812f"
+kratos_1 | time="2020-03-23T16:11:37Z" level=info msg="completed handling request" method=GET name="admin#[http://kratos:4434/](https://slack-redir.net/link?url=http%3A%2F%2Fkratos%3A4434%2F&amp;v=3)" remote="172.23.0.1:58716" request="//self-service/browser/flows/requests/registration?request=e136e899-7cbb-4068-8181-054005c2812f" status=301 text_status="Moved Permanently" took="700.9µs"
+oathkeeper_1 | {"granted":true,"http_host":"127.0.0.1:4455","http_method":"GET","http_url":"[http://host.docker.internal:8088/auth/registration?request=e136e899-7cbb-4068-8181-054005c2812f](https://slack-redir.net/link?url=http%3A%2F%2Fhost.docker.internal%3A8088%2Fauth%2Fregistration%3Frequest%3De136e899-7cbb-4068-8181-054005c2812f&amp;v=3)","http_user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:74.0) Gecko/20100101 Firefox/74.0","level":"warning","msg":"Access request granted","subject":"guest","time":"2020-03-23T16:11:37Z"}
+oathkeeper_1 | {"level":"info","measure#oathkeeper-proxy.latency":87799200,"method":"GET","msg":"completed handling request","remote":"172.23.0.1:56288","request":"/auth/registration?request=e136e899-7cbb-4068-8181-054005c2812f","status":200,"text_status":"OK","time":"2020-03-23T16:11:37Z","took":87799200}
+kratos_1 | time="2020-03-23T16:11:37Z" level=info msg="started handling request" method=GET name="admin#[http://kratos:4434/](https://slack-redir.net/link?url=http%3A%2F%2Fkratos%3A4434%2F&amp;v=3)" remote="172.23.0.1:58716" request="/self-service/browser/flows/requests/registration?request=e136e899-7cbb-4068-8181-054005c2812f"
+kratos_1 | time="2020-03-23T16:11:37Z" level=info msg="completed handling request" method=GET name="admin#[http://kratos:4434/](https://slack-redir.net/link?url=http%3A%2F%2Fkratos%3A4434%2F&amp;v=3)" remote="172.23.0.1:58716" request="/self-service/browser/flows/requests/registration?request=e136e899-7cbb-4068-8181-054005c2812f" status=200 text_status=OK took=7.6258ms
+oathkeeper_1 | {"level":"info","method":"POST","msg":"started handling request","remote":"172.23.0.1:56288","request":"/.ory/kratos/public/self-service/browser/flows/registration/strategies/password?request=e136e899-7cbb-4068-8181-054005c2812f","time":"2020-03-23T16:12:36Z"}
+oathkeeper_1 | {"granted":true,"http_host":"127.0.0.1:4455","http_method":"POST","http_url":"[http://kratos:4433/self-service/browser/flows/registration/strategies/password?request=e136e899-7cbb-4068-8181-054005c2812f](https://slack-redir.net/link?url=http%3A%2F%2Fkratos%3A4433%2Fself-service%2Fbrowser%2Fflows%2Fregistration%2Fstrategies%2Fpassword%3Frequest%3De136e899-7cbb-4068-8181-054005c2812f&amp;v=3)","http_user_agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:74.0) Gecko/20100101 Firefox/74.0","level":"warning","msg":"Access request granted","subject":"","time":"2020-03-23T16:12:36Z"}
+oathkeeper_1 | {"level":"info","measure#oathkeeper-proxy.latency":1736900,"method":"POST","msg":"completed handling request","remote":"172.23.0.1:56288","request":"/.ory/kratos/public/self-service/browser/flows/registration/strategies/password?request=e136e899-7cbb-4068-8181-054005c2812f","status":400,"text_status":"Bad Request","time":"2020-03-23T16:12:36Z","took":1736900}
+oathkeeper_1 | [cors] 2020/03/23 16:12:36 Handler: Actual request
+oathkeeper_1 | [cors] 2020/03/23 16:12:36 Actual response added headers: map[Access-Control-Allow-Credentials:[true] Access-Control-Allow-Origin:[*] Access-Control-Expose-Headers:[Content-Type] Vary:[Origin]]
+kratos_1 | time="2020-03-23T16:12:36Z" level=info msg="started handling request" method=POST name="public#[http://127.0.0.1:4455/.ory/kratos/public/](https://slack-redir.net/link?url=http%3A%2F%2F127.0.0.1%3A4455%2F.ory%2Fkratos%2Fpublic%2F&amp;v=3)" remote="172.23.0.7:39566" request="/self-service/browser/flows/registration/strategies/password?request=e136e899-7cbb-4068-8181-054005c2812f"
+kratos_1 | time="2020-03-23T16:12:36Z" level=warning msg="A request failed due to a missing or invalid csrf_token value" expected_token="o6NXLbPk68qEfFEE5iCKD4+XANec5n7VZNlNzoF42p8+vpGbQDNpSiBskVQUj5SNqSImUR+zKvp4j+q4FkODWg==" received_token="AFtF6kkDwfeQpoSAi1D2XkAYgybKKgnVnCmpbQdO1SddUJIeFs5wLh1aRYYNiORsIzIob3awjpslBhDwCvLNUQ==" received_token_form="AFtF6kkDwfeQpoSAi1D2XkAYgybKKgnVnCmpbQdO1SddUJIeFs5wLh1aRYYNiORsIzIob3awjpslBhDwCvLNUQ=="
+kratos_1 | time="2020-03-23T16:12:36Z" level=error msg="An error occurred while handling a request" code=400 debug= details="map[]" error="The request was malformed or contained invalid parameters" reason="CSRF token is missing or invalid." request-id= status=400 writer=JSON
+kratos_1 | time="2020-03-23T16:12:36Z" level=info msg="completed handling request" method=POST name="public#[http://127.0.0.1:4455/.ory/kratos/public/](https://slack-redir.net/link?url=http%3A%2F%2F127.0.0.1%3A4455%2F.ory%2Fkratos%2Fpublic%2F&amp;v=3)" remote="172.23.0.7:39566" request="/self-service/browser/flows/registration/strategies/password?request=e136e899-7cbb-4068-8181-054005c2812f" status=400 text_status="Bad Request" took="449.9µs"
+</code></pre>
+</blockquote>
+<p>I don’t use server-rendering, so I create an api in my self-service to return json from kratos, and then my web frontend (react) use this json to populates data.</p>
+<p>Here is my java self-service code</p>
+<pre><code>import java.net.URI;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import sh.ory.kratos.ApiClient;
+import sh.ory.kratos.ApiException;
+import sh.ory.kratos.ApiResponse;
+import sh.ory.kratos.api.AdminApi;
+import sh.ory.kratos.model.RegistrationRequest;
+
+@RestController
+@Slf4j
+public class RegistrationController {
+
+  private final IdpProperties idpProperties;
+
+  @Autowired
+  public RegistrationController(IdpProperties idpProperties) {
+    this.idpProperties = idpProperties;
+  }
+
+  @GetMapping("auth/registration")
+  public ResponseEntity&lt;RegistrationRequest&gt; register(
+      @RequestParam(required = false) String request) {
+    if (request == null) {
+      log.info("Parameter 'request' not available");
+      // redirect
+      return redirect();
+    }
+    log.info(request);
+    ApiClient client = new ApiClient();
+    client.setBasePath(idpProperties.getUrl().getKratosAdminApi());
+    AdminApi adminEndpoint = new AdminApi(client);
+    try {
+      ApiResponse&lt;RegistrationRequest&gt; response =
+          adminEndpoint.getSelfServiceBrowserRegistrationRequestWithHttpInfo(request);
+      if (response.getStatusCode() == 404
+          || response.getStatusCode() == 403
+          || response.getStatusCode() == 410) {
+        // redirect
+        return redirect();
+      }
+      if (response.getStatusCode() == 200) {
+        RegistrationRequest data = response.getData();
+        return new ResponseEntity&lt;&gt;(data, HttpStatus.OK);
+      }
+    } catch (ApiException e) {
+      log.error("Kratos connection error", e);
+    }
+    return new ResponseEntity&lt;&gt;(HttpStatus.INTERNAL_SERVER_ERROR);
+  }
+
+  private ResponseEntity redirect() {
+    HttpHeaders headers = new HttpHeaders();
+    headers.setLocation(
+        URI.create(
+            idpProperties.getUrl().getKratosBrowser()
+                + idpProperties.getUrl().getRegistrationRequest()));
+    return new ResponseEntity&lt;&gt;(headers, HttpStatus.FOUND);
+  }
+}
+</code></pre>
+<p>Configuration:</p>
+<pre><code>idp:
+  url:
+    kratos-admin-api: http://127.0.0.1:4434/
+    kratos-public-api: http://127.0.0.1:4433/
+    kratos-browser: http://127.0.0.1:4455/.ory/kratos/public
+    registration-request: /self-service/browser/flows/registration
+    login-request: /self-service/browser/flows/login
+</code></pre>
+<p>My kratos and oathkeeper config is similar to config files in kratos repository<br/>
+Any ideas? Thank you!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/407_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">MrShroom</div>
+          <div class="post_content">
+<p>which versions are you using?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">duytruong</div>
+          <div class="post_content">
+<p>I use a docker image build from master branch (newer than 0.1.1.alpha.1) because I need to run with postgresql</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>This is most likely a problem with your cookies. In your chrome DevTools, check out the “cookie” payloads and make sure that they are set for all the requests.</p>
+<p>As you can see in your logs, the CSRF tokens do not match:</p>
+<blockquote>
+<p>kratos_1 | time=“2020-03-23T16:12:36Z” level=warning msg=“A request failed due to a missing or invalid csrf_token value” expected_token=“o6NXLbPk68qEfFEE5iCKD4+XANec5n7VZNlNzoF42p8+vpGbQDNpSiBskVQUj5SNqSImUR+zKvp4j+q4FkODWg==” received_token=“AFtF6kkDwfeQpoSAi1D2XkAYgybKKgnVnCmpbQdO1SddUJIeFs5wLh1aRYYNiORsIzIob3awjpslBhDwCvLNUQ==” received_token_form=“AFtF6kkDwfeQpoSAi1D2XkAYgybKKgnVnCmpbQdO1SddUJIeFs5wLh1aRYYNiORsIzIob3awjpslBhDwCvLNUQ==”</p>
+</blockquote>
+<p>This means that the CSRF cookie from the initial GET request does not match the one from the final POST request. This can be because you’re using different hosts (e.g. localhost / 127.0.0.1), for example.</p>
+<p>I suggest you check out the cookies in the DevTools and make sure that hosts etc are properly set.</p>
+<p><strong>Also, as pointed out in another thread</strong>, make sure to use <code>--dev</code> flag when running ORY Kratos because it will make use of fortified cookeis otherwise which do not work on HTTP.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">duytruong</div>
+          <div class="post_content">
+<p>Thanks for your reply! I will check these cookies is available or not, i access to my web using hostname 127.0.0.1</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">duytruong</div>
+          <div class="post_content">
+<p>Thank you!, I resolved this issue by allow cors request using credentials such as cookies in my javascript http client</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>I have written docs for this topic, hope it helps!</p>
+<aside class="onebox githubpullrequest">
+<header class="source">
+<a href="https://github.com/ory/kratos/pull/342/files" target="_blank">github.com/ory/kratos</a>
+</header>
+<article class="onebox-body">
+<div class="github-row">
+<div class="github-icon-container" title="Pull Request">
+<svg aria-hidden="true" class="github-icon" height="60" viewbox="0 0 12 16" width="60"><path d="M11 11.28V5c-.03-.78-.34-1.47-.94-2.06C9.46 2.35 8.78 2.03 8 2H7V0L4 3l3 3V4h1c.27.02.48.11.69.31.21.2.3.42.31.69v6.28A1.993 1.993 0 0 0 10 15a1.993 1.993 0 0 0 1-3.72zm-1 2.92c-.66 0-1.2-.55-1.2-1.2 0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2zM4 3c0-1.11-.89-2-2-2a1.993 1.993 0 0 0-1 3.72v6.56A1.993 1.993 0 0 0 2 15a1.993 1.993 0 0 0 1-3.72V4.72c.59-.34 1-.98 1-1.72zm-.8 10c0 .66-.55 1.2-1.2 1.2-.65 0-1.2-.55-1.2-1.2 0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2zM2 4.2C1.34 4.2.8 3.65.8 3c0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2z"></path></svg>
+</div>
+<div class="github-info-container">
+<h4>
+<a href="https://github.com/ory/kratos/pull/342" target="_blank">docs: add csrf and cookie debug section</a>
+</h4>
+<div class="branches">
+<code>ory:master</code> ← <code>ory:fix-341</code>
+</div>
+<div class="github-info">
+<div class="date">
+        opened <span class="discourse-local-date" data-date="2020-04-12" data-format="ll" data-time="11:52:12" data-timezone="UTC">11:52AM - 12 Apr 20 UTC</span>
+</div>
+<div class="user">
+<a href="https://github.com/aeneasr" target="_blank">
+<img alt="aeneasr" class="onebox-avatar-inline" height="20" src="../../../images/936076922415beed8a112b37d618a07cd1b5c9c1.png" width="20"/>
+          aeneasr
+        </a>
+</div>
+<div class="lines" title="1 commits changed 4 files with 94 additions and 0 deletions">
+<a href="https://github.com/ory/kratos/pull/342/files" target="_blank">
+<span class="added">+94</span>
+<span class="removed">-0</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</article>
+<div class="onebox-metadata">
+</div>
+<div style="clear: both"></div>
+</aside>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">duytruong</div>
+          <div class="post_content">
+<p>Cool! it’s very helpful</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/599_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">itsgitz</div>
+          <div class="post_content">
+<p>Hello everyone. I’m new with ORY Kratos. I’ve the same issue even the csrf_token that generated from <code>/self-service/browser/flows/registration</code> is included with POST request after form like username and email is filled and sent to <code>/self-service/browser/flows/registration/strategies/password</code>. Can you help me?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Not without technical details, please also check our docs regarding this: <a href="https://www.ory.sh/kratos/docs/debug/csrf">https://www.ory.sh/kratos/docs/debug/csrf</a></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/599_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">itsgitz</div>
+          <div class="post_content">
+<p>I’m sorry for not telling the technical details. I’ve read the documentation about CSRF from your link. The documentation said that Accessing ORY’s APIs from server side application is better to use the Admin API port (I use default port, 4434) because Public Port requires csrf token, and Admin doesn’t. However, I tried to send request to Admin port for completing password strategy and the result is not found.</p>
+<p>For example, I send the post request to Admin port:<br/>
+<code>POST http://127.0.0.1:4434/self-service/browser/flows/login/strategies/password?request=1b7112e9-78be-4f21-8f01-d78453ed0fc3</code></p>
+<p>Response:<br/>
+<code>404 page not found</code></p>
+<p><img alt="image" data-base62-sha1="kY6tOwFTjPbfr6z83dGHJvhv5Fm" height="113" src="../../../images/92f6cd3c1fef64ebcd9681847dd9532ee5369410.png" width="477"/></p>
+<p><code>time="2020-06-21T04:01:54Z" level=info msg="completed handling request" method=POST name="admin#http://kratos:4434/" remote="172.18.0.1:58786" request="/self-service/browser/flows/login/strategies/password?request=1b7112e9-78be-4f21-8f01-d78453ed0fc3" status=404 text_status="Not Found" took="63.092µs"</code></p>
+<p>I’ve tried to send request to Public port, but error <code>CSRF token is missing or invalid</code> is appeared.</p>
+<p><img alt="image" data-base62-sha1="inXkEAjYVzBZJACSaYBlD86qlGC" height="197" src="../../../images/80dc67d87f950d46706e2ff996dff71e3b27e676.png" width="671"/></p>
+<p><code>level=warning msg="A request failed due to a missing or invalid csrf_token value" expected_token="lFl+ErNdDL+2IRVpt1OvZyE2D9kCqyMEoG3qn+khlqpG4xZ1F5374E+hlQ659jayCG1Cswefgb0eSbRufCxpRQ==" received_token="wmJblK1gToY4l3/WQFRBzUkJsaMcTR9ELlBFBeu+jUAgQ1sm1epycrMqMpOrmL0FnDQcC7NBe0QJHVnHz/30gA==" received_token_form="wmJblK1gToY4l3/WQFRBzUkJsaMcTR9ELlBFBeu+jUAgQ1sm1epycrMqMpOrmL0FnDQcC7NBe0QJHVnHz/30gA==" app-kratos        | time="2020-06-21T04:07:39Z" level=error msg="An error occurred while handling a request" code=400 debug= details="map[]" error="The request was malformed or contained invalid parameters" reason="CSRF token is missing or invalid." request-id= status=400 writer=JSON app-kratos        | time="2020-06-21T04:07:39Z" level=info msg="completed handling request" method=POST name="public#http://127.0.0.1:9080/.ory/kratos/public/" remote="172.18.0.1:48740" request="/self-service/browser/flows/login/strategies/password?request=a47f4bb2-ff1d-4f2d-a573-d1cc161358e3" status=400 text_status="Bad Request" took="190.86µs</code></p>
+<p>Here’s my ORY Kratos configuration:<br/>
+<img alt="image" data-base62-sha1="ekorJ9keHDPaY0gwVdPtDH5lQuO" height="272" src="../../../images/646c9cad7eef41a6b97fe576fd535fe7a928b9ce.png" width="540"/></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Do not send the POST request to the admin port, that will not work. The admin port is not to exposed to the internet, it does not make sense to try to access it from the browser.</p>
+<p>Please provide the full config including set up and everything. Or just use our quickstart guide from the docs to get started. No help can be provided otherwise.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">One041</div>
+          <div class="post_content">
+<p>I have the same problem.</p>
+<blockquote>
+<p>kratos_1                      | time=2020-08-21T12:34:37Z level=info msg=started handling request method=POST name=public#<a href="http://127.0.0.1:8089/.ory/kratos/public/" rel="nofollow noopener">http://127.0.0.1:8089/.ory/kratos/public/</a> remote=172.27.0.1:49434 request=/self-service/browser/flows/login/strategies/password?request=f17d7cdc-dca3-4a0e-b7d7-c9e0c244f1af<br/>
+kratos_1                      | time=2020-08-21T12:34:37Z level=warning msg=A request failed due to a missing or invalid csrf_token value audience=application <strong>expected_token</strong>=/fqHecL1chI+dTL+XPtuCDEqsAvklk/1FtBOT3LCY+VRbWMfmWnKxpqur0Vd0PvOnC06CqrD3UokGXT5AXunFA== <strong>received_token</strong>=O0W8DrG7CxTrsRzWbOhI9vj+SHNj7KgOBwys0OdroK071NKquqyPo5R40ueKwFqYNwXjZ8/nOxeybjxq38k4Ow== received_token_form=O0W8DrG7CxTrsRzWbOhI9vj+SHNj7KgOBwys0OdroK071NKquqyPo5R40ueKwFqYNwXjZ8/nOxeybjxq38k4Ow== service_name=kratos service_version=<br/>
+kratos_1                      | time=2020-08-21T12:34:37Z level=error msg=An error occurred while handling a request audience=application error=map[debug: message:The request was malformed or contained invalid parameters reason:CSRF token is missing or invalid. status:Bad Request status_code:400] http_request=map[headers:map[accept-encoding:gzip user-agent:Go-http-client/1.1] host:127.0.0.1:4433 method:POST path:/self-service/browser/flows/login/strategies/password query:Value is sensitive and has been redacted. To see the value set config key “log.leak_sensitive_values = true” or environment variable “LOG_LEAK_SENSITIVE_VALUES=true”. remote:172.27.0.1:49434 scheme:http] http_response=map[status_code:400] service_name=kratos service_version=<br/>
+kratos_1                      | time=2020-08-21T12:34:37Z level=info msg=completed handling request method=POST name=public#<a href="http://127.0.0.1:8089/.ory/kratos/public/" rel="nofollow noopener">http://127.0.0.1:8089/.ory/kratos/public/</a> remote=172.27.0.1:49434 request=/self-service/browser/flows/login/strategies/password?request=f17d7cdc-dca3-4a0e-b7d7-c9e0c244f1af status=400 text_status=Bad Request took=306.8µs</p>
+</blockquote>
+<p>My kratos.yml config</p>
+<blockquote>
+<p><span class="hashtag">#version:</span> v0.4.6-alpha.1</p>
+<p>dsn: memory</p>
+<p>serve:<br/>
+public:<br/>
+base_url: <a href="http://127.0.0.1:8089/.ory/kratos/public/" rel="nofollow noopener">http://127.0.0.1:8089/.ory/kratos/public/</a><br/>
+admin:<br/>
+base_url: <a href="http://kratos:4434/" rel="nofollow noopener">http://kratos:4434/</a></p>
+<p>selfservice:<br/>
+default_browser_return_url: <a href="http://127.0.0.1:8089/" rel="nofollow noopener">http://127.0.0.1:8089/</a><br/>
+whitelisted_return_urls:<br/>
+- <a href="http://127.0.0.1:8089" rel="nofollow noopener">http://127.0.0.1:8089</a></p>
+<p>strategies:<br/>
+password:<br/>
+enabled: true</p>
+<p>flows:<br/>
+error:<br/>
+ui_url: <a href="http://127.0.0.1:8089/error" rel="nofollow noopener">http://127.0.0.1:8089/error</a></p>
+<pre><code>settings:
+  ui_url: http://127.0.0.1:4455/settings
+  privileged_session_max_age: 15m
+
+recovery:
+  enabled: true
+  ui_url: http://127.0.0.1:4455/recovery
+
+verification:
+  enabled: true
+  ui_url: http://127.0.0.1:4455/verify
+  after:
+    default_browser_return_url: http://127.0.0.1:4455/
+
+logout:
+  after:
+    default_browser_return_url: http://127.0.0.1:4455/auth/login
+
+login:
+  ui_url: http://127.0.0.1:8089
+  request_lifespan: 10m
+
+registration:
+  request_lifespan: 10m
+  ui_url: http://127.0.0.1:4455/auth/registration
+  after:
+    password:
+      hooks:
+        -
+          hook: session
+</code></pre>
+<p>log:<br/>
+level: debug<br/>
+format: text</p>
+<p>secrets:<br/>
+cookie:<br/>
+- PLEASE-CHANGE-ME-I-AM-VERY-INSECURE</p>
+<p>hashers:<br/>
+argon2:<br/>
+parallelism: 1<br/>
+memory: 131072<br/>
+iterations: 2<br/>
+salt_length: 16<br/>
+key_length: 16</p>
+<p>identity:<br/>
+default_schema_url: file:///etc/config/kratos/identity.traits.schema.json</p>
+<p>courier:<br/>
+smtp:<br/>
+connection_uri: smtps://test:test@mailslurper:1025/?skip_ssl_verify=true</p>
+</blockquote>
+<p><div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/yYymyNsJiDiNFZu0sISRoyWFC5D.png?dl=1" href="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/original/1X/f52240664eb3b930d3b126f88d3267d48453168d.png" rel="nofollow noopener" title="2020-08-21 153938"><img alt="2020-08-21 153938" data-base62-sha1="yYymyNsJiDiNFZu0sISRoyWFC5D" data-small-upload="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/f52240664eb3b930d3b126f88d3267d48453168d_2_10x10.png" height="35" src="../../../images/f52240664eb3b930d3b126f88d3267d48453168d_2_690x35.png" srcset="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/f52240664eb3b930d3b126f88d3267d48453168d_2_690x35.png, //ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/f52240664eb3b930d3b126f88d3267d48453168d_2_1035x52.png 1.5x, //ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/f52240664eb3b930d3b126f88d3267d48453168d_2_1380x70.png 2x" width="690"/><div class="meta"><svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use xlink:href="#far-image"></use></svg><span class="filename">2020-08-21 153938</span><span class="informations">1736×89 5.25 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use xlink:href="#discourse-expand"></use></svg></div></a></div></p>
+<p>PS: I have read <a href="https://www.ory.sh/kratos/docs/debug/csrf/" rel="nofollow noopener">https://www.ory.sh/kratos/docs/debug/csrf/</a></p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

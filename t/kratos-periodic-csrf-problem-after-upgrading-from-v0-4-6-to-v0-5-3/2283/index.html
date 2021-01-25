@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Kratos periodic CSRF problem after upgrading from v0.4.6 to v0.5.3</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Kratos periodic CSRF problem after upgrading from v0.4.6 to v0.5.3</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/379_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">zhming0</div>
+          <div class="post_content">
+<p>Hi there, I have been using Kratos for quite a while and it was all working properly.</p>
+<p>But today after I upgraded it from 0.4.6 to 0.5.3, the CSRF problem just shows up. Kratos complaints about missing CSRF for all flows. And the issue seems to be periodic: for a short period of time it doesn’t work, and then it works after a while. So it’s very hard for me to reproduce this.</p>
+<p>I am aware that there is <a href="https://www.ory.sh/kratos/docs/debug/csrf" rel="noopener nofollow ugc">this doc</a> exist. I have double checked that non of those items applies to me.</p>
+<p>I am just wondering if there is any breaking changes relating to CSRF handling between these two versions that is not mentioned in the CHANGELOG?</p>
+<p>Thanks a lot. <img alt=":pray:" class="emoji" src="../../../images/pray.png" title=":pray:"/><img alt=":pray:" class="emoji" src="../../../images/pray.png" title=":pray:"/><img alt=":pray:" class="emoji" src="../../../images/pray.png" title=":pray:"/></p>
+<hr/>
+<p>More tech detail, when it’s breaking</p>
+<p>I tried:</p>
+<pre><code class="lang-auto">http '${KRATOS_ADMIN}/self-service/login/flows?id=${FLOW_ID}'
+</code></pre>
+<p>and then I grabbed the return CSRF token and passed in:</p>
+<pre><code class="lang-auto">http --form POST ${KRATOS_PUBLIC}/self-service/login/methods/password?flow=${FLOW_ID} \
+  csrf_token='THE ABOVE CSRF'  \
+  identifier='random' \
+  password='random' \
+  Host:'127.0.0.1:3001' # this is to simulate browser header
+</code></pre>
+<p>It redirects me to the error flow with following log in Kratos:</p>
+<pre><code class="lang-auto">time=2020-10-31T06:05:15Z level=info msg=Encountered self-service login error. audience=audit error=map[debug: message:The requested action was forbidden reason:A request failed due to a missing or invalid csrf_token value. status:Forbidden status_code:403] ......
+</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Sorry for the late reply - does this problem happen in the browser, an API client (e.g. react native app) or what context exactly?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/379_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">zhming0</div>
+          <div class="post_content">
+<p>Sorry for the late reply as I really couldn’t find a way to consistently re-produce this.</p>
+<p>To answer your question</p>
+<blockquote>
+<p>does this problem happen in the browser, an API client</p>
+</blockquote>
+<p>It happens in browser flow.</p>
+<blockquote>
+<p>what context exactly</p>
+</blockquote>
+<p>The last time when my customer reported this, I noticed following events:</p>
+<ul>
+<li>The customer was redirected to login screen because of expired session</li>
+<li>The customer tried to login again, but no matter what he does the error is always what I showed above.</li>
+<li>The customer tried to clear cache, using different browser, the problem persist.</li>
+<li>At the same time, one other customer attempts to login and succeeded.</li>
+<li>Now after the other customer is logged in, the reporting customer says he is able to login.</li>
+</ul>
+<p>There are other situations similar to above.</p>
+<p>Any help will be appreciated!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Hm without a reproducible test case it will be very hard to debug this. We need at least some headers, the request URLs, config, set up, and so on. Otherwise we would be doing fortune telling <img alt=":wink:" class="emoji" src="../../../images/wink.png" title=":wink:"/></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/379_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">zhming0</div>
+          <div class="post_content">
+<p>Yeah, I totally understand and I appreciate you spend time reading this already <img alt=":slight_smile:" class="emoji" src="../../../images/slight_smile.png" title=":slight_smile:"/>.</p>
+<hr/>
+<p>In terms of more tech detail:</p>
+<p>My initial message contains the minimal procedures that can trigger that error <strong>when</strong> the issue is happening. The log message is the only information Kratos spit out regarding this, as you can see, it’s very different from normal CSRF mismatching error log.</p>
+<hr/>
+<p>Maybe, can I ask this question from a different perspective?</p>
+<p>I understand that <strong>normally</strong> when a user complete a login flow, if CSRF mismatches, Kratos will return validation error as opposed to redirecting user to the new error flow (introduced in recent releases).</p>
+<p>My question is: under what case, would a CSRF issue trigger error flow above instead of simple validation error?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Your code example in your original post fails because you are not including any cookies in the HTTP request.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/379_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">zhming0</div>
+          <div class="post_content">
+<p><img alt=":man_facepalming:" class="emoji" src="../../../images/man_facepalming.png" title=":man_facepalming:"/> you are right. My example wasn’t correct. I didn’t realize Kratos needs both form CSRF token and cookie CSRF token.</p>
+<p>I started to understand the whole situation on my site, here is what happened. In a browser:</p>
+<ol>
+<li>A customer opens a the login page, initialized the Kratos login flow but doesn’t not login.</li>
+<li>The customer didn’t do any action within the CSRF Cookie expiry duration. (Or the cookie was removed)</li>
+<li>Now the customer tries to login, he will see the error flow.</li>
+<li>He clicked browser back button, ended up in <code>/login?flow=xxxx</code> (the previous flow id again) page and tried to login again. This is when he saw the error flow again and was convinced our site is broken.</li>
+</ol>
+<hr/>
+<p>In this situation, is it the best practice for me to handle the error flow proactively by redirecting user to <code>/login</code> so user can initialize a new login flow and obtaining a new CSRF token?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Hm, I was under the impression that CSRF failures should automagically initialize a new login/registration/… flow, but that might not actually be the case. Could you please create an issue if that is really the case? To test it, just initialize a login flow in a browser window, then copy the URL to a new incognito tab and submit it. You <em>should</em> end up at a new login flow but if not that means there is a bug!</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

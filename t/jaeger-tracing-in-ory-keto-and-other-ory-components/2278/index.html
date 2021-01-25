@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Jaeger tracing in Ory Keto and other Ory components</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Jaeger tracing in Ory Keto and other Ory components</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">larandersson</div>
+          <div class="post_content">
+<p>Hi,</p>
+<p>We have a microservice that invokes Ory Keto to check if a specific request is allowed. According to the documentation, you can then use the following configuration:</p>
+<ol>
+<li>
+<p>Under CORS configuration, I added</p>
+<pre><code> allowed_headers:
+     - x-b3-spanid
+     - x-b3-traceid
+     - x-b3-sampled
+     - x-b3-parentspanid
+</code></pre>
+</li>
+<li>
+<p>Under jaeger configuration:</p>
+<pre><code>   jaeger:
+       local_agent_address: &lt;jaeger-agent&gt;l:6831
+       propagation: b3
+       sampling:
+         server_url: http:/&lt;jaeger-agent&gt;:5778/sampling
+         type: const
+         value: 1
+   service_name: ORY Keto
+</code></pre>
+</li>
+<li>
+<p>In my client, I add the following http headers, and the below is a dump of the http request:</p>
+</li>
+</ol>
+<p><code>"POST /engines/acp/ory/glob/allowed HTTP/1.1\r\nHost: &lt;host&gt;:4456\r\nUser-Agent: Go-http-client/1.1\r\nContent-Length: 84\r\nAccept: application/json\r\nContent-Type: application/json\r\nX-B3-Sampled: 1\r\nX-B3-Spanid: 53a25bd3c253a200\r\nX-B3-Traceid: 61fcfc22185e56ed329a86f6fc233516\r\nx-b3-parentspanid: 53a25bd3c253a200\r\nAccept-Encoding: gzip\r\n\r\n{\"action\":\"read\",\"resource\":\"devicemgmt:instruments\",\"subject\":\"john.doe@acme.com\"}</code></p>
+<p>But, looking in the Jaeger UI, I do get a span for /engines/acp/ory/glob/allowed, but it’s not a child span of the span propagated as http headers. What could be the issue here?</p>
+<p>Regards</p>
+<p>Lars</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Hm it is possible that this is not properly being propagated. Another problem could be that the ory/x dependency in ory keto is not up to date - it might have been fixed there already!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">larandersson</div>
+          <div class="post_content">
+<p>I’m guessing it’s the first option. I tried to do the same thing as our microservice does but with curl and Keto configured to use debug level, and in the logs all I can see is:</p>
+<p><code>time=2020-11-02T21:32:03Z level=info msg=started handling request http_request=map[headers:map[accept:application/json origin:https://localhost user-agent:curl/7.55.1] host:localhost:4456 method:POST path:/engines/acp/ory/glob/allowed query:&lt;nil&gt; remote:127.0.0.1:55514 scheme:https]</code></p>
+<p>So, none of the headers are present here. Are you supposed to see all the headers in the log, or are they being filtered out intentionally? Where in the code should I look for this? I’m thinking of building a new image and put some trace statements to be able to see all the headers that are coming in the http request.</p>
+<p>The second option, regarding the ory/x dependency is most likely not the problem, as far as I can see, as the b3 propagation feature was added July 7th 2019 and the image we are using was built way later than that. I can’t see any other commits having been made to the tracing package that could be relevant after that date, unless I should look in another package?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">larandersson</div>
+          <div class="post_content">
+<p>New update:</p>
+<p>So I built a new Keto image, this time with some trace statements in the middleware.go file of the ory/x/tracing package. The headers seem to be propgated to Keto alright. A dump of the received http request looks like this:</p>
+<p><code>"POST /engines/acp/ory/glob/allowed HTTP/1.1\r\nHost: 10.0.9.133:4456\r\nAccept: application/json\r\nAccept-Encoding: gzip\r\nContent-Length: 84\r\nContent-Type: application/json\r\nUser-Agent: Go-http-client/1.1\r\nX-B3-Sampled: 1\r\nX-B3-Spanid: afe7c6d6e065bed9\r\nX-B3-Traceid: eafa2ceb6b0966c431c349284729268c\r\n\r\n{\"action\":\"read\",\"resource\":\"devicemgmt:instruments\",\"subject\":\"john.doe@acme.com\"}\n"</code></p>
+<p>But, the code below returns an error: <strong>opentracing: SpanContext not found in Extract carrier</strong></p>
+<pre><code>remoteContext, err := opentracing.GlobalTracer().Extract(
+  opentracing.HTTPHeaders,
+  opentracing.HTTPHeadersCarrier(r.Header),
+)</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">larandersson</div>
+          <div class="post_content">
+<p>Problem solved:</p>
+<p>It turned out to be a bug in Ory Keto. The propagation configuration is not being picked up:</p>
+<aside class="onebox githubblob">
+<header class="source">
+<a href="https://github.com/ory/keto/blob/master/driver/configuration/provider_viper.go#L61" rel="noopener nofollow ugc" target="_blank">github.com</a>
+</header>
+<article class="onebox-body">
+<h4><a href="https://github.com/ory/keto/blob/master/driver/configuration/provider_viper.go#L61" rel="noopener nofollow ugc" target="_blank">ory/keto/blob/master/driver/configuration/provider_viper.go#L61</a></h4>
+<pre class="onebox"><code class="lang-go"><ol class="start lines" start="51" style="counter-reset: li-counter 50 ;">
+<li>
+</li><li>func (v *ViperProvider) TracingProvider() string {</li>
+<li>	return viperx.GetString(v.l, "tracing.provider", "", "TRACING_PROVIDER")</li>
+<li>}</li>
+<li>
+</li><li>func (v *ViperProvider) TracingJaegerConfig() *tracing.JaegerConfig {</li>
+<li>	return &amp;tracing.JaegerConfig{</li>
+<li>		LocalAgentHostPort: viperx.GetString(v.l, "tracing.providers.jaeger.local_agent_address", "", "TRACING_PROVIDER_JAEGER_LOCAL_AGENT_ADDRESS"),</li>
+<li>		SamplerType:        viperx.GetString(v.l, "tracing.providers.jaeger.sampling.type", "const", "TRACING_PROVIDER_JAEGER_SAMPLING_TYPE"),</li>
+<li>		SamplerValue:       viperx.GetFloat64(v.l, "tracing.providers.jaeger.sampling.value", float64(1), "TRACING_PROVIDER_JAEGER_SAMPLING_VALUE"),</li>
+<li class="selected">		SamplerServerURL:   viperx.GetString(v.l, "tracing.providers.jaeger.sampling.server_url", "", "TRACING_PROVIDER_JAEGER_SAMPLING_SERVER_URL"),</li>
+<li>	}</li>
+<li>}</li>
+</ol></code></pre>
+</article>
+<div class="onebox-metadata">
+</div>
+<div style="clear: both"></div>
+</aside>
+<p>The following line should be added:</p>
+<p><code>Propagation:        viperx.GetString(v.l, "tracing.providers.jaeger.propagation", "", "TRACING_PROVIDER_JAEGER_PROPAGATION"),</code></p>
+<p>Will provide a PR for this bug.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Thank you! PR is merged <img alt=":slight_smile:" class="emoji" src="../../../images/slight_smile.png" title=":slight_smile:"/></p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

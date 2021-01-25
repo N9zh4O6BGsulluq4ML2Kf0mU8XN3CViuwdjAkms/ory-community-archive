@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>How to use post_logout_redirect_uris param to logout in PKCE mode</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">How to use post_logout_redirect_uris param to logout in PKCE mode</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">jacky-neo</div>
+          <div class="post_content">
+<p>my client as below. when I invoke hydra public endpoint “/oauth2/sessions/logout”, I get fail info:</p>
+<pre><code>*Error: invalid_request*
+</code></pre>
+<ul>
+<li>Description: The request is missing a required parameter, includes an invalid parameter value, includes a parameter more than once, or is otherwise malformed*</li>
+<li>Hint: Logout failed because query parameter post_logout_redirect_uri is set but id_token_hint is missing*</li>
+<li>Debug:*</li>
+</ul>
+<p>I add id_token_hint=id_token, I get fail info:</p>
+<pre><code>*Error: invalid_request*
+</code></pre>
+<ul>
+<li>Description: The request is missing a required parameter, includes an invalid parameter value, includes a parameter more than once, or is otherwise malformed*</li>
+<li>Hint: token contains an invalid number of segments*</li>
+<li>Debug:*</li>
+</ul>
+<p>How can I do?</p>
+<pre><code class="lang-auto">{
+
+        "client_id": "id_pkce",
+
+        "client_name": "",
+
+        "redirect_uris": [
+
+            "http://localhost:8080/auth/"
+
+        ],
+
+        "grant_types": [
+
+            "authorization_code",
+
+            "refresh_token"
+
+        ],
+
+        "response_types": [
+
+            "code",
+
+            "id_token"
+
+        ],
+
+        "scope": "openid offline first_party",
+
+        "audience": [],
+
+        "owner": "",
+
+        "policy_uri": "",
+
+        "allowed_cors_origins": [
+
+            "http://localhost:8080"
+
+        ],
+
+        "tos_uri": "",
+
+        "client_uri": "",
+
+        "logo_uri": "",
+
+        "contacts": [],
+
+        "client_secret_expires_at": 0,
+
+        "subject_type": "public",
+
+        "jwks": {},
+
+        "token_endpoint_auth_method": "none",
+
+        "userinfo_signed_response_alg": "none",
+
+        "created_at": "2020-10-16T04:57:04Z",
+
+        "updated_at": "2020-10-16T04:57:04Z",
+
+        "post_logout_redirect_uris": [
+
+            "http://localhost:8080"
+
+        ],
+
+        "metadata": {}
+
+    }
+</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>You need to set an actual ID Token, which is a JSON Web Token or rather an OpenID Connect ID Token, not the string <code>id_token</code>.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">jacky-neo</div>
+          <div class="post_content">
+<p>Sorry to reploy later for rest day. How can I get openID Connectt ID token?  use /userinfo to get? I tried value of token, sid, sub or userid. But I get same error as ‘id_token’. Could you give more tips. Thank you so much！</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>I recommend watching:</p>
+<div class="onebox lazyYT lazyYT-container" data-parameters="feature=oembed&amp;wmode=opaque" data-youtube-id="996OiexHze0" data-youtube-title="OAuth 2.0 and OpenID Connect (in plain English)">
+<a href="https://www.youtube.com/watch?v=996OiexHze0" rel="noopener" target="_blank">
+<img class="ytp-thumbnail-image" height="388" src="../../../images/f6956b6f64cc1306f406db083f665f837b37464c.jpeg" title="OAuth 2.0 and OpenID Connect (in plain English)" width="690"/>
+</a>
+</div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">jacky-neo</div>
+          <div class="post_content">
+<p>Thx. I missed scope ‘openid’ when submit ‘/oauth2/auth’. After I added it, I got id_token value from ‘/auth2/token’. I used id_token as id_token_hint in logout. The error is resolved. But I get another info. If I set env ‘URLS_POST_LOGOUT_REDIRECT’ following info, the info is disappear. But browser redirect as env not the value of ‘post_logout_redirect_uris’. My hydra version 1.5. Pls give more suggestion.</p>
+<pre><code class="lang-auto"> The Default Post Logout URL is not set which is why you are seeing this fallback page. Your log out request however succeeded.
+
+You are seeing this page because configuration key urls.post_logout_redirect is not set.
+
+If you are an administrator, please read the guide to understand what you need to do. If you are a user, please contact the administrator. 
+</code></pre>
+<p>I hope it will do as the following:</p>
+<pre><code class="lang-auto">The post_logout_redirect defaults to the configuration value of urls.post_logout_redirect. If a post_logout_redirect_uri was set and that URL is in the array of the OAuth2 Client's urls.post_logout_redirect, the browser will be redirected there instead.
+</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">jacky-neo</div>
+          <div class="post_content">
+<p>I read logout flow of hydra again and find that I need append a query param ‘post_logout_redirect_uri’. Its value is in array called ‘post_logout_redirect_uris’ of client. Now I resolved the issue at last.</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

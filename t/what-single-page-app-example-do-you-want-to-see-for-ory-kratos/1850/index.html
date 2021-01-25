@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>What Single Page App example do you want to see for ORY Kratos?</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">What Single Page App example do you want to see for ORY Kratos?</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>We want to provide you with a Single Page App example for ORY Kratos, similar to <a href="https://github.com/ory/kratos-selfservice-ui-node">https://github.com/ory/kratos-selfservice-ui-node</a> . We are however not sure if we should use ReactJS or keep it simple with some good old JQuery. What do you prefer?</p>
+<div class="poll" data-poll-charttype="bar" data-poll-max="2" data-poll-min="1" data-poll-name="poll" data-poll-results="always" data-poll-status="open" data-poll-type="regular">
+<div>
+<div class="poll-container">
+<ul>
+<li data-poll-option-id="27d126c33ab98e9b7d3c975d863ee232">React SPA Example</li>
+<li data-poll-option-id="661e50be84ed98ef6f5e9142a83830e9">JQuery Example</li>
+</ul>
+</div>
+<div class="poll-info">
+<p>
+<span class="info-number">0</span>
+<span class="info-label">voters</span>
+</p>
+</div>
+</div>
+</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/260_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">ghenry</div>
+          <div class="post_content">
+<p>vuejs please <img alt=":slight_smile:" class="emoji" src="../../../images/slight_smile.png" title=":slight_smile:"/> React is dead!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Sorry, these two are the only options available for support from our side. <strong>Let’s not make this a framework war/discussion</strong>. I can also easily find at least as many people who contradict that opinion, but that’s not what this thread is about.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">One041</div>
+          <div class="post_content">
+<p>Im Angular developer. I dont know React =\</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Do you feel that something like this would be explanatory enough though?</p>
+<pre><code class="lang-auto">const LoginPage = ({ router }) =&gt; {
+  const request = kratos.getLoginRequest(router.params.request)
+  return (
+    &lt;div&gt;
+      &lt;form action={request.methods.password.action}&gt;
+         ...
+      &lt;/form&gt;
+    &lt;/div&gt;
+  )
+}
+</code></pre>
+<p>It’s really about understanding the concept rather than cloning the react app itself!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/423_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">tttp</div>
+          <div class="post_content">
+<p>Do you have a timeline in mind as for when the example would be ready?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Unfortunately we don’t give out timelines for open source projects. We will probably start with some documentation first.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/423_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">tttp</div>
+          <div class="post_content">
+<p>Sure,</p>
+<p>I do work on React, happy to have a look and help before ready for public consumption if it’s useful for you guys</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/489_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">matheusmatos</div>
+          <div class="post_content">
+<p>I’m a React developer but maybe is better to leave things simple in that case. I would suggest VanillaJS or jQuery just to understand the concept: watch network requests and which info we must save in local storage. I can help to write with some guidance.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/491_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">NetToaster</div>
+          <div class="post_content">
+<p>I really cant wait to see that example! when more or less it will be released ? Is there any way to contribute ?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/491_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">NetToaster</div>
+          <div class="post_content">
+<p>I have a one more question, login/registration forms will be coded in react or app will be redirecting to the kratos login page ?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>They will be coded in react</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">rickwang7712</div>
+          <div class="post_content">
+<p>vuejs!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/524_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">ellioseven</div>
+          <div class="post_content">
+<p>I’m actually working on an example React implementation if anyone is interested in taking a look: <a href="https://github.com/ellioseven/kratos-ss-ui-react/tree/master" rel="nofollow noopener">https://github.com/ellioseven/kratos-ss-ui-react/tree/master</a></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p><img alt=":tada:" class="emoji only-emoji" src="../../../images/tada.png" title=":tada:"/></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/561_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">UkonnRa</div>
+          <div class="post_content">
+<p>That’s a great example! But I just wonder how you develop locally when using React? I encounter lots of <a href="https://github.com/ory/kratos-selfservice-ui-react/issues/1#issuecomment-679460986" rel="nofollow noopener">CORS problems</a> when I develop my frontend. When developing, the frontend and Kratos <strong>must</strong> be in the different origins right? So I just wondering if there are any CORS settings in Kratos to walkaround it</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">unramk</div>
+          <div class="post_content">
+<p>I’m build a JAMstack app with Sapper and will try integrating Kratos into it. I’d be willing to publish a plug and play example/template of the basic flow of the app that you could use as an example. (Perhaps in exchange for some support if I get stuck with something Kratos specific <img alt=":slight_smile:" class="emoji" src="../../../images/slight_smile.png" title=":slight_smile:"/>)</p>
+<p>This is definitely not good for a main example, as Svelte is still not widely adopted, but as it’s a rapidly growing frontend framework (fourth by growth rate on github, right after react, angular and vue) and there’s no good, plug and play, full stack and open source identity service setup for it around.</p>
+<p>It could be a decent source of exposure to your project, and very useful to have in the OSS community.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/586_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">tnm0113</div>
+          <div class="post_content">
+<p>Any one made an working Angular example ? I have included kratos-client in my package.json but when i initialized new PublicApi() i had error "Uncaught TypeError: Cannot read property ‘prototype’ of undefined " , tks for helping me<br/>
+Note: im using Angular 9</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/564_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">stilet</div>
+          <div class="post_content">
+<p>It would be just super! Can I take a look at your repository?</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

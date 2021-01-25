@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Initiate logout flow oauth2/auth</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Initiate logout flow oauth2/auth</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">notNeo</div>
+          <div class="post_content">
+<p>is the logout request only for openid?</p>
+<p>I can request the login, consent and presumably the logout per oauth2/auth.<br/>
+this model indicates the necessary data, needed for a logout to be successfull</p>
+<aside class="onebox githubblob">
+<header class="source">
+<a href="https://github.com/ory/hydra-client-go/blob/master/models/logout_request.go#L16" rel="nofollow noopener" target="_blank">github.com</a>
+</header>
+<article class="onebox-body">
+<h4><a href="https://github.com/ory/hydra-client-go/blob/master/models/logout_request.go#L16" rel="nofollow noopener" target="_blank">ory/hydra-client-go/blob/master/models/logout_request.go#L16</a></h4>
+<pre class="onebox"><code class="lang-go"><ol class="start lines" start="6" style="counter-reset: li-counter 5 ;">
+<li>// Editing this file might prove futile when you re-run the swagger generate command</li>
+<li>
+</li><li>import (</li>
+<li>	"github.com/go-openapi/strfmt"</li>
+<li>	"github.com/go-openapi/swag"</li>
+<li>)</li>
+<li>
+</li><li>// LogoutRequest Contains information about an ongoing logout request.</li>
+<li>//</li>
+<li>// swagger:model logoutRequest</li>
+<li class="selected">type LogoutRequest struct {</li>
+<li>
+</li><li>	// RequestURL is the original Logout URL requested.</li>
+<li>	RequestURL string `json:"request_url,omitempty"`</li>
+<li>
+</li><li>	// RPInitiated is set to true if the request was initiated by a Relying Party (RP), also known as an OAuth 2.0 Client.</li>
+<li>	RpInitiated bool `json:"rp_initiated,omitempty"`</li>
+<li>
+</li><li>	// SessionID is the login session ID that was requested to log out.</li>
+<li>	Sid string `json:"sid,omitempty"`</li>
+<li>
+</li></ol></code></pre>
+</article>
+<div class="onebox-metadata">
+</div>
+<div style="clear: both"></div>
+</aside>
+<p>is the session_id to be set at login, does hydra set one at random or is another variable responsible in case it is missing, such as the login_verifier?</p>
+<p>tl;dr<br/>
+how would one go about and logging out a client which has an access token?<br/>
+I could not find any resources except for openid.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/669_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">vinckr</div>
+          <div class="post_content">
+<p>An Access Token (proof of authorization) is not the same thing as a “login session”<br/>
+(which is what we have OpenID Connect for).</p>
+<p><a href="https://www.ory.sh/hydra/docs/concepts/logout/">From the docs:</a><br/>
+" A logout request may be initiated by the OpenID Provider (OP -  <strong>you</strong> ) or by the Relying Party (RP - the OAuth2 Client):<br/>
+The RP-initiated flow needs an  <code>id_token_hint</code>  and may optionally define  <code>state</code>  and  <code>post_logout_redirect_uri</code> .</p>
+<p><a href="https://www.ory.sh/hydra/docs/reference/api/">About the session_id:</a><br/>
+“LoginSessionID is the login session ID. If the user-agent reuses a login session (via cookie / remember flag) this ID will remain the same. If the user-agent did not have an existing authentication session (e.g. remember is false) this will be a new random value. This value is used as the “sid” parameter in the ID Token and in OIDC Front-/Back- channel logout. It’s value can generally be used to associate consecutive login requests by a certain user.”</p>
+<p>Let me know if that helped!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">notNeo</div>
+          <div class="post_content">
+<p>atm i don’t bother about openID and just try to get the basics right.</p>
+<p>I know that a logout won’t invalidate an access_token.<br/>
+but there is a logout endpoint for “/oauth2/auth/requests/logout”, which appears to be for the relaying party (client). correct me if I’m wrong</p>
+<p>I can’t find any model conforming to the requirements as pointed out by the documentation thus my question. but I had the same problem with the login flow and deduced the needed params from the link in the consent-node, which isn’t practical. i can’t do the same for the logout because I can’t get logout to work properly. (“unable to fetch the requested resource”)</p>
+<p>maybe there is documentation or code that I missed you could point me to?</p>
+<p>EDIT:<br/>
+the login request (containing the Sid) results if sent only in a response containing the csrf and a 302 to a location containing the challenge. but not the random Sid which has purposedly been set automatically</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>I don’t really understand the question, what are you trying to do, what are you expecting to happen, and what happens instead?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">notNeo</div>
+          <div class="post_content">
+<p>there is the request to get the login challenge, the url containing the following:</p>
+<p>[<br/>
+“client_id”: “auth-code-client”,<br/>
+“nonce”: nonce,<br/>
+“redirect_uri”: “<a href="http://127.0.0.1:5555/callback" rel="nofollow noopener">http://127.0.0.1:5555/callback</a>”,<br/>
+“response_type”: “code”,<br/>
+“scope”: “openid offline”,<br/>
+“state”: state<br/>
+]</p>
+<p>I want to acquire equal information to succeed at the logout endpoint at “/oauth2/auth/requests/logout”</p>
+<p>ps: the “nonce” and the “state” are placeholders for the random string</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>So you want to see, for example, the ClientID associated with the logout request?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">notNeo</div>
+          <div class="post_content">
+<p>I guess I am expressing myself in an unclear fashion.<br/>
+I have no clue how the information itself stands out especially in my formulation, so I will try again.</p>
+<p>my goal is to get the logout_challenge. which parameters do I have to encode into the url? and which endpoint do I have to address? is it documented? can someone point me to the source, where it is implemented?</p>
+<p>EDIT:<br/>
+I am looking for the logout equivalent of this:<br/>
+</p><aside class="onebox githubblob">
+<header class="source">
+<a href="https://github.com/ory/hydra/blob/master/cmd/token_user.go#L152" rel="nofollow noopener" target="_blank">github.com</a>
+</header>
+<article class="onebox-body">
+<h4><a href="https://github.com/ory/hydra/blob/master/cmd/token_user.go#L152" rel="nofollow noopener" target="_blank">ory/hydra/blob/master/cmd/token_user.go#L152</a></h4>
+<pre class="onebox"><code class="lang-go"><ol class="start lines" start="142" style="counter-reset: li-counter 141 ;">
+<li>			RedirectURL: redirectUrl,</li>
+<li>			Scopes:      scopes,</li>
+<li>		}</li>
+<li>
+</li><li>		state, err := randx.RuneSequence(24, randx.AlphaLower)</li>
+<li>		cmdx.Must(err, "Could not generate random state: %s", err)</li>
+<li>
+</li><li>		nonce, err := randx.RuneSequence(24, randx.AlphaLower)</li>
+<li>		cmdx.Must(err, "Could not generate random state: %s", err)</li>
+<li>
+</li><li class="selected">		authCodeURL := conf.AuthCodeURL(</li>
+<li>			string(state),</li>
+<li>			oauth2.SetAuthURLParam("audience", strings.Join(audience, "+")),</li>
+<li>			oauth2.SetAuthURLParam("nonce", string(nonce)),</li>
+<li>			oauth2.SetAuthURLParam("prompt", strings.Join(prompt, "+")),</li>
+<li>			oauth2.SetAuthURLParam("max_age", strconv.Itoa(maxAge)),</li>
+<li>		)</li>
+<li>
+</li><li>		if !flagx.MustGetBool(cmd, "no-open") {</li>
+<li>			_ = webbrowser.Open(serverLocation) // ignore errors</li>
+<li>		}</li>
+</ol></code></pre>
+</article>
+<div class="onebox-metadata">
+</div>
+<div style="clear: both"></div>
+</aside>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">notNeo</div>
+          <div class="post_content">
+<p>okay I may have sounded more aggressive than I like to admit.</p>
+<p>the logout flow is well documented. my mistake was disregarding the endpoint “/oauth2/sessions” for it not being documented in its own section.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/669_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">vinckr</div>
+          <div class="post_content">
+<p>Dont worry about it!<br/>
+Implementing this on your own can often be frustrating, because it is quite complex, even with documentation.</p>
+<p>hackerman is unfortunately busy at the moment, but I am certain he will get back to your issue, when there is some free time.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/669_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">vinckr</div>
+          <div class="post_content">
+<p>By the way, I was just looking through older issues on ORY Hydra.<br/>
+Is this related to your problem?<br/>
+<a href="https://github.com/ory/hydra/issues/1483">Add oAuth2Client to logoutRequest similar to loginRequest. #1483</a></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">notNeo</div>
+          <div class="post_content">
+<p>well I don’t like the approach of using a separate client_id for each user. I would rather use the subject<br/>
+field to differentiate users while the client_id could represent the service serving to the user. something like “mobile_app”.</p>
+<p>I suppose there is no issue of subjects from the same client identifying as another.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/669_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">vinckr</div>
+          <div class="post_content">
+<p>Does this adress your problem?</p>
+<aside class="onebox githubissue">
+<header class="source">
+<a href="https://github.com/ory/hydra/issues/1712" rel="noopener" target="_blank">github.com/ory/hydra</a>
+</header>
+<article class="onebox-body">
+<div class="github-row">
+<div class="github-icon-container" title="Issue">
+<svg aria-hidden="true" class="github-icon" height="60" viewbox="0 0 14 16" width="60"><path d="M7 2.3c3.14 0 5.7 2.56 5.7 5.7s-2.56 5.7-5.7 5.7A5.71 5.71 0 0 1 1.3 8c0-3.14 2.56-5.7 5.7-5.7zM7 1C3.14 1 0 4.14 0 8s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm1 3H6v5h2V4zm0 6H6v2h2v-2z"></path></svg>
+</div>
+<div class="github-info-container">
+<h4>
+<a href="https://github.com/ory/hydra/issues/1712" rel="noopener" target="_blank">Handle more than one client secret per client</a>
+</h4>
+<div class="github-info">
+<div class="date">
+        opened <span class="discourse-local-date" data-date="2020-01-28" data-format="ll" data-time="12:54:32" data-timezone="UTC">12:54PM - 28 Jan 20 UTC</span>
+</div>
+<div class="user">
+<a href="https://github.com/DennisPattmann5012" rel="noopener" target="_blank">
+<img alt="DennisPattmann5012" class="onebox-avatar-inline" height="20" src="../../../images/d98f699179c6007d75bbdd817a7c660604f48218.jpeg" width="20"/>
+          DennisPattmann5012
+        </a>
+</div>
+</div>
+</div>
+</div>
+<div class="github-row">
+<p class="github-content">Is your feature request related to a problem? Please describe.
+If we want to rotate a client secret for a specific client,...</p>
+</div>
+<div class="labels">
+</div>
+</article>
+<div class="onebox-metadata">
+</div>
+<div style="clear: both"></div>
+</aside>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<aside class="quote no-group" data-post="8" data-topic="2090" data-username="notNeo">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" class="avatar" height="20" src="../../../images/40.png" width="20"/> notNeo:</div>
+<blockquote>
+<p>the logout flow is well documented. my mistake was disregarding the endpoint “/oauth2/sessions” for it not being documented in its own section.</p>
+</blockquote>
+</aside>
+<p>Ok so your problem is resolved then?</p>
+<aside class="quote no-group" data-post="11" data-topic="2090" data-username="notNeo">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" class="avatar" height="20" src="../../../images/40.png" width="20"/> notNeo:</div>
+<blockquote>
+<p>well I don’t like the approach of using a separate client_id for each user. I would rather use the subject<br/>
+field to differentiate users while the client_id could represent the service serving to the user. something like “mobile_app”.</p>
+</blockquote>
+</aside>
+<p>Yes, please don’t use client_ids as a substitute for users!</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

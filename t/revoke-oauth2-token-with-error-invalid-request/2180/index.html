@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Revoke Oauth2 token with error “invalid_request”</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Revoke Oauth2 token with error “invalid_request”</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/588_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">Seven5y</div>
+          <div class="post_content">
+<p>I use curl to post revoke api, like this:<br/>
+curl --location --request POST ‘<a href="http://containter.datahunter.cn:11000/oauth2/revoke" rel="nofollow noopener">http://containter.datahunter.cn:11000/oauth2/revoke</a>’ <br/>
+–header ‘Content-Type: application/x-www-form-urlencoded’ <br/>
+–data-urlencode ‘token=AwxH2rfJKzye5pQ8mmU-9PEpfDKc_QTyTQ2rmgKxWQk.F8q7GWkGFf_gKY1FrFEep8HqMeW6sGUjwrn8bs1Ta2M’ <br/>
+–data-urlencode ‘token_type_hint=refresh_token’</p>
+<p>but, i get error:<br/>
+{<br/>
+“error”: “invalid_request”,<br/>
+“error_description”: “The request is missing a required parameter, includes an invalid parameter value, includes a parameter more than once, or is otherwise malformed”,<br/>
+“error_hint”: “Make sure that the various parameters are correct, be aware of case sensitivity and trim your parameters. Make sure that the client you are using has exactly whitelisted the redirect_uri you specified.”,<br/>
+“status_code”: 400<br/>
+}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/588_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">Seven5y</div>
+          <div class="post_content">
+<p>got solution: <a class="inline-onebox" href="https://community.ory.sh/t/how-to-revoke-token/1394">How to revoke token</a></p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

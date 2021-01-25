@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Disabling calls to external APIs during registration in dev mode?</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Disabling calls to external APIs during registration in dev mode?</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">turgaer</div>
+          <div class="post_content">
+<p>Hello there,</p>
+<p>I’ve installed Kratos via the quickstart tutorial and everything seems to work just fine. <img alt=":slight_smile:" class="emoji" src="../../../images/slight_smile.png" title=":slight_smile:"/></p>
+<p>But is it possible to disable calls of Kratos to external APIs during the registration process? My problem is that I am sometimes behind a proxy during development and registration fails because some calls to external APIs are not successful and the registration fails.</p>
+<p>kratos-selfservice-ui-node_1  | Error: socket hang up<br/>
+kratos-selfservice-ui-node_1  |     at connResetException (internal/errors.js:609:14)<br/>
+kratos-selfservice-ui-node_1  |     at Socket.socketOnEnd (_http_client.js:455:23)<br/>
+kratos-selfservice-ui-node_1  |     at Socket.emit (events.js:333:22)<br/>
+kratos-selfservice-ui-node_1  |     at endReadableNT (_stream_readable.js:1220:12)<br/>
+kratos-selfservice-ui-node_1  |     at processTicksAndRejections (internal/process/task_queues.js:84:21)</p>
+<p>I think it is being checked if the entered password hash is being registered in some data breach databases.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Yes that is correct. What version are you running?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">turgaer</div>
+          <div class="post_content">
+<p>I am running the latest version of the docker release, “oryd/kratos:latest”. It’s not really high priority, I simply encountered the need. <img alt=":slight_smile:" class="emoji" src="../../../images/slight_smile.png" title=":slight_smile:"/></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>We released a new version of Kratos yesterday - and I think the issue you mentioned should have been resolved there!</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

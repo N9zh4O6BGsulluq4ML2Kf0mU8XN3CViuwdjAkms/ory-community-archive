@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Multiple schemas/identities seem problematic</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Multiple schemas/identities seem problematic</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">c0depwn</div>
+          <div class="post_content">
+<p>Hi there,</p>
+<p>I want to start off by saying that the ecosystem which is being built is quite amazing, I am impressed! <img alt=":slight_smile:" class="emoji" src="../../../images/slight_smile.png" title=":slight_smile:"/></p>
+<p>I came across some issue when spinning up kratos along with the oathkeeper proxy and  selfservice-ui-node. I have defined multiple identity schemas in json. One is for an “employee” user type and the second one for a “customer” user type. My issue is that I would like to be able to specify the schema when registering a new account from the selfservice endpoints or public API or anywhere else where I can create a user. The admin API seems to offer a <code>POST /identities</code> which allows you to send <code>schema_id</code> in the request body which works, but there is no way to specify any credentials in this way. Also when I create a new user via the selfservice-ui-node and check the created identity in the admin API with <code>GET /identities</code> the <code>schema_id</code> always seems to be “default”, only when I use the previously mentioned admin API endpoint to create a user the schema is actually “employee” or “customer” instead of “default”.</p>
+<p>So to sum up here are my main questions:<br/>
+Is there any way to specify the <code>schema_id</code> to render the proper form inputs which belong to the specified schema?<br/>
+Is there any way to get the actual <code>schema_id</code> on the entity of the identity when using the public <code>GET /session/whoami</code> enpoint instead of “default”?</p>
+<p>I am using a docker-compose with the following images:<br/>
+oryd/kratos:v0.4.6<br/>
+oryd/oathkeeper:v0.38<br/>
+oryd/kratos-selfservice-ui-node:latest</p>
+<p>Let me know if any more details are needed, I will be happy to provide them.</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

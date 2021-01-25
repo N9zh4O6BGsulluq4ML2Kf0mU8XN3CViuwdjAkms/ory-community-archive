@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Custom fields in response in additional OAuth 2 access token, refresh token and id token</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Custom fields in response in additional OAuth 2 access token, refresh token and id token</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/589_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">sagarshah1983</div>
+          <div class="post_content">
+<p>Is there an option to add custom fields in the response generating access token from Hydra in addition to OAuth 2/Open ID Connect tokens?<br/>
+I am referring to this need for SMART App on FHIR healthcare app, which is a specification on top of OAuth 2.0 + Open ID Connect.</p>
+<p><a class="onebox" href="https://hl7.org/fhir/smart-app-launch/scopes-and-launch-context/index.html#launch-context-arrives-with-your-access_token" rel="nofollow noopener" target="_blank">https://hl7.org/fhir/smart-app-launch/scopes-and-launch-context/index.html#launch-context-arrives-with-your-access_token</a><br/>
+This requires some additional fields to be returned by Authorization server based on some additional inputs (launch parameter)</p>
+<p>Please advise, if there’s any such support/plugin/extension available or can be developed?<br/>
+Appreciate!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>No, that is not possible. Also, it was partially already answered in one of your threads: <a class="inline-onebox" href="https://community.ory.sh/t/userinfo-endpoint/2170">Userinfo endpoint</a></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/589_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">sagarshah1983</div>
+          <div class="post_content">
+<p>Thanks for replying. Is there any support for plugins/extensions that we could write for custom scenarios that enable us to intercept certain request parameters on the OAuth server requests (and add additional fields to the token endpoint response)?</p>
+<p>For info: SMART App on FHIR is the conformance on top of OAuth 2.0 and Open ID Connect, but there are not many open source providers available for this solutions, so we are trying to evaluate if we can build it with Hydra.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>It is not possible to write extensions or plugins for ORY Hydra. I do not know the SMART or FHIR standards so I don’t really know what’s needed and what isn’t which means I can’t really answer your question regarding this <img alt=":confused:" class="emoji" src="../../../images/confused.png" title=":confused:"/></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/589_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">sagarshah1983</div>
+          <div class="post_content">
+<p>Thank you for responding. I know its not defined anywhere in OAuth 2 or OpenID Connect and has come up as a standard for health care applications.</p>
+<p>(Just for info in nutshell about) SMART on FHIR capabilities: It requires oauth server to accept an additional “launch” parameter in addition to all supported for authorization code and return the response with certain additional fields, depending on the value of launch parameter passed to it earlier when requesting authorization code.<br/>
+We could build something in here provided there’s a way in hydra to support some interceptors/plugins/extensions</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Could you point me to the relevant specification and specific section where this is explained? Thank you!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/589_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">sagarshah1983</div>
+          <div class="post_content">
+<p>Sure!</p>
+<p>This page lists the auth flow at high level for both scenarios EHR launch and standalone launch of a healthcare 3rd party app, which is part of SMART app launch criteria<br/>
+<a class="onebox" href="https://hl7.org/fhir/smart-app-launch/index.html" rel="nofollow noopener" target="_blank">https://hl7.org/fhir/smart-app-launch/index.html</a></p>
+<p>This page defined the scopes that client should have. Most of them are standard except “launch”, “launch/*” related, which seems to add a different behavior on auth server - <a href="https://hl7.org/fhir/smart-app-launch/scopes-and-launch-context/index.html" rel="nofollow noopener">https://hl7.org/fhir/smart-app-launch/scopes-and-launch-context/index.html</a> (Section 3 defines how the context data is shared from EHR application to 3rd party App using launch parameter and then passed on to OAuth server, which then returns the context information back to 3rd party app/client.</p>
+<p>This page is listing the conformance page criteria with link to above other pages - <a href="https://hl7.org/fhir/smart-app-launch/conformance/index.html" rel="nofollow noopener">https://hl7.org/fhir/smart-app-launch/conformance/index.html</a></p>
+<p>Thank you for showing an interest.<br/>
+Hope this helps.</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

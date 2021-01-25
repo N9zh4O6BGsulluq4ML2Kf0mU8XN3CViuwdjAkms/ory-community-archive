@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Unauthorized whoami react self service ui</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Unauthorized whoami react self service ui</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">Chris</div>
+          <div class="post_content">
+<p>Hey Guys,</p>
+<p>i’m new in the ory community and im trying to implement a react self service ui in react.<br/>
+The login and registration flows are working but now when i try to call the /sessions/whoami endpoint i get a 401 response.<br/>
+The Kratos log says:<br/>
+level=error msg=An error occurred while handling a request <a href="http://func=github.com/ory/herodot.DefaultErrorReporter.func1" rel="noopener nofollow ugc">func=github.com/ory/herodot.DefaultErrorReporter.func1</a> file=/go/pkg/mod/github.com/ory/herodot@v0.9.0/error_reporter.go:24 audience=application error=map[debug: message:The request could not be authorized reason:No valid session cookie found. status:Unauthorized status_code:401 trace:<br/>
+But when i look in chome dev tools store there is an ory_kratos_session cookie<br/>
+<div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/xXgQUH0MPQbTUNTxX8HQUBJ2mpF.png?dl=1" href="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/original/1X/edfaf763d70c6e9c189806c6d182c1dea0c693af.png" rel="noopener nofollow ugc" title="image"><img alt="image" data-base62-sha1="xXgQUH0MPQbTUNTxX8HQUBJ2mpF" data-small-upload="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/edfaf763d70c6e9c189806c6d182c1dea0c693af_2_10x10.png" height="49" src="../../../images/edfaf763d70c6e9c189806c6d182c1dea0c693af.png" width="690"/><div class="meta"><svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use xlink:href="#far-image"></use></svg><span class="filename">image</span><span class="informations">1025×73 5.47 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use xlink:href="#discourse-expand"></use></svg></div></a></div></p>
+<p>I am using the <span class="mention">@oryd</span>/kratos npm package in version 0.5.3-alpha.1. and Kratos in verion v0.5.3-alpha.1 in docker on my local machine<br/>
+Did i missed something?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Looks like the session cookie is not properly sent to the endpoint. Are you using CORS or something similar?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">Chris</div>
+          <div class="post_content">
+<p>Yes i’m using cors in the kratos config with the following configuration.</p>
+<pre><code class="lang-auto">serve:
+  public:
+    base_url: http://127.0.0.1:4433/
+    cors:
+      enabled: true
+      allowed_origins:
+        - http://127.0.0.1:3000
+      allowed_methods:
+        - POST
+        - GET
+        - PUT
+        - PATCH
+        - DELETE
+      allowed_headers:
+        - Authorization
+        - Cookie
+      exposed_headers:
+        - Content-Type
+        - Set-Cookie
+</code></pre>
+<p>When i disable cors i get the following error on every request.</p>
+<p><code>Access to XMLHttpRequest at 'http://127.0.0.1:4433/self-service/login/flows?id=e45f2917-0da2-4cfe-a1a6-0d5bf5156946' from origin 'http://127.0.0.1:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.</code></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/623_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">zepatrik</div>
+          <div class="post_content">
+<p>Can you confirm that the cookie is actually send to the whoami endpoint? You can see all the cookies send in the network tab in the dev tools when you select the request.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">Chris</div>
+          <div class="post_content">
+<p>Unfortunately it seems like the cookies aren’t set in the reqest headers.<br/>
+Im using the PublicApi from <span class="mention">@oryd</span>/kratos-client:v0.5.3-alpha.1.</p>
+<pre><code class="lang-auto"> kratos
+      .whoami()
+      .then((res) =&gt; console.log("RESULT", res))
+      .catch((err) =&gt; console.error("ERROR", err));
+</code></pre>
+<p>Am i missing something? Or do i need to specify the cookies myself?</p>
+<p>My headers:</p>
+<p>Request</p>
+<pre><code>GET /sessions/whoami HTTP/1.1
+Host: 127.0.0.1:4433
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:82.0) Gecko/20100101 Firefox/82.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Origin: http://127.0.0.1:3000
+Connection: keep-alive
+Referer: http://127.0.0.1:3000/
+</code></pre>
+<p>Response</p>
+<pre><code>HTTP/1.1 401 Unauthorized
+Access-Control-Allow-Credentials: true
+Access-Control-Allow-Origin: http://127.0.0.1:3000
+Access-Control-Expose-Headers: Content-Type, Set-Cookie
+Content-Type: application/json
+Set-Cookie: csrf_token=J3LVWTuAimboXTjWPQ1GoTEV3PzuDuX/EXL4GTmBJnk=; Path=/; Domain=127.0.0.1; Max-Age=31536000; HttpOnly
+Vary: Origin
+Vary: Cookie
+Date: Thu, 12 Nov 2020 11:07:53 GMT
+Content-Length: 137</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">Chris</div>
+          <div class="post_content">
+<p>I have crated a small demo repository to demonstrate this behaviour.</p>
+<aside class="onebox allowlistedgeneric">
+<header class="source">
+<img class="site-icon" height="32" src="../../../images/missing_image.png" width="32"/>
+<a href="https://github.com/chklaes/ory-kratos-ssui-react" rel="noopener nofollow ugc" target="_blank">GitHub</a>
+</header>
+<article class="onebox-body">
+<img class="thumbnail onebox-avatar" height="400" src="../../../images/f89aa1cdd4a2a2c6d8bb61ae30884cfc2a2ade80.jpeg" width="400"/>
+<h3><a href="https://github.com/chklaes/ory-kratos-ssui-react" rel="noopener nofollow ugc" target="_blank">chklaes/ory-kratos-ssui-react</a></h3>
+<p>Contribute to chklaes/ory-kratos-ssui-react development by creating an account on GitHub.</p>
+</article>
+<div class="onebox-metadata">
+</div>
+<div style="clear: both"></div>
+</aside>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>You could try:</p>
+<pre><code class="lang-auto">const kratos = new PublicApi(
+    new Configuration({
+      basePath: kratosUrl,
+      baseOptions: {
+        withCredentials: true
+      }
+    })
+  )
+</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Alternatively <code>kratos.whoami()</code> accepts a cookie as the first argument, but the cookie is not available in the JS context. I think the problem is that the SDK isn’t instructed to include credentials. The SDK uses <a href="https://github.com/axios/axios">https://github.com/axios/axios</a> under the hood so you might have some luck looking through their documentation!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">Chris</div>
+          <div class="post_content">
+<p>Thank you a lot <span class="mention">@hackerman</span>, the withCredential was the missing point.</p>
+<pre><code class="lang-auto">baseOptions: {
+    withCredentials: true
+}
+</code></pre>
+<p>I have seen the credentials options on some fetch request in your slack channel but didnt know that i’m able the set this option in the PublicApi Configuration.</p>
+<p>I thought the sdk set this option by default.</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

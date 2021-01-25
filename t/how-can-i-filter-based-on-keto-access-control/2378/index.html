@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>How can I filter based on Keto access control?</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">How can I filter based on Keto access control?</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/392_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">orly</div>
+          <div class="post_content">
+<p>I’m working on reworking our APIs to work better with the Oathkeeper / Zero Trust model. The biggest pain point for me so far has been figuring out how to allow <em>filtering</em> based on access.</p>
+<p>For example, taking an example from the Keto docs, let’s use blog posts. I want to restrict access based on resource definitions like <code>blogpost:1</code>, <code>blogpost:2</code>, <code>blogpost:3</code>, and use policies like <code>blogpost:*</code>.</p>
+<p>That’s great, but what if I want to only allow users to see a specific subset of these? From an access control perspective, that’s easy: just add each individual post ID / a pattern to the user’s policy / role.</p>
+<p>From a UI perspective, I’m not sure how to accomplish this. What would the endpoint to request access to the subset of resources look like? I wouldn’t think the frontend should just try to access every single blog post and test each individually. I’d want to hide posts that the user does not have access to.</p>
+<p>Based on Keto’s available APIs, the best thing I could come up with is <code>GET /blogposts/group</code>, using the group in the URL to have Oathkeeper use in the required resource like <code>blogpost:{group}:*</code>. This would mean I’d have to store a list of groups for each blog post in our database and filter queries based on that list.</p>
+<p>That makes it a little better in a way, but it still doesn’t allow me to simply list all blog posts a user has access to. Maybe the user has access to several of these custom-made “blog post access groups”.</p>
+<p>Would I have to have an API that checks the Keto Allowed API for each unique group?</p>
+<p>What is the best way to solve something like this?</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

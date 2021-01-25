@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Kratos doesn&rsquo;t accept boolean value upon error</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Kratos doesn&rsquo;t accept boolean value upon error</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/592_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">nash</div>
+          <div class="post_content">
+<p>I defined the field “consent” in the file <code>identity.traits.schema.json</code> in order to record that the user has agreed to the terms of conditions of my app. I did it as so:</p>
+<pre><code class="lang-auto">{
+    ...
+    "properties": {
+        ...
+        "traits": {
+            ...
+            "properties": {
+                ...
+                "consent": {
+                    "type": "boolean"
+                }
+            },
+            "required": [
+                ...
+                "consent"
+            ],
+        }
+    }
+}
+</code></pre>
+<p>The response I get from <code>/self-service/browser/flows/requests/registration</code> provided me this information about for the above field:</p>
+<pre><code class="lang-auto">...
+"traits.consent": {
+    "name": "traits.consent",
+    "type": "checkbox"
+}
+</code></pre>
+<p>However, upon submitting when there is another error in the form (e.g., missing field), I get this response:</p>
+<pre><code class="lang-auto">...
+"traits.consent": {
+    "name": "traits.consent",
+    "type": "text",
+    "value": "on",
+    "messages": [
+        {
+            "id": 4000001,
+            "text": "expected boolean, but got string",
+            "type": "error"
+        }
+    ]}
+}
+</code></pre>
+<p>For some reason, the type has changed to “text” and the value to “on”, but the error indicates that a boolean value is still expected.<br/>
+Am I doing something wrong?</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>No CSRF token generated after being redirected to /login?login_challenge=</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">No CSRF token generated after being redirected to /login?login_challenge=</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/596_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">ezerw</div>
+          <div class="post_content">
+<p>Hi,<br/>
+I’m implementing the Authorisation Code grant using a docker-compose file running a php laravel app (with nginx to serve it), mysql and hydra:</p>
+<pre><code class="lang-auto">version: "3.7"
+
+services:
+  #
+  # PHP-FPM
+  #
+  app:
+    image: vendhq/oauth-poc
+    container_name: oauth_app
+    restart: unless-stopped
+    tty: true
+    ports:
+      - 9000
+    build:
+      context: .
+      dockerfile: php.dockerfile
+      args:
+        - UID=1000
+        - XDEBUG_PORT=9001
+        - XDEBUG_IDE_KEY=vend-backend
+        - OPCACHE_VALIDATE_TIMESTAMPS=1
+    depends_on:
+      - mysql
+    command: sh -c "/wait &amp;&amp; /bootstrap.sh"
+    environment:
+      - WAIT_HOSTS=mysql:3306
+      - WAIT_HOSTS_TIMEOUT=300
+      - WAIT_SLEEP_INTERVAL=10
+      - WAIT_HOST_CONNECT_TIMEOUT=30
+    volumes:
+      - ./src:/var/www/html:rw
+      - ./config/dev/php/php.ini:/usr/local/etc/php/php.ini
+    networks:
+      - net
+  #
+  # NGINX
+  #
+  nginx:
+    image: nginx:1.19.1-alpine
+    container_name: oauth_nginx
+    restart: unless-stopped
+    tty: true
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./src:/var/www/html:rw
+      - ./config/dev/nginx/:/etc/nginx/conf.d/
+    networks:
+      - net
+
+  #
+  # MYSQL
+  #
+  mysql:
+    image: mysql:5.7
+    container_name: oauth_mysql
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=oauth
+    networks:
+      - net
+
+  #
+  # HYDRA MIGRATE
+  #
+  hydra-migrate:
+    image: oryd/hydra:v1.6.0
+    container_name: oauth_hydra_migrate
+    environment:
+      - DSN=mysql://user:password@tcp(mysql:3306)/mysql?max_conns=20&amp;max_idle_conns=4&amp;parseTime=true
+    command:
+      migrate sql -e --yes
+    depends_on:
+      - mysql
+    restart: on-failure
+    networks:
+      - net
+
+  #
+  # HYDRA
+  #
+  hydra:
+    image: oryd/hydra:v1.6.0
+    container_name: oauth_hydra
+    command:
+      serve all --dangerous-force-http --dangerous-allow-insecure-redirect-urls=http://localhost/callback
+    depends_on:
+      - hydra-migrate
+    environment:
+      - DSN=mysql://user:password@tcp(mysql:3306)/mysql?max_conns=20&amp;max_idle_conns=4&amp;parseTime=true
+      - URLS_SELF_ISSUER=http://127.0.0.1:4444
+      - URLS_LOGIN=http://127.0.0.1/login
+      - URLS_ERROR=http://127.0.0.1/oauth-error
+      - LOG_LEAK_SENSITIVE_VALUES=true
+      - OAUTH2_EXPOSE_INTERNAL_ERRORS=true
+      - LOG_LEVEL=debug
+    ports:
+      - "4444:4444" # Public port
+      - "4445:4445" # Admin port
+      - "5555:5555" # Port for hydra token user
+    volumes:
+      - ./config/dev/hydra/certs/:/hydra_certs
+    restart: unless-stopped
+    networks:
+      - net
+        
+# Docker Networks
+networks:
+  net:
+    driver: bridge
+</code></pre>
+<p>Everything goes well until I get the <code>redirect_uri</code> from the login consent PUT request. When I redirect the user to it I got this error:</p>
+<pre><code class="lang-auto">"error" =&gt; "request_forbidden"
+"error_debug" =&gt; "No CSRF value available in the session cookie"
+"error_description" =&gt; "The request is not allowed"
+"error_hint" =&gt; "You are not allowed to perform this action."
+"state" =&gt; "som3-stat3"
+</code></pre>
+<p>These are the steps I’m doing:</p>
+<ul>
+<li>GET <a href="http://127.0.0.1:4444/oauth2/auth?scope=openid+offline_access&amp;response_type=code&amp;client_id=b5b61016-c517-4f63-827d-5c8325932fc6&amp;redirect_uri=http://127.0.0.1/callback&amp;state=som3-stat3&amp;code_challenge=uJtRM_p2LSPAPQSiYyfl12HclbOgGtHImsAkmwWyjOo&amp;code_challenge_method=S256&amp;prompt=login" rel="nofollow noopener">http://127.0.0.1:4444/oauth2/auth?scope=openid+offline_access&amp;response_type=code&amp;client_id=b5b61016-c517-4f63-827d-5c8325932fc6&amp;redirect_uri=http://127.0.0.1/callback&amp;state=som3-stat3&amp;code_challenge=uJtRM_p2LSPAPQSiYyfl12HclbOgGtHImsAkmwWyjOo&amp;code_challenge_method=S256&amp;prompt=login</a> which redirects me to the /login URL with a login_challenge but I can’t see a CSRF token generated there, only the one Laravel created:</li>
+</ul>
+<p><img alt="Screen Shot 2020-08-13 at 10.03.34 AM" data-base62-sha1="yBXIseBGY8DXK8gPWoV3pepVeQG" height="148" src="../../../images/f294811f45c62dfc5b009e5e54bcaffeff05f5c2.png" width="360"/></p>
+<ul>
+<li>Enter the user credentials and send the form (including the PUT request to <code>/requests/login/accept?login_challenge=...</code>) and I get the <code>redirect_uri</code> as a response but then redirecting the user there gives me the error above.</li>
+</ul>
+<p>Can someone see what I’m doing wrong?</p>
+<p>Thanks!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<aside class="onebox githubissue">
+<header class="source">
+<a href="https://github.com/ory/hydra/issues/1988" rel="noopener" target="_blank">github.com/ory/hydra</a>
+</header>
+<article class="onebox-body">
+<div class="github-row">
+<div class="github-icon-container" title="Issue">
+<svg aria-hidden="true" class="github-icon" height="60" viewbox="0 0 14 16" width="60"><path d="M7 2.3c3.14 0 5.7 2.56 5.7 5.7s-2.56 5.7-5.7 5.7A5.71 5.71 0 0 1 1.3 8c0-3.14 2.56-5.7 5.7-5.7zM7 1C3.14 1 0 4.14 0 8s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm1 3H6v5h2V4zm0 6H6v2h2v-2z"></path></svg>
+</div>
+<div class="github-info-container">
+<h4>
+<a href="https://github.com/ory/hydra/issues/1988" rel="noopener" target="_blank">Cookie issue with google chrome Version 84.0.4147.125 (http can't set cookie for browser) request_forbidden.</a>
+</h4>
+<div class="github-info">
+<div class="date">
+        opened <span class="discourse-local-date" data-date="2020-08-14" data-format="ll" data-time="06:58:01" data-timezone="UTC">06:58AM - 14 Aug 20 UTC</span>
+</div>
+<div class="date">
+          closed <span class="discourse-local-date" data-date="2020-08-14" data-format="ll" data-time="08:03:24" data-timezone="UTC">08:03AM - 14 Aug 20 UTC</span>
+</div>
+<div class="user">
+<a href="https://github.com/tienvnz98" rel="noopener" target="_blank">
+<img alt="tienvnz98" class="onebox-avatar-inline" height="20" src="../../../images/79845a4fa44faf274f6b7065cd1bb1fa9f147170.jpeg" width="20"/>
+          tienvnz98
+        </a>
+</div>
+</div>
+</div>
+</div>
+<div class="github-row">
+<p class="github-content">Hello!
+I having a issue with google chrome version 84.0.4147.125. The browsers can't set the cookie in headers response from ory/hydra (public...</p>
+</div>
+<div class="labels">
+</div>
+</article>
+<div class="onebox-metadata">
+</div>
+<div style="clear: both"></div>
+</aside>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/596_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">ezerw</div>
+          <div class="post_content">
+<p>Hey <span class="mention">@hackerman</span> thanks for this. It works perfect now.</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

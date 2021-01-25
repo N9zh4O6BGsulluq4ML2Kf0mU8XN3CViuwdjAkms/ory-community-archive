@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Hydra cookie reject by browser</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Hydra cookie reject by browser</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/628_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">SimonWangJY</div>
+          <div class="post_content">
+<p>Hi Experts,</p>
+<p>recently i’m facing a problem related to the hydra cookie. when we test in the local everything works fine for the redirect from hydra to login page because its under same domain localhost. However after we deploy to our dev environment, we cannot receive the cookie when hydra redirect to our login url. I suspect this is because the cookie is rejected by browser because the domain is different from hydra and our app. so my question is how can we specify the domain in hydra if we want to use different subdomains for hydra and our app.</p>
+<p>for example this is our hydra auth url:<br/>
+<strong><a href="https://public-hydra.dev-1.app/oauth2/auth?client_id=xilo-client&amp;" rel="noopener nofollow ugc">https://public-hydra.dev-1.app/oauth2/auth?client_id=xilo-client&amp;</a>…</strong></p>
+<p>then it will redirect to our login url: <strong><a href="https://usersvc.dev-1.app/login?login_challenge=a318ac65193f45fb95d3d10e220f43f3" rel="noopener nofollow ugc">https://usersvc.dev-1.app/login?login_challenge=a318ac65193f45fb95d3d10e220f43f3</a></strong></p>
+<p>we cannot capture the cookie from hydra. if is is caused by the domain, how can we tell hydra the domain is <strong>dev-1.app</strong> instead of <strong>public-hydra.dev-1.app</strong> so it can share its cookie to other subdomain?</p>
+<p>Please let me know if you want more information. thank you in advance.</p>
+<p><div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/eFX6V3x53xad1cNuCupaWTIEdLA.png?dl=1" href="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/original/1X/66dc7edf40694e1d0562bd4bbaf17af8ba550bda.png" rel="noopener nofollow ugc" title="Screen Shot 2020-11-14 at 11.38.08 AM"><img alt="Screen Shot 2020-11-14 at 11.38.08 AM" data-base62-sha1="eFX6V3x53xad1cNuCupaWTIEdLA" data-small-upload="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/66dc7edf40694e1d0562bd4bbaf17af8ba550bda_2_10x10.png" height="90" src="../../../images/66dc7edf40694e1d0562bd4bbaf17af8ba550bda_2_690x90.png" srcset="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/66dc7edf40694e1d0562bd4bbaf17af8ba550bda_2_690x90.png, //ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/66dc7edf40694e1d0562bd4bbaf17af8ba550bda_2_1035x135.png 1.5x, //ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/66dc7edf40694e1d0562bd4bbaf17af8ba550bda_2_1380x180.png 2x" width="690"/><div class="meta"><svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use xlink:href="#far-image"></use></svg><span class="filename">Screen Shot 2020-11-14 at 11.38.08 AM</span><span class="informations">1412×185 47.8 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use xlink:href="#discourse-expand"></use></svg></div></a></div> <div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/pWCAWYP210h92N6tKjaWabbGl4P.png?dl=1" href="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/original/1X/b5d6c8da261d8d8ed7e068baadcb62a6183615ff.png" rel="noopener nofollow ugc" title="Screen Shot 2020-11-14 at 11.38.17 AM"><img alt="Screen Shot 2020-11-14 at 11.38.17 AM" data-base62-sha1="pWCAWYP210h92N6tKjaWabbGl4P" data-small-upload="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/b5d6c8da261d8d8ed7e068baadcb62a6183615ff_2_10x10.png" height="91" src="../../../images/b5d6c8da261d8d8ed7e068baadcb62a6183615ff_2_690x91.png" srcset="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/b5d6c8da261d8d8ed7e068baadcb62a6183615ff_2_690x91.png, //ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/original/1X/b5d6c8da261d8d8ed7e068baadcb62a6183615ff.png 1.5x, //ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/original/1X/b5d6c8da261d8d8ed7e068baadcb62a6183615ff.png 2x" width="690"/><div class="meta"><svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use xlink:href="#far-image"></use></svg><span class="filename">Screen Shot 2020-11-14 at 11.38.17 AM</span><span class="informations">795×105 20 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use xlink:href="#discourse-expand"></use></svg></div></a></div></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>I believe the problem could have to do with SAME_SITE. WHat version are you using?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/628_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">SimonWangJY</div>
+          <div class="post_content">
+<p>we were using version 1.3.2 but after upgrade to version 1.8.5 the problem still exist. the SAME_SITE value is NONE. From the official document it mentioned that the chrome will reject the cookies without secure flag. how could we set the flag for secure? could you please give me some advice? thank you.<div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/d3ffz4dqiQA1ZK7Pn9kP8HdVMxN.jpeg?dl=1" href="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/original/1X/5b7a31e1580ddc0b465467d677ac1dc2696ac017.jpeg" rel="noopener nofollow ugc" title="Screen Shot 2020-11-16 at 9.53.41 PM"><img alt="Screen Shot 2020-11-16 at 9.53.41 PM" data-base62-sha1="d3ffz4dqiQA1ZK7Pn9kP8HdVMxN" data-small-upload="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/5b7a31e1580ddc0b465467d677ac1dc2696ac017_2_10x10.png" height="156" src="../../../images/5b7a31e1580ddc0b465467d677ac1dc2696ac017_2_690x156.jpeg" srcset="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/5b7a31e1580ddc0b465467d677ac1dc2696ac017_2_690x156.jpeg, //ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/5b7a31e1580ddc0b465467d677ac1dc2696ac017_2_1035x234.jpeg 1.5x, //ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/5b7a31e1580ddc0b465467d677ac1dc2696ac017_2_1380x312.jpeg 2x" width="690"/><div class="meta"><svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use xlink:href="#far-image"></use></svg><span class="filename">Screen Shot 2020-11-16 at 9.53.41 PM</span><span class="informations">2238×508 192 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use xlink:href="#discourse-expand"></use></svg></div></a></div></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>If the secure flag is missing you are using <code>--dangerous-force-http</code> which is just for local testing. Do not do that in prod.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/628_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">SimonWangJY</div>
+          <div class="post_content">
+<p>thank you very much. i just disable the setting and i got another error: <strong>{“error”:“error”,“error_verbose”:“The error is unrecognizable.”,“error_description”:“The error is unrecognizable.\n\ncan not serve request over insecure http”,“status_code”:500,“error_debug”:“can not serve request over insecure http”}</strong></p>
+<p>seems this error related to tls? do you have any idea for the reason to cause this error? thank you</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>It’s in the error message <img alt=":wink:" class="emoji" src="../../../images/wink.png" title=":wink:"/></p>
+<aside class="quote no-group" data-post="5" data-topic="2312" data-username="SimonWangJY">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" class="avatar" height="20" src="../../../images/628_2.png" width="20"/> SimonWangJY:</div>
+<blockquote>
+<p>can not serve request over insecure http</p>
+</blockquote>
+</aside>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/628_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">SimonWangJY</div>
+          <div class="post_content">
+<p>yes <img alt=":joy:" class="emoji" src="../../../images/joy.png" title=":joy:"/>  i fixed this issue but there is still no cookies when it redirect to our login page, this is the snapshot for your information: is there any configuration i might missing for this case?<br/>
+<div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/tKB9XML04raiWjb682HT3uYCWDi.png?dl=1" href="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/original/1X/d0838d12b92be250be7c7e8b1ba91f832dffe57c.png" rel="noopener nofollow ugc" title="Screen Shot 2020-11-16 at 11.11.00 PM"><img alt="Screen Shot 2020-11-16 at 11.11.00 PM" data-base62-sha1="tKB9XML04raiWjb682HT3uYCWDi" data-small-upload="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/d0838d12b92be250be7c7e8b1ba91f832dffe57c_2_10x10.png" height="102" src="../../../images/d0838d12b92be250be7c7e8b1ba91f832dffe57c_2_690x102.png" srcset="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/d0838d12b92be250be7c7e8b1ba91f832dffe57c_2_690x102.png, //ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/d0838d12b92be250be7c7e8b1ba91f832dffe57c_2_1035x153.png 1.5x, //ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/d0838d12b92be250be7c7e8b1ba91f832dffe57c_2_1380x204.png 2x" width="690"/><div class="meta"><svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use xlink:href="#far-image"></use></svg><span class="filename">Screen Shot 2020-11-16 at 11.11.00 PM</span><span class="informations">1387×207 53.6 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use xlink:href="#discourse-expand"></use></svg></div></a></div></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Wait, you want to read ORY Hydra’s cookie in your login app? That is not possible, by design.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/628_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">SimonWangJY</div>
+          <div class="post_content">
+<p>is it possible caused by the domain difference between hydra and our web app?  for example the domain for our web app is <strong>web.dev-1.app</strong> and for hydra is <strong>public-hydra.dev-1.app</strong> ? from our expectation we wish to use sub domain for web and hydra and the browser could recognize the domain is dev-1.app instead of public-hydra.dev-1.app. Is it possible to specify the domain in hydra? thank you <img alt=":slight_smile:" class="emoji" src="../../../images/slight_smile.png" title=":slight_smile:"/></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/628_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">SimonWangJY</div>
+          <div class="post_content">
+<p>sorry maybe i didn’t describe my question clearly. On your official hydra node consent example , you are returning a static login page with csrf cookie embedded in the page. but in our case, we are redirecting to login page on another server where website server is deployed. will this cause the problem that browser cannot capture the csrf cookie for public hydra? as you can see from the screenshot there is no <strong>oauth2_authentication_csrf</strong> cookie in our login page. thank you <div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/dhPHZkeBsNJ7iZl0RCJVQqnvBsC.png?dl=1" href="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/original/1X/5d2059069f9867743519a3c8acef477c121fc23a.png" rel="noopener nofollow ugc" title="Screen Shot 2020-11-17 at 12.47.39 AM"><img alt="Screen Shot 2020-11-17 at 12.47.39 AM" data-base62-sha1="dhPHZkeBsNJ7iZl0RCJVQqnvBsC" data-small-upload="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/5d2059069f9867743519a3c8acef477c121fc23a_2_10x10.png" height="191" src="../../../images/5d2059069f9867743519a3c8acef477c121fc23a_2_690x191.png" srcset="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/5d2059069f9867743519a3c8acef477c121fc23a_2_690x191.png, //ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/5d2059069f9867743519a3c8acef477c121fc23a_2_1035x286.png 1.5x, //ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/original/1X/5d2059069f9867743519a3c8acef477c121fc23a.png 2x" width="690"/><div class="meta"><svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use xlink:href="#far-image"></use></svg><span class="filename">Screen Shot 2020-11-17 at 12.47.39 AM</span><span class="informations">1365×378 34.9 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use xlink:href="#discourse-expand"></use></svg></div></a></div></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>That cookie is not used by the login app, just ignore it.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>The login app csrf token is only to prevent csrf on the submit forms, it is not related to hydra.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/628_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">SimonWangJY</div>
+          <div class="post_content">
+<p>thank you for you reply. finally i solved this problem by using same domain for both hydra and our app <img alt=":slight_smile:" class="emoji" src="../../../images/slight_smile.png" title=":slight_smile:"/></p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

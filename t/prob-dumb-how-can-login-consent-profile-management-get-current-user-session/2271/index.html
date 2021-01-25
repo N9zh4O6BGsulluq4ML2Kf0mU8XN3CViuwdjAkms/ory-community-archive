@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>[Prob. dumb] How can login/consent/profile management get current user session</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">[Prob. dumb] How can login/consent/profile management get current user session</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/615_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">honzapatCZ</div>
+          <div class="post_content">
+<p>If the login/consent/profile management is suppsed to be sessionless, how can we get the current user session, so that profile management could be built(change email, picture, list all authorized apps and be able to revoke them)<br/>
+PS: I already figured out the authorized apps via the private api.</p>
+<p>Only solution that I could think of(and is probably hacky way) is having the profile management be like a first party client, so he can skip the consent in a normal oauth/oidc auth flow and get verified user id and stuff.(I suppose this is like silent signin)</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>You have to first log in to establish a session within the flow. It is not possible to do this with a shared session state as that will break OpenID Connect compliance.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/615_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">honzapatCZ</div>
+          <div class="post_content">
+<p>That means?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Not sure what you mean, but if you refer to:</p>
+<blockquote>
+<p>Only solution that I could think of(and is probably hacky way) is having the profile management be like a first party client, so he can skip the consent in a normal oauth/oidc auth flow and get verified user id and stuff.(I suppose this is like silent signin)</p>
+</blockquote>
+<p>Yes, that you can do! But you can’t skip the login!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/615_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">honzapatCZ</div>
+          <div class="post_content">
+<p>So like doing another auth. Which in case of having remembered login would skip the consent(bcz firstparty) if hydra wont find any active session it would normally prompt login and then use that in the profile management?<br/>
+Or I could store the latest login session and use that.</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

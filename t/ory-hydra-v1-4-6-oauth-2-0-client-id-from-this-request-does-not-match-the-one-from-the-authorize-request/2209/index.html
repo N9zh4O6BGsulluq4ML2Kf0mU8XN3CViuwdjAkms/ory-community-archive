@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>ORY Hydra v1.4.6- OAuth 2.0 Client ID from this request does not match the one from the authorize request</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">ORY Hydra v1.4.6- OAuth 2.0 Client ID from this request does not match the one from the authorize request</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">dhanyak</div>
+          <div class="post_content">
+<p>Hello,</p>
+<p>After completing the login/consent flow, I get the auth code in callback url.<br/>
+I’m calling /auth2/token endpoint to exchange the ‘code’ for access token and refresh token but ORY Hydra v1.4.6 is returning below error hint which is not enough to analyze/fix the issue. Please help.</p>
+<p>time=“2020-09-23T13:11:27Z” level=info msg=“started handling request” method=POST remote=“172.18.0.1:38336” request=/oauth2/token<br/>
+time=“2020-09-23T13:11:27Z” level=error msg=“An error occurred” description=“The provided authorization grant (e.g., authorization code, resource owner credentials) or refresh token is invalid, expired, revoked, does not match the redirection URI used in the authorization request, or was issued to another client” error=invalid_grant hint=“<strong>The OAuth 2.0 Client ID from this request does not match the one from the authorize request</strong>.”</p>
+<p>cURL code for /auth2/token request:</p>
+<p>curl --location --request POST ‘http://&lt;IP_ADDRESS&gt;/oauth2/token’ <br/>
+–header ‘Content-Type: application/x-www-form-urlencoded’ <br/>
+–header ‘Accept: application/json’ <br/>
+–data-urlencode ‘grant_type=authorization_code’ <br/>
+–data-urlencode ‘scope=openid offline offline_access’ <br/>
+–data-urlencode ‘code=UjpzQ4DTC3gOHLYlKgk2lG3_c-So3drqdH8w0Vqbb4I.x0Hi8a9R9I9yv4kJLzHyPxMmFDgim0GxSJtx2fsmNSs’ <br/>
+–data-urlencode ‘redirect_uri=https://&lt;IP_ADDRESS&gt;/oauth-service/callback’ <br/>
+–data-urlencode ‘code_verifier=782da554-6ca9-44d7-808b-1d88fd98123b’</p>
+<p>cURL command to update the client:<br/>
+curl --location --request PUT ‘https://&lt;IP_ADDRESS&gt;:9001/clients/MY_WEB_APP_CLIENT_ID’ <br/>
+–header ‘Content-Type: application/json’ <br/>
+–header ‘Accept: application/json’ <br/>
+–data-raw ‘{<br/>
+“client_id”: “MY_WEB_APP_CLIENT_ID”,<br/>
+“client_name”: “MY_WEB_APP_CLIENT_ID”,<br/>
+“client_secret”: “MY_WEB_APP_CLIENT_ID”,<br/>
+“client_secret_expires_at”: 0,<br/>
+“created_at”: “2020-04-06T12:34:42Z”,<br/>
+“grant_types”: [“authorization_code”,“refresh_token”],<br/>
+“token_endpoint_auth_method”: “client_secret_basic”,<br/>
+“redirect_uris”: [“https://&lt;IP_ADDRESS&gt;/oauth-service/callback”]<br/>
+}’</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>You need to include the client ID and secret in the request to the <code>/oauth2/token</code> endpoint, otherwise this will not work. I recommend using a library instead: <a href="https://oauth.net/code/">https://oauth.net/code/</a></p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

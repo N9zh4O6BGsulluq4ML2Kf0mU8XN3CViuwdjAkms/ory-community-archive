@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Parallelizing fosite handler processing?</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Parallelizing fosite handler processing?</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/670_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">lazeratops</div>
+          <div class="post_content">
+<p>Hi,</p>
+<p>I am wondering if it would be reasonable to parallelize some or all fosite handler iteration. For example, fosite currently generates an access token and an ID token sequentially as we iterate through the relevant handlers here in <code>access_response_writer.go</code></p>
+<pre><code>func (f *Fosite) NewAccessResponse(ctx context.Context, requester AccessRequester) (AccessResponder, error) {
+    var err error
+    var tk TokenEndpointHandler
+
+    response := NewAccessResponse()
+    for _, tk = range f.TokenEndpointHandlers {
+	    if err = tk.PopulateTokenEndpointResponse(ctx, requester, response); err == nil {
+	    	// do nothing
+	    } else if errors.Is(err, ErrUnknownRequest) {
+	    	// do nothing
+	    } else if err != nil {
+	    	return nil, err
+	    }
+    }
+
+    if response.GetAccessToken() == "" || response.GetTokenType() == "" {
+    	return nil, errorsx.WithStack(ErrServerError.WithHint("An internal server occurred while trying to complete the request.").WithDebug("Access token or token type not set by TokenEndpointHandlers."))
+    }
+
+    return response, nil
+} 
+</code></pre>
+<p>Would there be an issue with spinning up a new goroutine to process each handler and wait until all are done before returning? Are some handlers dependent on others being done first?</p>
+<p>Thanks</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Yes, order is unfortunately required for some handlers to work properly!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/670_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">lazeratops</div>
+          <div class="post_content">
+<p>Thanks, I just noticed this as well this morning when experimenting with implementing my own provider with Fosite as a base to override <code>NewAccessResponse()</code> and run the handlers in parallel; saw that the ID token actually requires the hash of the access token. Good to know!</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

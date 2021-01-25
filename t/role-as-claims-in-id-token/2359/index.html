@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Role as claims in id token</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Role as claims in id token</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/657_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">blackjid</div>
+          <div class="post_content">
+<p>Hi!, I was looking into keycloak when I stumble upon the ory ecosystem. I have read the docs but I’m still a little lost if my use case is a good fit for any or more ory projects.</p>
+<p>I’m using envoy as a reverse proxy for my apps where I can use oidc to protect my endpoints and pass the id token as an authorization token.</p>
+<p>I’m looking to:</p>
+<ul>
+<li>login with my google account</li>
+<li>be able to add custom roles and groups to the identities. Add those roles as claims in the idtoken so I can manage access in my apps after validating the token</li>
+</ul>
+<p>That way I can validate the token in the apps and assign permission based on identity and role claims.</p>
+<p>Is this a use case covered??</p>
+<p>I can see that I don’t need oathkeeper since I already have envoy as a proxy.<br/>
+I can use hydra as a oidc server in the proxy using google as the identidy provider.<br/>
+Not sure if I can customize roles per user… In hydra? kratos?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p><span class="mention">@blackjid</span> hey, thank you for the question. Do you want to log in only with your Google Account?  Or do you want to enrich the profile also, or maybe log in with a password as well?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/593_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">emanmks</div>
+          <div class="post_content">
+<p>To login with a google account you’re gonna need this configuration in kratos.yml:</p>
+<pre><code>methods:
+    password:
+      enabled: true
+    oidc:
+      enabled: true
+      config:
+        providers:
+          - id: google
+            provider: google
+            client_id: ...
+            client_secret: ...
+            mapper_url: file:///etc/config/kratos/oidc.google.jsonnet
+            scope:
+              - email
+              - profile
+              - openid
+</code></pre>
+<p>and prepare the oidc config for google, with the following content:</p>
+<pre><code>local claims = {
+  email_verified: false
+} + std.extVar('claims');
+
+{
+  identity: {
+    traits: {
+      [if "email" in claims &amp;&amp; claims.email_verified then "email" else null]: claims.email,
+    },
+  },
+}
+</code></pre>
+<p>I assume you already know how to get that client id and client secret.</p>
+<p>For the 2nd question, I will suggest using oathkeeper which has the ability to mutate (using the hydrator handler) the claims of the token so your upstream services can utilize them for further processes.</p>
+<p>If you go this way, your upstream service will retrieve the JSON Web Keys provided by oathkeeper in order to validate the mutated token. Remember this is not the only way. There are many possible setups for your case IMO.<br/>
+.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/657_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">blackjid</div>
+          <div class="post_content">
+<p>I want to log in only with google account and enrich the profile with some extra claims. Something like</p>
+<pre><code class="lang-auto">{
+...
+"claims": [
+    "roles": ["admin", "user"]
+  ]
+}
+</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/657_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">blackjid</div>
+          <div class="post_content">
+<p>Thanks… I’ll play around a bit more…</p>
+<blockquote>
+<p>For the 2nd question, I will suggest using oathkeeper which has the ability to mutate (using the hydrator handler) the claims of the token so your upstream services can utilize them for further processes.</p>
+</blockquote>
+<p>Can you think of another way to do this without having to add oathkeeper to the system? I already have a proxy in place… It would be nice if kratos itself could mutate the idtoken to add some custom claims depending on the user…</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

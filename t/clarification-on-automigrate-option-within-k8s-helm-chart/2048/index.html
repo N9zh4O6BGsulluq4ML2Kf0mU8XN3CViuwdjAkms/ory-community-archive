@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Clarification on automigrate option within k8s helm chart</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Clarification on automigrate option within k8s helm chart</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/534_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">abregar</div>
+          <div class="post_content">
+<p>Hi,<br/>
+one ambiguity arose on <strong>automigrate</strong> option while trying to put hydra helm chart to life into some production grade k8s (meaning more than 1 pod replicas) . According to hydra docs (the part where releases specifically instruct running migrate on db initialize or upgrade). I assume <strong>migrate</strong> is not idempotent operation and as such I see not safe to put  into initContainer.</p>
+<p>Or am I wrong and operation is safe to run on every redeploy(i.e. at hydra upgrades) and all replicas in k8s cluster? Seems initContainer logs suggest this - observed at hands on test - i.e. redeploy to same hydra version gives information on 0 changes to be performed in db and initContainer exits successfully:<br/>
+The following migration is planned:<br/>
+| DRIVER | MODULE | ID | # |        QUERY         |<br/>
+|--------|--------|----|—|----------------------|<br/>
+|--------|--------|----|—|----------------------|<br/>
+Successfully applied 0 SQL migrations!</p>
+<p>Or it is expected to toggle option enabled manually only at explicit systemOps intention as release instructs?</p>
+<p>Or even more conservative - doing migrate only from some ‘outside k8s’ hydra instance and also not ‘live’?</p>
+<p>If this last is true, what about using helm hooks (pre-install, pre-upgrade) and run <strong>migrate</strong> as a job?</p>
+<p>Thanks in advance and kind regards</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>It is safe to run migrate more than once on the same DB snapshot. I’m not 100% sure if there could be an issue where to migrate commands run concurrently and both try to migrate the DB - this might cause some issues.</p>
+<p>In general all of that really depends on your environment. Of course, manual “outside-of-cluster” upgrades are probably ops best practice because it allows you to do backups before and remedy any issues right away (because of the manual step). A manual step does not necessarily have to run on a dev machine, it could also be in the CI with some manual job approval of some sort.</p>
+<p>So it’s really up to you and your requirements.</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

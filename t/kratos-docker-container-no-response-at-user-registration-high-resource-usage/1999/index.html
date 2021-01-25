@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Kratos Docker container - no response at user registration &amp; high resource usage</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Kratos Docker container - no response at user registration &amp; high resource usage</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/421_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">bellamira</div>
+          <div class="post_content">
+<p>We are running Kratos in a docker container and using the password strategy to login and register users. The login flow seems to work fine, but when a users attempts to register, the request hangs and the docker container starts using massive amounts of resources. Looking for guidance on why the request is hanging and why the container is using so many resources on that request.</p>
+<p><div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/wO9hMwF0u39w7ZbFsMqScq66CgH.png?dl=1" href="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/original/1X/e5f0d0eb033659c5ffe67ce5feb60bf2d557df93.png" rel="nofollow noopener" title="image"><img alt="image" data-base62-sha1="wO9hMwF0u39w7ZbFsMqScq66CgH" data-small-upload="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/e5f0d0eb033659c5ffe67ce5feb60bf2d557df93_2_10x10.png" height="434" src="../../../images/e5f0d0eb033659c5ffe67ce5feb60bf2d557df93_2_690x434.png" srcset="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/e5f0d0eb033659c5ffe67ce5feb60bf2d557df93_2_690x434.png, //ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/e5f0d0eb033659c5ffe67ce5feb60bf2d557df93_2_1035x651.png 1.5x, //ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/original/1X/e5f0d0eb033659c5ffe67ce5feb60bf2d557df93.png 2x" width="690"/><div class="meta"><svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use xlink:href="#far-image"></use></svg><span class="filename">image</span><span class="informations">1046×659 29.1 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use xlink:href="#discourse-expand"></use></svg></div></a></div></p>
+<p>Here are trace level logs from the container:</p>
+<pre><code class="lang-auto">{
+  "file": "/go/pkg/mod/github.com/ory/x@v0.0.135/reqlog/middleware.go:143",
+  "func": "github.com/ory/x/reqlog.(*Middleware).ServeHTTP",
+  "level": "info",
+  "method": "GET",
+  "msg": "completed handling request",
+  "name": "public#https://myapp.com/.ory/kratos/public",
+  "remote": "172.18.0.2:58040",
+  "request": "/self-service/browser/flows/requests/login?request=99967d0e-bc79-4de8-bf6d-cc95a68959b0",
+  "status": 200,
+  "text_status": "OK",
+  "time": "2020-07-22T13:54:26Z",
+  "took": 1140400
+}
+{
+  "file": "/go/pkg/mod/github.com/ory/x@v0.0.135/reqlog/middleware.go:135",
+  "func": "github.com/ory/x/reqlog.(*Middleware).ServeHTTP",
+  "level": "info",
+  "method": "GET",
+  "msg": "started handling request",
+  "name": "public#https://myapp.com/.ory/kratos/public",
+  "remote": "172.18.0.2:58040",
+  "request": "/self-service/browser/flows/registration",
+  "time": "2020-07-22T13:54:33Z"
+}
+{
+  "file": "/go/pkg/mod/github.com/ory/x@v0.0.135/reqlog/middleware.go:143",
+  "func": "github.com/ory/x/reqlog.(*Middleware).ServeHTTP",
+  "level": "info",
+  "method": "GET",
+  "msg": "completed handling request",
+  "name": "public#https://myapp.com/.ory/kratos/public",
+  "remote": "172.18.0.2:58040",
+  "request": "/self-service/browser/flows/registration",
+  "status": 302,
+  "text_status": "Found",
+  "time": "2020-07-22T13:54:33Z",
+  "took": 13969602
+}
+{
+  "file": "/go/pkg/mod/github.com/ory/x@v0.0.135/reqlog/middleware.go:135",
+  "func": "github.com/ory/x/reqlog.(*Middleware).ServeHTTP",
+  "level": "info",
+  "method": "GET",
+  "msg": "started handling request",
+  "name": "public#https://myapp.com/.ory/kratos/public",
+  "remote": "172.18.0.2:58040",
+  "request": "/self-service/browser/flows/requests/registration?request=d33428bc-f993-4c2f-8e41-466d608fee0f",
+  "time": "2020-07-22T13:54:34Z"
+}
+{
+  "file": "/go/pkg/mod/github.com/ory/x@v0.0.135/reqlog/middleware.go:143",
+  "func": "github.com/ory/x/reqlog.(*Middleware).ServeHTTP",
+  "level": "info",
+  "method": "GET",
+  "msg": "completed handling request",
+  "name": "public#https://myapp.com/.ory/kratos/public",
+  "remote": "172.18.0.2:58040",
+  "request": "/self-service/browser/flows/requests/registration?request=d33428bc-f993-4c2f-8e41-466d608fee0f",
+  "status": 200,
+  "text_status": "OK",
+  "time": "2020-07-22T13:54:34Z",
+  "took": 983700
+}
+{
+  "file": "/go/pkg/mod/github.com/ory/x@v0.0.135/reqlog/middleware.go:135",
+  "func": "github.com/ory/x/reqlog.(*Middleware).ServeHTTP",
+  "level": "info",
+  "method": "POST",
+  "msg": "started handling request",
+  "name": "public#https://myapp.com/.ory/kratos/public",
+  "remote": "172.18.0.2:58040",
+  "request": "/self-service/browser/flows/registration/strategies/password?request=d33428bc-f993-4c2f-8e41-466d608fee0f",
+  "time": "2020-07-22T13:54:53Z"
+}
+</code></pre>
+<p>Here is our kratos config file:</p>
+<pre><code class="lang-auto">## ORY Kratos Configuration
+#
+identity:
+  default_schema_url: file:///etc/config/kratos/identity.traits.schema.json
+selfservice:
+  default_browser_return_url: https://myapp.com/
+  whitelisted_return_urls:
+    - https://myapp.com/
+  flows:
+    settings:
+      ui_url: https://myapp.com/settings
+      request_lifespan: 1h
+      privileged_session_max_age: 1h
+    logout:
+      after:
+        default_browser_return_url: https://myapp.com/
+    registration:
+      ui_url: https://myapp.com/auth/registration
+      request_lifespan: 1h
+    login:
+      ui_url: https://myapp.com/auth/login
+      request_lifespan: 1h
+      after:
+        default_browser_return_url: https://myapp.com/
+    verification:
+      enabled: true
+      ui_url: https://myapp.com/verify
+      after:
+        default_browser_return_url: https://myapp.com/
+      request_lifespan: 1m
+    error:
+      ui_url: https://myapp.com/error
+  strategies:
+    profile:
+      enabled: false
+    recovery_token:
+      enabled: false
+    password:
+      enabled: true
+
+courier:
+  smtp:
+    connection_uri: smtps://foo:bar@my-mailserver:1234/?skip_ssl_verify=false
+    from_address: V7cf2ygb0H@dgtERYRNqoqpVwWZSvoSvpnX.hn
+
+serve:
+  admin:
+    base_url: http://kratos:4434/
+    port: 4434
+  public:
+    base_url: https://myapp.com/.ory/kratos/public
+    port: 4433
+#
+log:
+  level: trace
+  format: json
+#
+hashers:
+  argon2:
+    memory: 9923292
+    iterations: 93455383
+    parallelism: 57113235
+    salt_length: 87632070
+    key_length: 3894910
+#
+session:
+  lifespan: 1h
+  cookie_same_site: Lax
+</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/421_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">bellamira</div>
+          <div class="post_content">
+<p>I believe we have solved this issue. Our hasher configuration settings were way too high. Most likely, the request was timing out because Kratos was taking so long to hash the password.</p>
+<p>After changing the configuration to use more sensible values, <a href="https://www.ory.sh/kratos/docs/concepts/credentials/username-email-password/#configuration" rel="nofollow noopener">as shown here</a>, the system is now working.</p>
+<p>Our previous values were taken <a href="https://www.ory.sh/kratos/docs/reference/configuration/" rel="nofollow noopener">from this file</a>. Perhaps this example file should be changed to represent “reasonable” default values, with the minimum and maximum values shown as comments.</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

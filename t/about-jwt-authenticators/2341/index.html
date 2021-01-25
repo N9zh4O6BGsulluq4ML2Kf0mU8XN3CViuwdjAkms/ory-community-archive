@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>About jwt authenticators</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">About jwt authenticators</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">balahoho</div>
+          <div class="post_content">
+<p>the config.yaml follow this:</p>
+<pre><code class="lang-auto">serve:
+  api:
+    port: 4456 # run the proxy at port 4455
+  proxy:
+    port: 4455 # run the api at port 4456
+    cors: 
+      enabled: true
+
+access_rules:
+  repositories:
+    - file:///app/config/rules/rules.json
+
+authenticators:
+  noop:
+    enabled: true
+
+  jwt:
+    enabled: true
+    config: 
+      jwks_urls:
+        - file:///app/config/jwt/jwks.json
+        
+authorizers:
+  allow:
+    enabled: true
+      
+  deny:
+    enabled: true
+    
+mutators:
+  noop:
+    enabled: true
+</code></pre>
+<p>the jwks.json is from <a href="https://github.com/ory/oathkeeper/blob/master/.docker_compose/jwks.json" rel="noopener nofollow ugc">https://github.com/ory/oathkeeper/blob/master/.docker_compose/jwks.json</a></p>
+<p>I use kratos login api got a session token,then try to use this token visit oathkeeper proxy:<br/>
+<div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/vNGPgVoJBKBwBN9SrHZkMZ8cz6D.png?dl=1" href="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/original/1X/dee15bcc4dee6cdad91322311c091faf785704a7.png" rel="noopener nofollow ugc" title="企业微信截图_20201125180309"><img alt="企业微信截图_20201125180309" data-base62-sha1="vNGPgVoJBKBwBN9SrHZkMZ8cz6D" data-small-upload="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/dee15bcc4dee6cdad91322311c091faf785704a7_2_10x10.png" height="305" src="../../../images/dee15bcc4dee6cdad91322311c091faf785704a7_2_690x305.png" srcset="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/dee15bcc4dee6cdad91322311c091faf785704a7_2_690x305.png, //ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/original/1X/dee15bcc4dee6cdad91322311c091faf785704a7.png 1.5x, //ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/original/1X/dee15bcc4dee6cdad91322311c091faf785704a7.png 2x" width="690"/><div class="meta"><svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use xlink:href="#far-image"></use></svg><span class="filename">企业微信截图_20201125180309</span><span class="informations">1008×447 20.5 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use xlink:href="#discourse-expand"></use></svg></div></a></div><br/>
+the error reason is “token contains an invalid number of segments”.<br/>
+Is there a problem with the configuration?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>The Kratos token is not a JWT! You need the session check authenticator</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

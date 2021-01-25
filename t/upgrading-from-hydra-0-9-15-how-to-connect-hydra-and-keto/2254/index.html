@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Upgrading from Hydra 0.9.15 =&gt; how to connect Hydra and Keto</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Upgrading from Hydra 0.9.15 =&gt; how to connect Hydra and Keto</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">johnwu96822</div>
+          <div class="post_content">
+<p>We used Hydra 0.9.15 many years back and wanting to upgrade it to the latest version. We use the client credentials grant for our internal service to service communication, and used the /warden/token/allowed endpoint to verify tokens. Hence we manage Hydra policies with subjects and resources to control access between services.</p>
+<p>However since Hydra 1.0, warden/policies have been moved out of Hydra and into Keto. So what should be our approach to upgrade Hydra to the latest and still maintain the warden capability? Can Hydra and Keto work together and how to hook them up?? Thank you!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Hey <span class="mention">@johnwu96822</span>, nice to see you back again! Yes, you can combine those two projects!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">johnwu96822</div>
+          <div class="post_content">
+<p>Hi <span class="mention">@hackerman</span> thanks for remembering me. I do need assistance in setting up the latest Hydra that uses Keto to determine whether a token as access to a resource. I will also need a way to migrate the current database to Hydra and Keto. Could you please provide me with any documentation or instructions? Thank you!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">johnwu96822</div>
+          <div class="post_content">
+<p>I found this <a href="https://github.com/ory/examples/commit/cf012f79f5e7e3f835fdd17af1346b361e4a4ed9#diff-7c871fb24f77979d302875614eb87cd95bdf492a8a3178f7abb700bcef250636" rel="nofollow noopener">https://github.com/ory/examples/commit/cf012f79f5e7e3f835fdd17af1346b361e4a4ed9#diff-7c871fb24f77979d302875614eb87cd95bdf492a8a3178f7abb700bcef250636</a> Will a similar setup still work with the latest versions of Hydra, Keto, and Oathkeeper?</p>
+<p>Also found <a href="https://github.com/ory/hydra/blob/master/UPGRADE.md#upgrading-from-versions-v09x" rel="nofollow noopener">https://github.com/ory/hydra/blob/master/UPGRADE.md#upgrading-from-versions-v09x</a></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Yes, the upgrade guides and changelings are the best source there. Unfortunately 0.9 is very old (2017) and lots has changed since then so I can’t really give you a lot of pointers on what to do. You could try following the upgrade guide one-by-one for each major release until you reach current 1.8, or, you could try and start from scratch. While some APIs changed, many of the concepts are still the ones established with 0.9 (e.g. the consent flow) and then, once that works, figure out a migration path for the database.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">johnwu96822</div>
+          <div class="post_content">
+<p>Hi <span class="mention">@hackerman</span> Any idea about the performance of Keto? Like how many requests per sec, memory footprint, and is it scalable with large number of policies? Thank you!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Unfortunately not, you would have to do your own testing!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">johnwu96822</div>
+          <div class="post_content">
+<p>Found this issue against opa <a href="https://github.com/open-policy-agent/opa/issues/1443" rel="noopener nofollow ugc">https://github.com/open-policy-agent/opa/issues/1443</a></p>
+<p>My own testing also revealed the same result, that Keto’s (with opa) lookup time is proportional to the size of the policy data.</p>
+<p>I’ve no more questions. This topic can be closed. Thanks!!</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Problems with configuration of keto_engine_acp_ory authorizer</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Problems with configuration of keto_engine_acp_ory authorizer</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">jcamp</div>
+          <div class="post_content">
+<p>I try to implement the <code>keto_engine_acp_ory</code> authorizer, but somehow I seem to be unable to connect Oathkeeper with Keto. I can reach Keto directly via curl requests, and Oathkeeper is able to forward requests to Keto via the internal network as well (I just tested this to make sure I don’t have problems with my network).</p>
+<p>I suppose that I have some mistake in the configuration and I have to admit that the docs are quite unclear to me. Especially why I should specify <code>required_action</code> and <code>required_resource</code> both in <code>access_rules.yml</code> and <code>oathkeeper.yml</code>.</p>
+<p>This is my configuration of Oathkeeper:</p>
+<pre><code class="lang-auto">authorizers:
+  allow:
+    enabled: true
+  keto_engine_acp_ory:
+    enabled: true
+    config:
+      base_url: http://ory-keto-example--keto:4466/
+      flavor: exact
+      required_action: read
+      required_resource: example_resource
+      subject: subject0
+</code></pre>
+<p>and this is my access rule:</p>
+<pre><code class="lang-auto">-
+  id: "nuxt-app:protected"
+  upstream:
+    preserve_host: true
+    url: "http://nuxt-app-1:3000"
+  match:
+    url: "http://127.0.0.1:4455/&lt;{dashboard,settings}&gt;"
+    methods:
+      - GET
+      - POST
+      - PUT
+      - DELETE
+      - PATCH
+
+  authenticators:
+    -
+      handler: anonymous
+
+  authorizer:
+    handler: keto_engine_acp_ory
+    config:
+      subject: subject0
+      required_action: read
+      required_resource: example_resource
+      flavor: exact
+
+  mutators:
+    - handler: id_token
+  errors:
+    - handler: redirect
+      config:
+        to: http://127.0.0.1:4455/
+</code></pre>
+<p>I get the following error:</p>
+<pre><code class="lang-auto">oathkeeper_1                  | [cors] 2020/08/12 08:55:20 Handler: Actual request
+oathkeeper_1                  | [cors] 2020/08/12 08:55:20   Actual request no headers added: missing origin
+oathkeeper_1                  | time=2020-08-12T08:55:20Z level=info msg=started handling request http_request=map[headers:map[accept:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8 accept-encoding:gzip, deflate accept-language:en-US,en;q=0.5 cookie:Value is sensitive and has been redacted. To see the value set config key "log.leak_sensitive_values = true" or environment variable "LOG_LEAK_SENSITIVE_VALUES=true". user-agent:Mozilla/5.0 (X11; Linux x86_64; rv:76.0) Gecko/20100101 Firefox/76.0] host:127.0.0.1:4455 method:GET path:/dashboard query:&lt;nil&gt; remote:172.24.0.1:54168 scheme:http]
+oathkeeper_1                  | time=2020-08-12T08:55:20Z level=warning msg=The authorization handler encountered an error audience=application authorization_handler=keto_engine_acp_ory error=map[debug: message:The matched handler uses Regexp MatchingStrategy which is not selected in the configuration reason: status:Internal Server Error status_code:500] granted=false http_host=127.0.0.1:4455 http_method=GET http_url=http://127.0.0.1:4455/dashboard http_user_agent=Mozilla/5.0 (X11; Linux x86_64; rv:76.0) Gecko/20100101 Firefox/76.0 reason_id=authorization_handler_error rule_id=nuxt-app:protected service_name=ORY Oathkeeper service_version=v0.38.3-beta.1 subject=guest
+oathkeeper_1                  | time=2020-08-12T08:55:20Z level=warning msg=Access request denied audience=application error=map[debug: message:The matched handler uses Regexp MatchingStrategy which is not selected in the configuration reason: status:Internal Server Error status_code:500] granted=false http_host=127.0.0.1:4455 http_method=GET http_url=http://127.0.0.1:4455/dashboard http_user_agent=Mozilla/5.0 (X11; Linux x86_64; rv:76.0) Gecko/20100101 Firefox/76.0 service_name=ORY Oathkeeper service_version=v0.38.3-beta.1
+oathkeeper_1                  | time=2020-08-12T08:55:20Z level=error msg=An error occurred while handling a request code=500 debug= details=map[] error=The matched handler uses Regexp MatchingStrategy which is not selected in the configuration reason= request-id= status=500 writer=JSON
+oathkeeper_1                  | time=2020-08-12T08:55:20Z level=info msg=completed handling request http_request=map[headers:map[accept:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8 accept-encoding:gzip, deflate accept-language:en-US,en;q=0.5 cookie:Value is sensitive and has been redacted. To see the value set config key "log.leak_sensitive_values = true" or environment variable "LOG_LEAK_SENSITIVE_VALUES=true". user-agent:Mozilla/5.0 (X11; Linux x86_64; rv:76.0) Gecko/20100101 Firefox/76.0] host:127.0.0.1:4455 method:GET path:/dashboard query:&lt;nil&gt; remote:172.24.0.1:54168 scheme:http] http_response=map[status:500 text_status:Internal Server Error took:5.471121ms]
+
+</code></pre>
+<p>I don’t really know why it complains about regex specifically, since the error occurs with any (false) <code>base_url</code>, so that it seems to not be able to connect to Keto at all.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Sorry for the long response time. We want to deprecate <code>keto_engine_acp_ory</code> in favor of a generic <code>remote_json</code> handler which is why we haven’t shown it a lot of love recently. The problem is that <code>keto_engine_acp_ory</code> currently only works with regex routes if I recall correctly, because of the way we use RegexCaptureGroups to render <code>required_action</code> and so on. Hope this helps!</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

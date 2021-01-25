@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>DB Housekeeping</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">DB Housekeeping</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">LSI</div>
+          <div class="post_content">
+<p>Hello,</p>
+<p>for sizing of our systems we use very often a load tests and we noticed, that hydra tables become very large if we don’t remove data. We speak mostly about these tables:</p>
+<p>hydra_oauth2_access<br/>
+hydra_oauth2_authentication_request<br/>
+hydra_oauth2_authentication_request_handled<br/>
+hydra_oauth2_authentication_session<br/>
+hydra_oauth2_code<br/>
+hydra_oauth2_consent_request<br/>
+hydra_oauth2_consent_request_handled<br/>
+hydra_oauth2_refresh</p>
+<p>Known way to do some housekeeping is by using of /oauth2/flush. But it handles only hydra_oauth2_access table.</p>
+<p>In the issue <a href="https://github.com/ory/hydra/issues/1574" rel="nofollow noopener">https://github.com/ory/hydra/issues/1574</a> aeneasr wrote on 13 August</p>
+<blockquote>
+<p>Clean up should now be more or less automatic for most flows. We also introduced better foreign key checks since then. There might still be stale data but it definitely shouldn’t be too much. If you do find leaky tables in the latest version, please do report here <img alt=":slight_smile:" class="emoji" src="../../../images/slight_smile.png" title=":slight_smile:"/></p>
+</blockquote>
+<p>This is why we thought after upgrade to 1.7.4 the cleaning will work automatically. But I see with this version we have the same problem as before. /oauth2/flush handles only hydra_oauth2_access. Did I misunderstand that?</p>
+<p>I can imagine cleaning e.g. hydra_oauth2_refresh after 30 days because our refresh token are valid for 30 days but what is about other tables?</p>
+<p>Is there any official proper way to do some housekeeping considering all/most tables?</p>
+<p>Thank you very much!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Hi there, thank you for the question - looks like we need to do some improvement here! What would be perfect is if you could create a reproducible GitHub repo with all the ways these tables get accumulated as we could use that as a basis for testing the implementation!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">LSI</div>
+          <div class="post_content">
+<p>Hello,</p>
+<p>just for your information:</p>
+<p>in our load tests we used only the authorization code flow. That was the reason why so many tables were filled up with a lot (thousend and thousend of rows) of data. After using refresh token flow we can see that every table was filled up with 2 - 3 hundred of rows - not more. Only hydra_oauth2_access gets a lot of data but there is a flush concept for it. So we don’t have the problem any more. Of cause you could run in the same problem in 2 - 3 years in case you don’t clean the database. But I would say if you set the TTL of your refresh token to certain time (e.g. 90 days) you can clean your data by considering this period without any problem. The problem you could run in is the setup with refresh token without ttl but I don’t know if such concept of auth is used very often.</p>
+<p>Thank you</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Thank you for the follow up! That is what we would have expected as well!</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

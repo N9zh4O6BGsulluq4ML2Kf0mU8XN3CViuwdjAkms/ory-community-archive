@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Expired Sessions in a Browser App</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Expired Sessions in a Browser App</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/524_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">ellioseven</div>
+          <div class="post_content">
+<p>I’ve got some questions about how to deal with expired sessions in a browser app. It seems like the  <code>whoami</code> endpoint returns session data even if the session has expired. So I need to handle that myself?</p>
+<p>It seems to me that the <code>login?refresh=true</code> endpoint needs to be used to refresh that session. However the user has to enter their password, which isn’t really ideal in this case. It means I have to set a long session expiry, say 24 hours.</p>
+<p>Are there any major security implications of having a long session expiry? Is there a way for a user to extend their session without having to “log in again”?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>The issue has been resolved on master and we’ll also be adding a secondary check. The problem was that the cookie expiry time was not correctly being set. So there’s no need for you to work around this, it’s just a bug right now <img alt=":slight_smile:" class="emoji" src="../../../images/slight_smile.png" title=":slight_smile:"/></p>
+<p>Logout behaves correctly!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<aside class="onebox githubpullrequest">
+<header class="source">
+<a href="https://github.com/ory/kratos/pull/612" target="_blank">github.com/ory/kratos</a>
+</header>
+<article class="onebox-body">
+<div class="github-row">
+<div class="github-icon-container" title="Pull Request">
+<svg aria-hidden="true" class="github-icon" height="60" viewbox="0 0 12 16" width="60"><path d="M11 11.28V5c-.03-.78-.34-1.47-.94-2.06C9.46 2.35 8.78 2.03 8 2H7V0L4 3l3 3V4h1c.27.02.48.11.69.31.21.2.3.42.31.69v6.28A1.993 1.993 0 0 0 10 15a1.993 1.993 0 0 0 1-3.72zm-1 2.92c-.66 0-1.2-.55-1.2-1.2 0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2zM4 3c0-1.11-.89-2-2-2a1.993 1.993 0 0 0-1 3.72v6.56A1.993 1.993 0 0 0 2 15a1.993 1.993 0 0 0 1-3.72V4.72c.59-.34 1-.98 1-1.72zm-.8 10c0 .66-.55 1.2-1.2 1.2-.65 0-1.2-.55-1.2-1.2 0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2zM2 4.2C1.34 4.2.8 3.65.8 3c0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2z"></path></svg>
+</div>
+<div class="github-info-container">
+<h4>
+<a href="https://github.com/ory/kratos/pull/612" target="_blank">fix: resolves a bug that prevents sessions from expiring</a>
+</h4>
+<div class="branches">
+<code>ory:master</code> ← <code>ory:fix-session</code>
+</div>
+<div class="github-info">
+<div class="date">
+        opened <span class="discourse-local-date" data-date="2020-07-30" data-format="ll" data-time="12:36:28" data-timezone="UTC">12:36PM - 30 Jul 20 UTC</span>
+</div>
+<div class="user">
+<a href="https://github.com/aeneasr" target="_blank">
+<img alt="aeneasr" class="onebox-avatar-inline" height="20" src="../../../images/936076922415beed8a112b37d618a07cd1b5c9c1.png" width="20"/>
+          aeneasr
+        </a>
+</div>
+<div class="lines" title="1 commits changed 2 files with 79 additions and 6 deletions">
+<a href="https://github.com/ory/kratos/pull/612/files" target="_blank">
+<span class="added">+79</span>
+<span class="removed">-6</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</article>
+<div class="onebox-metadata">
+</div>
+<div style="clear: both"></div>
+</aside>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/586_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">tnm0113</div>
+          <div class="post_content">
+<p>I have pulled latest code on master, built docker and deployed to k8s, but it seems log out flow doesnt work correctly. After logging out from browser, i request to whoami endpoint with session id in cookie and still get result with valid session. Or i misundestand the point that when log out we doesnt set session expire ?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>There’s another patch which is part of a bigger change waiting to be merged. It adds active flags to sessions to ensure valid sessions!</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

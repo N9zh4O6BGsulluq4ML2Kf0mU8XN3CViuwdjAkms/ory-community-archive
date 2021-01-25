@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>SSE with Oathkeeper</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">SSE with Oathkeeper</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/621_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">andlinger</div>
+          <div class="post_content">
+<p>Is there any experience regarding Oathkeeper and the use of Server Sent Events streams?</p>
+<p>In principle the Server Sent Event streams work, but they always break up after 2 minutes (this is the time the oathkeeper is configured for the HTTP write timeout).</p>
+<p>But this should not happen. The SSE stream should run until it is terminated by the client.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Yeah we don’t really support long running HTTP connections in ORY Oathkeeper yet. You can however configure the timeouts IIRC. If you want, we could discuss what a PR for SSE could look like on ORY Oathkeeper’s GitHub!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/621_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">andlinger</div>
+          <div class="post_content">
+<p>With pleasure. But unfortunately I cannot program GO</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Hydra as OAuth provider</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Hydra as OAuth provider</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/592_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">nash</div>
+          <div class="post_content">
+<p>I have two apps: one that runs Hydra, and another that uses Kratos.<br/>
+I would like to register the hydra-app as an external OAuth provider in my kratos-app. For that purpose, I configured my kratos-app in the following way:</p>
+<pre><code class="lang-bash">  ...
+  oidc:
+      enabled: true
+      config:
+        providers:
+          - id: my-hydra-app
+            provider: generic
+            client_id: fc00bb7e-991c-42bb-934e-fad51b136ecd
+            client_secret: 92ba1115-8cbe-4cd4-a0bc-f2ff6f69863c
+            mapper_url: file:///etc/config/kratos/my-hydra-app.data-mapper.jsonnet
+            auth_url: https://my-hydra-app.com/oauth/oauth2/auth
+            token_url: https://my-hydra-app.com/oauth/oauth2/token
+            issuer_url: https://my-hydra-app.com/oauth/
+            scope:
+              - email
+              - profile
+</code></pre>
+<p>I registered my kratos-app in my hydra app using the following callback:</p>
+<pre><code class="lang-bash">http://my-kratos-app.com/.ory/kratos/public/self-service/methods/oidc/callback/my-hydra-app
+</code></pre>
+<p>When the user executes the login flow, the following error appears:</p>
+<pre><code class="lang-bash">The request was malformed or contained invalid parameters reason:Unable to complete OpenID Connect flow because the OpenID Provider returned error "invalid_scope": The requested scope is invalid, unknown, or malformed status
+</code></pre>
+<p>Any idea what I’m doing wrong?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Please show the configuration of <code>my-hydra-app</code> client and add more context like which versions you are using and so on.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/592_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">nash</div>
+          <div class="post_content">
+<p>Thanks for the reply.<br/>
+I use the docker image <code>v0.5.4-alpha.1-sqlite</code> of Kratos, and below is the configuration of the Hydra app in a docker-compose file.</p>
+<pre><code class="lang-auto">  hydra-migrate:
+    image: oryd/hydra:v1.3.2
+    links:
+      - postgresd:postgresd
+    networks:
+      - intranet
+    environment:
+      - LOG_LEVEL=debug
+      - HYDRA_SYSTEM_SECRET=youReallyNeedToChangeThis
+    command:
+      migrate sql postgres://dbuser:secret@postgresd:5432/accesscontroldb?sslmode=disable --yes
+    restart: on-failure
+
+  hydra:
+    image: oryd/hydra:v1.3.2
+    links:
+      - postgresd:postgresd
+    expose:
+      - "4444"
+      - "4445"
+    depends_on:
+      - hydra-migrate
+      - user-service
+    command:
+      serve all --skip-tls-verify
+    networks:
+      - intranet
+    environment:
+      - LOG_LEVEL=debug
+      - SECRETS_SYSTEM=youReallyNeedToChangeThis
+      - DSN=postgres://dbuser:secret@postgresd:5432/accesscontroldb?sslmode=disable
+      - OAUTH2_CONSENT_URL=https://${EXTERNAL_HOST_NAME}/login/consent
+      - OAUTH2_LOGIN_URL=https://${EXTERNAL_HOST_NAME}/login/login
+      - URLS_SELF_ISSUER=https://${EXTERNAL_HOST_NAME}/oauth
+      - URLS_LOGOUT=https://${EXTERNAL_HOST_NAME}/login/logout
+      - OAUTH2_LOGOUT_REDIRECT_URL=https://${EXTERNAL_HOST_NAME}
+      - OAUTH2_EXPOSE_INTERNAL_ERRORS=1
+      - WEBFINGER_OIDC_DISCOVERY_SUPPORTED_SCOPE=openid offline email profile
+      - WEBFINGER_OIDC_DISCOVERY_USERINFO_URL=https://${EXTERNAL_HOST_NAME}/user-service/userinfo
+    restart: on-failure
+</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>More context please. Show your full config, show your oath2 client, …, as I said in my post before.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/592_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">nash</div>
+          <div class="post_content">
+<p>I’m not sure what you mean by OAuth2 client. Maybe the rendered frontend of the Kratos app?<br/>
+I’m attaching here the full configuration file of Kratos.<br/>
+I perhaps should also mention that my-hydra-app uses a self-signed SSL certificate.</p>
+<pre><code class="lang-auto">serve:
+  public:
+    base_url: http://my-kratos-app.com/.ory/kratos/public/
+    cors:
+      enabled: true
+  admin:
+    base_url: http://kratos:4434/
+
+selfservice:
+  default_browser_return_url: http://my-kratos-app.com/
+  whitelisted_return_urls:
+    - http://my-kratos-app.com
+
+  methods:
+    password:
+      enabled: true
+    oidc:
+      enabled: true
+      config:
+        providers:
+          - id: my-hydra-app
+            provider: generic
+            client_id: fc00bb7e-991c-42bb-934e-fad51b136ecd
+            client_secret: 92ba1115-8cbe-4cd4-a0bc-f2ff6f69863c
+            mapper_url: file:///etc/config/kratos/my-hydra-app.data-mapper.jsonnet
+            auth_url: https://my-hydra-app.eu/oauth/oauth2/auth
+            token_url: https://my-hydra-app.eu/oauth/oauth2/token
+            issuer_url: https://my-hydra-app.eu/oauth/
+            scope:
+              - email
+              - profile
+          - id: github
+            provider: github
+            mapper_url: file:///etc/config/kratos/github.data-mapper.jsonnet
+            client_id: GITHUB_CLIENT_ID
+            client_secret: GITHUB_CLIENT_SECRET
+            scope:
+              - user:email
+    profile:
+      enabled: true
+    link:
+      enabled: true
+
+  flows:
+    error:
+      ui_url: http://my-kratos-app.com/500
+
+    settings:
+      ui_url: http://my-kratos-app.com/my-profile/update
+      privileged_session_max_age: 15m
+      after:
+        default_browser_return_url: http://my-kratos-app.com/after-profile-update
+
+    recovery:
+      enabled: true
+      ui_url: http://my-kratos-app.com/password-recovery
+
+    verification:
+      enabled: true
+      ui_url: http://my-kratos-app.com/email-verification
+      after:
+        default_browser_return_url: http://my-kratos-app.com/email-verified
+
+    logout:
+      after:
+        default_browser_return_url: http://my-kratos-app.com/
+
+    login:
+      ui_url: http://my-kratos-app.com/login
+      lifespan: 10m
+      after:
+        default_browser_return_url: http://my-kratos-app.com/after-login
+
+    registration:
+      lifespan: 10m
+      ui_url: http://my-kratos-app.com/registration
+      after:
+        default_browser_return_url: http://my-kratos-app.com/after-registration
+        password:
+          hooks:
+            -
+              hook: session
+        oidc:
+          hooks:
+            - 
+              hook: session
+
+log:
+  level: debug
+  format: text
+  leak_sensitive_values: true
+
+secrets:
+  cookie:
+    - PLEASE-CHANGE-ME-I-AM-VERY-INSECURE
+
+hashers:
+  argon2:
+    parallelism: 1
+    memory: 131072
+    iterations: 2
+    salt_length: 16
+    key_length: 16
+
+identity:
+  default_schema_url: file:///etc/config/kratos/identity.traits.schema.json
+
+courier:
+  smtp:
+    connection_uri: smtps://test:test@mailslurper:1025/?skip_ssl_verify=true
+</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p><code> fc00bb7e-991c-42bb-934e-fad51b136ecd</code> &lt;- the oauth2 client</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/592_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">nash</div>
+          <div class="post_content">
+<p>Got it!</p>
+<pre><code class="lang-json">{
+    "client_id":"fc00bb7e-991c-42bb-934e-fad51b136ecd",
+    "client_name":"",
+    "redirect_uris":["http://my-kratos-app.com/.ory/kratos/public/self-service/methods/oidc/callback/my-hydra-app"],
+    "grant_types":["authorization_code","refresh_token"],
+    "response_types":["code","id_token"],
+    "scope":"email profile",
+    "audience":[],
+    "owner":"",
+    "policy_uri":"",
+    "allowed_cors_origins":[],
+    "tos_uri":"",
+    "client_uri":"",
+    "logo_uri":"",
+    "contacts":[],
+    "client_secret_expires_at":0,
+    "subject_type":"public",
+    "token_endpoint_auth_method":"client_secret_basic",
+    "userinfo_signed_response_alg":"none",
+    "created_at":"2020-11-04T11:35:21Z",
+    "updated_at":"2020-11-04T11:35:21Z",
+    "metadata":null
+}
+</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Hm the scope looks OK, but I would expect Ory Hydra to fail because the redirect URL (<code>http://my-kratos-app.com/.ory/kratos/public/self-service/methods/oidc/callback/my-hydra-app</code>) is not <code>https</code>.</p>
+<p>However, that does not match with the error message you posted. You can set <code>LOG_LEVEL=trace</code> in ORY Hydra and it will show more details in the logs. Could you perform the flow again and show the log messages (at least a couple of seconds before and after you performed the flow)?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/592_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">nash</div>
+          <div class="post_content">
+<p>Sorry for my late reply.<br/>
+Unfortunately I don’t have so much freedom in my hydra app.<br/>
+I did, however, set up a self-signed certificate in my kratos app, and I get the following error:</p>
+<pre><code class="lang-bash">message:The request was malformed or contained invalid parameters
+reason:Unable to complete OpenID Connect flow because the OpenID Provider returned error "invalid_scope": The requested scope is invalid, unknown, or malformed
+status:Bad Request status_code:400
+</code></pre>
+<p>Any idea what can be the reason?<br/>
+I perhaps should also mention that the hydra app also uses a self-signed certificate.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Looks like you misconfigured a scope or something!</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

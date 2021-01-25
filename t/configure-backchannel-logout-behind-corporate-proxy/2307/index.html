@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Configure Backchannel logout behind corporate proxy</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Configure Backchannel logout behind corporate proxy</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/232_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">eskava</div>
+          <div class="post_content">
+<p>Dear Community</p>
+<p>I need to provide a Single Sign Out solution for my company.<br/>
+Single Sign On has been implemented successfully thanks to Hydra, your soft is awesome guys, thanks so much for the great work. We are running smoothly on production with just two legs and Hydra is using next to nothing resources (I am not talking about Keycloak the ogre).</p>
+<p>I setup a backchannel logout solution but some of my clients are on a different network and I need to use the corporate proxy to access theses network.</p>
+<p>I cannot find any documentation on how to setup these proxy. Does some of you guys came up with similar setting? How did you solve it?</p>
+<p>Best regards,<br/>
+Alexandre</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/260_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">ghenry</div>
+          <div class="post_content">
+<p>Just a normal reverse proxy. Try:</p>
+<aside class="onebox allowlistedgeneric">
+<header class="source">
+<img class="site-icon" height="48" src="../../../images/favicon-48x48.ico" width="48"/>
+<a href="https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/" rel="noopener nofollow ugc" target="_blank">NGINX Documentation</a>
+</header>
+<article class="onebox-body">
+<div class="aspect-image" style="--aspect-ratio:500/300;"><img class="thumbnail" height="300" src="../../../images/c98a575f35a1cd3c5d0d2b301ec891597d25790c.png" width="500"/></div>
+<h3><a href="https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/" rel="noopener nofollow ugc" target="_blank">NGINX Docs | NGINX Reverse Proxy</a></h3>
+<p>Configure NGINX as a reverse proxy for HTTP and other protocols, with support for modifying request headers and fine-tuned buffering of responses.</p>
+</article>
+<div class="onebox-metadata">
+</div>
+<div style="clear: both"></div>
+</aside>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/226_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">tacurran</div>
+          <div class="post_content">
+<p><span class="mention">@eskava</span> have you looked into Oathkeeper?</p>
+<p>ORY Oathkeeper is an Identity &amp; Access Proxy (IAP) and Access Control Decision API that authorizes HTTP requests based on sets of Access Rules. The BeyondCorp Model is designed by <a href="https://cloud.google.com/beyondcorp/">Google</a> and secures applications in Zero-Trust networks.</p>
+<p>An Identity &amp; Access Proxy is typically deployed in front of (think API Gateway) web-facing applications and is capable of authenticating and optionally authorizing access requests. The Access Control Decision API can be deployed alongside an existing API Gateway or reverse proxy. ORY Oathkeeper’s Access Control Decision API works with:</p>
+<ul>
+<li>
+<a href="https://github.com/datawire/ambassador">Ambassador</a> via <a href="https://www.getambassador.io/reference/services/auth-service">auth service</a>.</li>
+<li>
+<a href="https://www.envoyproxy.io/">Envoy</a> via the <a href="https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/ext_authz_filter">External Authorization HTTP Filter</a>
+</li>
+<li>
+<a href="https://aws.amazon.com/api-gateway/">AWS API Gateway</a> via <a href="https://aws.amazon.com/de/blogs/compute/introducing-custom-authorizers-in-amazon-api-gateway/">Custom Authorizers</a>
+</li>
+<li>
+<a href="https://www.nginx.com/">Nginx</a> via <a href="https://docs.nginx.com/nginx/admin-guide/security-controls/configuring-subrequest-authentication/">Authentication Based on Subrequest Result</a>
+</li>
+</ul>
+<p>among others.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/232_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">eskava</div>
+          <div class="post_content">
+<p>Dear <span class="mention">@ghenry</span>,<br/>
+I have been looking into your solution, it seems not easy to configure NGINX to add custome headers and route calls to another http proxy. look like forward proxying is not well supported.<br/>
+Did you actually managed to get this working?</p>
+<p>Thanks for your inputs.</p>
+<p>Eskava</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/260_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">ghenry</div>
+          <div class="post_content">
+<p>What did you try? Nginx proxying isn’t new <img alt=":slight_smile:" class="emoji" src="../../../images/slight_smile.png" title=":slight_smile:"/> We use it to front lots of Docker Swarm things and other processes, even SSH.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/232_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">eskava</div>
+          <div class="post_content">
+<p>Dear <span class="mention">@ghenry</span></p>
+<p>I am glad you have plenty of usage for NGINX, I juste used it to serve HTML (PHP mainly) and as reverse proxy to deal with CORS issues mainly.<br/>
+I would be so glad if you could provide me with a working example of NGINX configuration adding some headers and forward the request to a HTML PROXY.</p>
+<p>Thanks for sharing <img alt=":slight_smile:" class="emoji" src="../../../images/slight_smile.png" title=":slight_smile:"/><br/>
+Eskava</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

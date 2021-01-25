@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>The latest version of ORY Kratos (v.0.5) has problem using PostgreSQL while migration</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">The latest version of ORY Kratos (v.0.5) has problem using PostgreSQL while migration</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/599_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">itsgitz</div>
+          <div class="post_content">
+<p>Hello,</p>
+<p>I want using user invitation link feature on the latest version of ORY Kratos (v.0.5). But, there’s problem while migrating data into PostgreSQL database.</p>
+<p><div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/gSbg7ubCFQI0wTNJXbUXhBqtdjD.png?dl=1" href="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/original/1X/7642b4ebee3a02f937c21e7e8469adc7e93a6bcd.png" rel="noopener nofollow ugc" title="image"><img alt="image" data-base62-sha1="gSbg7ubCFQI0wTNJXbUXhBqtdjD" data-small-upload="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/7642b4ebee3a02f937c21e7e8469adc7e93a6bcd_2_10x10.png" height="82" src="../../../images/7642b4ebee3a02f937c21e7e8469adc7e93a6bcd.png" width="690"/><div class="meta"><svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use xlink:href="#far-image"></use></svg><span class="filename">image</span><span class="informations">1771×213 11.1 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use xlink:href="#discourse-expand"></use></svg></div></a></div></p>
+<p>The error log said <code>Unable to initialize persister, unsupported dialect sqlite3</code> even though I’m using PostgreSQL, not SQLite 3.</p>
+<p>Here is my configuration on my docker-compose file:</p>
+<p><div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/9Y1cSOpLbbApcAudM3Y6loyZyEZ.png?dl=1" href="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/original/1X/45dc6d4600baa610950604233e037d2878798ced.png" rel="noopener nofollow ugc" title="image"><img alt="image" data-base62-sha1="9Y1cSOpLbbApcAudM3Y6loyZyEZ" data-small-upload="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/45dc6d4600baa610950604233e037d2878798ced_2_10x10.png" height="126" src="../../../images/45dc6d4600baa610950604233e037d2878798ced.png" width="690"/><div class="meta"><svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use xlink:href="#far-image"></use></svg><span class="filename">image</span><span class="informations">770×141 6.57 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use xlink:href="#discourse-expand"></use></svg></div></a></div></p>
+<p>There were no problem when I was using the previous version (0.4.0) with same docker-compose configuration. Am I missed something on the latest version documentation?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>This should be fixed with the current release (I think 0.5.4) of ORY Kratos. Make sure to upgrade!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/599_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">itsgitz</div>
+          <div class="post_content">
+<p>Oh, yes! It’s said <code>Successfully applied SQL migrations!</code> when using v0.5.4.</p>
+<p><div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/yxhn7W6llRgIijRbu9AOUhztoKP.png?dl=1" href="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/original/1X/f20cfcc05d52faa01d79d86bcdc06b19b702dcdf.png" rel="noopener nofollow ugc" title="image"><img alt="image" data-base62-sha1="yxhn7W6llRgIijRbu9AOUhztoKP" data-small-upload="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/f20cfcc05d52faa01d79d86bcdc06b19b702dcdf_2_10x10.png" height="273" src="../../../images/f20cfcc05d52faa01d79d86bcdc06b19b702dcdf.png" width="690"/><div class="meta"><svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use xlink:href="#far-image"></use></svg><span class="filename">image</span><span class="informations">796×315 6.58 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use xlink:href="#discourse-expand"></use></svg></div></a></div></p>
+<p>And now I can use user invitation link feature, thanks!</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

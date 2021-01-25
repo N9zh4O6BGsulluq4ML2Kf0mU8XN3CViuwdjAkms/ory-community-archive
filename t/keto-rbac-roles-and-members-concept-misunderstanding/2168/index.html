@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Keto RBAC - Roles and members - concept misunderstanding</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Keto RBAC - Roles and members - concept misunderstanding</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">chatap</div>
+          <div class="post_content">
+<p>I’ve struggling to setup my roles and policies correctly to achieve my goal.  My understanding is as follows.</p>
+<ol>
+<li>Create a role</li>
+<li>Add members to role</li>
+<li>Created a policy with subject set to roleId</li>
+</ol>
+<p>Now my issue</p>
+<ol start="4">
+<li>Call the “allowed API”</li>
+</ol>
+<p>Where do I include member id?</p>
+<p>When I call the API with the subject being equal to the roleId, it is never checking the member id.</p>
+<p>Does this mean before calling the “allowed API”, I first need to call “GET role API” to see if the user has the role?</p>
+<p>I was under the impressed this would be apart of Keto, as it seems counter intuitive for me to responsible for this.</p>
+<p>Many thanks in advance,<br/>
+Aaron</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/672_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">mr_rustbot</div>
+          <div class="post_content">
+<p>Are you still stuck on this? Adding a member to a role means you can just pass the role ID to the Allowed API. No need to pass the member subject directly.</p>
+<p>Keto will know that subject is a member of that role.</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

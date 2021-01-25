@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Managing access rights of REST endpoints in backend server using Flask-Login</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Managing access rights of REST endpoints in backend server using Flask-Login</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/592_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">nash</div>
+          <div class="post_content">
+<p>I have a Python <a href="https://flask.palletsprojects.com/en/1.1.x/" rel="nofollow noopener">Flask</a> application in which I use <a href="https://flask-login.readthedocs.io/en/latest/" rel="nofollow noopener">Flask-Login</a> to manage the access rights of the REST endpoints of the backend server. This worked quite well with a naive user-database using SQLAlchemy. However, adjusting Flask-Login to work with Kratos turned out to be trickier than I initially expected.</p>
+<p>Specifically, Flask login requires to implement a <code>user_loader</code> callback. That should return a user object of a class that implements a certain interface. Instead of loading the user object from the database using SQLAlchemy, I tried to convert the response of the <a href="https://www.ory.sh/kratos/docs/reference/api#check-who-the-current-http-session-belongs-to" rel="nofollow noopener">WhoAmI API call</a> to an object of the requested class, but now it seems this callback is not even called. It could be related to session management of Flask behind the scenes, but I’m not sure.</p>
+<p>A few questions:</p>
+<ol>
+<li>Does anyone have experience with this and can offer some guidance?</li>
+<li>Is Flask-Login the way to go, or should I manage the access rights of the REST endpoints using a different approach?</li>
+</ol>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Unfortunately I do not but maybe someone else can help <img alt=":slight_smile:" class="emoji" src="../../../images/slight_smile.png" title=":slight_smile:"/></p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

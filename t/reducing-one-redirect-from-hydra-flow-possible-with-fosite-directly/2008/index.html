@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Reducing one redirect from Hydra flow - possible with Fosite directly?</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Reducing one redirect from Hydra flow - possible with Fosite directly?</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">Phoeniyx</div>
+          <div class="post_content">
+<p>Hey guys. Not asking about the initial redirect from the Client to Hydra - which is of course needed. But the second redirect from Hydra to the authentication endpoint. Looking at the Hydra doc that says: <em>“ORY Hydra implements the flows described in OAuth2 and OpenID Connect 1.0 without forcing you to use a “Hydra User Management” or some template engine or a predefined front-end. Instead it relies on HTTP redirection and cryptographic methods to verify user consent allowing you to use ORY Hydra with any authentication endpoint…”</em></p>
+<p>Appreciate the rationale for that, but:</p>
+<ol>
+<li>if I do want to plug in my own UI WITHOUT this redirect from Hydra to the Authentication endpoint (i.e. the Hydra Authr and Authn endpoints are the same), is there a way to achieve this with Hydra? I just want to save 1/2 redirects if possible.</li>
+<li>Also if redirect URL needed, can it be dynamic with client_id and not static via config by OAUTH2_LOGIN_URL env value?</li>
+</ol>
+<p>If neither is possible, what are your thoughts re: the work effort to support all this with Fosite directly? Assuming it is Hydra that is making above requests difficult instead of Fosite itself (I may be way off here). Thank you.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Sounds like you don’t want OAuth2 in which case using Fosite directly will not help at all. I’d recommend checking out ORY Kratos instead in that case: <a href="http://github.com/ory/kratos">http://github.com/ory/kratos</a></p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

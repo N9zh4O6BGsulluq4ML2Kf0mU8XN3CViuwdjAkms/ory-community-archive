@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Missing csrf token in a setup with Oathkeeper and Kratos for authentication</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Missing csrf token in a setup with Oathkeeper and Kratos for authentication</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">jcamp</div>
+          <div class="post_content">
+<p>I have the following setup: A Nuxt js frontend on 127.0.0.1:3000, Ory Kratos in its standard configuration with the public API on 127.0.0.1:4433, and Ory Oathkeeper on 127.0.0.1:4455 protecting the Keto API.</p>
+<p>Oathkeeper, Kratos and Keto are all within the same network and communicate internally.</p>
+<p>I use the Nuxt proxy to forward the traffic to Kratos and Oathkeeper as it is done in the quickstart guide of Kratos.</p>
+<p>I trigger a POST request to the API within the Nuxt app via Axios. The session cookie of Kratos and the CSRF token are both in the request header.</p>
+<p>Right now I have the problem that Oathkeeper seems to not forward the CSRF token to Kratos. Kratos says that “requested_token=”, i.e. that it is empty. I get the following logs:</p>
+<pre><code class="lang-auto">oathkeeper_1                  | [cors] 2020/08/06 11:09:48 Handler: Actual request
+oathkeeper_1                  | [cors] 2020/08/06 11:09:48   Actual response added headers: map[Access-Control-Allow-Credentials:[true] Access-Control-Allow-Origin:[*] Access-Control-Expose-Headers:[Content-Type] Vary:[Origin]]
+oathkeeper_1                  | time=2020-08-06T11:09:48Z level=info msg=started handling request http_request=map[headers:map[accept:application/json, text/plain, */* accept-encoding:gzip, deflate accept-language:en-US,en;q=0.5 cookie:Value is sensitive and has been redacted. To see the value set config key "log.leak_sensitive_values = true" or environment variable "LOG_LEAK_SENSITIVE_VALUES=true". origin:http://127.0.0.1:3000 referer:http://127.0.0.1:3000/testketo user-agent:Mozilla/5.0 (X11; Linux x86_64; rv:76.0) Gecko/20100101 Firefox/76.0] host:127.0.0.1:4455 method:POST path:/engines/acp/ory/exact/allowed query:&lt;nil&gt; remote:172.24.0.1:33380 scheme:http]
+kratos_1                      | time=2020-08-06T11:09:48Z level=info msg=started handling request method=POST name=public#http://127.0.0.1:4433/ remote=172.24.0.5:58522 request=/engines/acp/ory/exact/allowed
+kratos_1                      | time=2020-08-06T11:09:48Z level=warning msg=A request failed due to a missing or invalid csrf_token value audience=application expected_token=T0vRik6Gs5/jD9czmLjy/pHNCouKtbEePHJe2cTd/9iGRNXc9iAmRwMRoRhPSqS/zro+npSQYoynk9NAK8+j5A== received_token= received_token_form= service_name=kratos service_version=
+kratos_1                      | time=2020-08-06T11:09:48Z level=error msg=An error occurred while handling a request audience=application error=map[debug: message:The request was malformed or contained invalid parameters reason:CSRF token is missing or invalid. status:Bad Request status_code:400] http_request=map[headers:map[accept:application/json, text/plain, */* accept-encoding:gzip, deflate accept-language:en-US,en;q=0.5 cookie:Value is sensitive and has been redacted. To see the value set config key "log.leak_sensitive_values = true" or environment variable "LOG_LEAK_SENSITIVE_VALUES=true". origin:http://127.0.0.1:3000 referer:http://127.0.0.1:3000/testketo user-agent:Mozilla/5.0 (X11; Linux x86_64; rv:76.0) Gecko/20100101 Firefox/76.0] host:kratos:4433 method:POST path:/engines/acp/ory/exact/allowed query:&lt;nil&gt; remote:172.24.0.5:58522 scheme:http] http_response=map[status_code:400] service_name=kratos service_version=
+kratos_1                      | time=2020-08-06T11:09:48Z level=info msg=completed handling request method=POST name=public#http://127.0.0.1:4433/ remote=172.24.0.5:58522 request=/engines/acp/ory/exact/allowed status=400 text_status=Bad Request took=1.006632ms
+oathkeeper_1                  | time=2020-08-06T11:09:48Z level=warning msg=The authentication handler encountered an error audience=application authentication_handler=cookie_session error=map[debug: message:Access credentials are invalid reason: status:Unauthorized status_code:401] granted=false http_host=127.0.0.1:4455 http_method=POST http_url=http://127.0.0.1:4455/engines/acp/ory/exact/allowed http_user_agent=Mozilla/5.0 (X11; Linux x86_64; rv:76.0) Gecko/20100101 Firefox/76.0 reason_id=authentication_handler_error rule_id=ory:kratos-selfservice-ui-node:protected service_name=ORY Oathkeeper service_version=v0.38.3-beta.1
+oathkeeper_1                  | time=2020-08-06T11:09:48Z level=warning msg=Access request denied audience=application error=map[debug: message:Access credentials are invalid reason: status:Unauthorized status_code:401] granted=false http_host=127.0.0.1:4455 http_method=POST http_url=http://127.0.0.1:4455/engines/acp/ory/exact/allowed http_user_agent=Mozilla/5.0 (X11; Linux x86_64; rv:76.0) Gecko/20100101 Firefox/76.0 service_name=ORY Oathkeeper service_version=v0.38.3-beta.1
+oathkeeper_1                  | time=2020-08-06T11:09:48Z level=error msg=An error occurred while handling a request code=401 debug= details=map[] error=Access credentials are invalid reason= request-id= status=401 writer=JSON
+oathkeeper_1                  | time=2020-08-06T11:09:48Z level=info msg=completed handling request http_request=map[headers:map[accept:application/json, text/plain, */* accept-encoding:gzip, deflate accept-language:en-US,en;q=0.5 cookie:Value is sensitive and has been redacted. To see the value set config key "log.leak_sensitive_values = true" or environment variable "LOG_LEAK_SENSITIVE_VALUES=true". origin:http://127.0.0.1:3000 referer:http://127.0.0.1:3000/testketo user-agent:Mozilla/5.0 (X11; Linux x86_64; rv:76.0) Gecko/20100101 Firefox/76.0] host:127.0.0.1:4455 method:POST path:/engines/acp/ory/exact/allowed query:&lt;nil&gt; remote:172.24.0.1:33380 scheme:http] http_response=map[status:401 text_status:Unauthorized took:9.498877ms]
+</code></pre>
+<p>I had a look at this article <a href="https://www.ory.sh/kratos/docs/debug/csrf" rel="nofollow noopener">https://www.ory.sh/kratos/docs/debug/csrf</a>, but it didn’t help me. Kratos and Nuxt are working perfectly together, it is only a problem I have with Oathkeeper.</p>
+<p>This is my Oathkeeper config:</p>
+<pre><code class="lang-auto">log:
+  level: debug
+  format: json
+
+
+serve:
+  proxy:
+    cors:
+      enabled: true
+      allowed_origins:
+        - "*"
+      allowed_methods:
+        - POST
+        - GET
+        - PUT
+        - PATCH
+        - DELETE
+      allowed_headers:
+        - Authorization
+        - Content-Type
+      exposed_headers:
+        - Content-Type
+      allow_credentials: true
+      debug: true
+
+errors:
+  fallback:
+    - json
+
+  handlers:
+    redirect:
+      enabled: true
+      config:
+        to: http://127.0.0.1:4455/auth/login
+        when:
+          -
+            error:
+              - unauthorized
+              - forbidden
+            request:
+              header:
+                accept:
+                  - text/html
+    json:
+      enabled: true
+      config:
+        verbose: true
+
+access_rules:
+  matching_strategy: glob
+  repositories:
+    - file:///etc/config/oathkeeper/my_access_rules.yml
+
+authenticators:
+  anonymous:
+    enabled: true
+    config:
+      subject: guest
+
+  cookie_session:
+    enabled: true
+    config:
+      check_session_url: http://kratos:4433/sessions/whoami
+      preserve_path: false
+      extra_from: "@this"
+      subject_from: "identity.id"
+      only:
+        - ory_kratos_session
+
+  noop:
+    enabled: true
+
+authorizers:
+  allow:
+    enabled: true
+
+mutators:
+  noop:
+    enabled: true
+</code></pre>
+<p>and this is the only access rule I have:</p>
+<pre><code class="lang-auto">-
+  id: "ory:kratos-selfservice-ui-node:protected"
+  upstream:
+    preserve_host: true
+    url: "http://127.0.0.1:4466"
+  match:
+    url: "http://127.0.0.1:4455/engines/acp/ory/&lt;**&gt;"
+    methods:
+      - GET
+      - POST
+      - PUT
+      - DELETE
+      - PATCH
+  authenticators:
+    -
+      handler: cookie_session
+  authorizer:
+    handler: allow
+  mutators:
+    - handler: noop
+  errors:
+    - handler: redirect
+      config:
+        to: http://127.0.0.1:3000/auth/login
+</code></pre>
+<p>If I just set Oathkeeper authentication method to “noop”, then the request goes through and Oathkeeper does not have any problems.</p>
+<p>Do you have any suggestions of what I might do wrongly?</p>
+<p>I already saw this issue on Github <a href="https://github.com/ory/kratos/issues/270" rel="nofollow noopener">https://github.com/ory/kratos/issues/270</a>, but it is supposed to be solved already, so I am not sure if this is related!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Check out <a href="https://www.ory.sh/kratos/docs/guides/zero-trust-iap-proxy-identity-access-proxy">https://www.ory.sh/kratos/docs/guides/zero-trust-iap-proxy-identity-access-proxy</a></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">jcamp</div>
+          <div class="post_content">
+<p>Thank you for the response. I now did the same setup with Oathkeeper as proxy, so that I have only one domain and it works. However, I actually wanted to avoid this and intentionally did not try this first. If I don’t want to have Oathkeeper as a gateway for every route of my app in production, is there another solution to avoid the cookie issues? I would just like to avoid another software I don’t necessarily need to slow down the performance…<br/>
+I might be overly cautious with this, however…</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>If you want cookies, you need to set up a shared top level domain. There is no way around that.</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

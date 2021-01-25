@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Redirect URL containing plus character</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Redirect URL containing plus character</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">dominikglandorf</div>
+          <div class="post_content">
+<p>Dear community,</p>
+<p>for a OAuth2 code flow we use a protocol containing a plus (+) character: web+application://callback</p>
+<p>The character is correctly represented in the database. When /oauth2/auth is called, we get a redirect_uri not matching error. May it be due to a transformation of the plus in the URL to a space? Do you encounter the same error with a plus sign?</p>
+<p>Best,<br/>
+Dominik</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Hi there, please provide more information, such as the concrete error, the client config, the server, versions, and so on.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">dominikglandorf</div>
+          <div class="post_content">
+<p>The error:<br/>
+<div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/7vvqDRaDVID8uIfgIwQXxJE2ccu.png?dl=1" href="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/original/1X/349ef977c1cfbf90d99217438bc079e2a2a3dcc6.png" rel="nofollow noopener" title="Bildschirmfoto 2020-09-08 um 16.14.07"><img alt="Bildschirmfoto 2020-09-08 um 16.14.07" data-base62-sha1="7vvqDRaDVID8uIfgIwQXxJE2ccu" data-small-upload="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/349ef977c1cfbf90d99217438bc079e2a2a3dcc6_2_10x10.png" height="138" src="../../../images/349ef977c1cfbf90d99217438bc079e2a2a3dcc6_2_690x138.png" srcset="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/349ef977c1cfbf90d99217438bc079e2a2a3dcc6_2_690x138.png, //ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/349ef977c1cfbf90d99217438bc079e2a2a3dcc6_2_1035x207.png 1.5x, //ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/original/1X/349ef977c1cfbf90d99217438bc079e2a2a3dcc6.png 2x" width="690"/><div class="meta"><svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use xlink:href="#far-image"></use></svg><span class="filename">Bildschirmfoto 2020-09-08 um 16.14.07</span><span class="informations">1135×228 36.3 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use xlink:href="#discourse-expand"></use></svg></div></a></div></p>
+<p>Client config:<br/>
+client_id: application<br/>
+client_secret: 12345678<br/>
+redirect_uri: web+application://go<br/>
+scope: openid<br/>
+token endpoint auth method: client_secret_post</p>
+<p>Hydra version: v1.7.4</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">asaf000</div>
+          <div class="post_content">
+<p><span class="mention">@dominikglandorf</span> then don’t <img alt=":slight_smile:" class="emoji" src="../../../images/slight_smile.png" title=":slight_smile:"/> + is very special in URL encoding</p>
+<p><span class="mention">@hackerman</span> Go encodes plus char into %2B</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">dominikglandorf</div>
+          <div class="post_content">
+<p>Thanks for your reply. Unfortunately, we are not able to change the protocol of the client.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Yeah I don’t think URL schemes allow special characters like that in the scheme.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">dominikglandorf</div>
+          <div class="post_content">
+<p>This RFC 3986 is about URIs: <a href="https://tools.ietf.org/html/rfc3986#section-3.1" rel="nofollow noopener">https://tools.ietf.org/html/rfc3986#section-3.1</a> It says:</p>
+<p>“Scheme names consist of a sequence of characters beginning with a<br/>
+letter and followed by any combination of letters, digits, plus<br/>
+(”+"), period ("."), or hyphen ("-")."</p>
+<p>Mozilla says here <a href="https://developer.mozilla.org/en-US/docs/Web/API/Navigator/registerProtocolHandler#Permitted_schemes" rel="nofollow noopener">https://developer.mozilla.org/en-US/docs/Web/API/Navigator/registerProtocolHandler#Permitted_schemes</a> that <strong>web+</strong> is a valid prefix for custom schemes. Those protocol handlers are permitted by W3C in the HTML5 specification.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>My bad then, could you open an issue in ORY Hydra or ORY Fosite containing a reproducible case? Then we can track and fix it <img alt=":slight_smile:" class="emoji" src="../../../images/slight_smile.png" title=":slight_smile:"/></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">dominikglandorf</div>
+          <div class="post_content">
+<p>Thank you. Here it is <a href="https://github.com/ory/hydra/issues/2055" rel="nofollow noopener">https://github.com/ory/hydra/issues/2055</a></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Thank you!</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

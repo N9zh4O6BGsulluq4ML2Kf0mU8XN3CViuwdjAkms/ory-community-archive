@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Strip_path support regular expressions？</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Strip_path support regular expressions？</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">dengzhe</div>
+          <div class="post_content">
+<p>*** I want to use regular expressions in strip_path<br/>
+my oathkeeper rules:</p>
+<pre><code class="lang-json">[
+  {
+    "id": "	deployment-agent",
+    "upstream": {
+      "url": "http://ip:port",
+	  "preserve_host": false,
+	  "strip_path": "/deployment-agent/&lt;read|write|modify&gt;"
+    },
+    "match": {
+      "url": "http://ip:port/deployment-agent/&lt;read|write|modify&gt;/&lt;.*&gt;",
+      "methods": [
+        "POST",
+	"PATCH",
+        "GET",
+        "PUT",
+        "DELETE"
+      ]
+    },
+    "authenticators": [
+      {
+        "handler": "oauth2_introspection"
+      }
+    ],
+    "authorizer": {
+      "handler": "keto_engine_acp_ory",
+		"config": {
+			"required_action": "$1",
+			"required_resource": "deployment-agent",
+			"subject": "{{ print .Extra.client_id }}",
+			"flavor": "exact"
+		}
+    },
+    "mutators": [
+      {
+        "handler": "noop",
+      }
+    ]
+  }
+]
+</code></pre>
+<p>It didn’t work.<br/>
+What should I do</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>We don’t support regex in strip path at the moment!</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

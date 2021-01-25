@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>How to see expiration date of refresh token in response</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">How to see expiration date of refresh token in response</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">LSI</div>
+          <div class="post_content">
+<p>Hello everyone,</p>
+<p>this question is considering maybe less hydra but oauth2. I set the expiration ttl for access and refresh token by setting env vars “TTL_ACCESS_TOKEN” and “TTL_REFRESH_TOKEN” for hydra. While I can see the expiration for access token in response, there is no expiration for refresh token. I use especially oauth2 go library (just for info <a href="http://golang.org/x/oauth2" rel="nofollow noopener">golang.org/x/oauth2</a>") and in the response there is no any expiration data for refresh token. I’m not sure if it is the behavior of the library or of hydra or generally of oauth2.</p>
+<p>Can somebody tell, if hydra’s response generally provide this information?</p>
+<p>Thank you!</p>
+<p>LSI</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Yeah it looks like we currently omit that information. Feel free to create a bug report in hydra!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">LSI</div>
+          <div class="post_content">
+<p>According to RFC <a href="https://tools.ietf.org/html/rfc6749#section-5.1" rel="nofollow noopener">https://tools.ietf.org/html/rfc6749#section-5.1</a> there is no field in the response to show the expiration of refresh token. This is why I would say it’s not a bug. But I’ll open an issue with label “feat” <img alt=":slight_smile:" class="emoji" src="../../../images/slight_smile.png" title=":slight_smile:"/></p>
+<p>Thank you</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Perfect <img alt=":slight_smile:" class="emoji" src="../../../images/slight_smile.png" title=":slight_smile:"/></p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

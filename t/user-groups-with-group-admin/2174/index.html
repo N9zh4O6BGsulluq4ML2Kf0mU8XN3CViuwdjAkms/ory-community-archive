@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>User groups with group admin</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">User groups with group admin</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/583_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">paulborile</div>
+          <div class="post_content">
+<p>Hi,</p>
+<p>I’m trying to understand if user groups are possible using kratos : a groups of users will have a group admin wich has global admin privileges on that group. If this feature is not present, is it interesting/present in any roadmap for the product ?</p>
+<p>Thanks<br/>
+-Paul</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">shreyas_deshpande</div>
+          <div class="post_content">
+<p>Hi, i am also looking for some groups kind of support, wherein multiple users can be added a group and authorization can be driven using groups.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/623_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">zepatrik</div>
+          <div class="post_content">
+<p>Kratos is only solving authorization, for ACL and permissions you could use e.g. Keto, or your custom solution.</p>
+<p>EDIT:<br/>
+You can of course use the identity schema to store group membership and roles. But interpreting the implications of that is out of scope for Kratos.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">shreyas_deshpande</div>
+          <div class="post_content">
+<p>Thanks for the reply. so the identity schema does support groups? i mean identity management features mentioned in Kratos,i did not find something for groups</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/623_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">zepatrik</div>
+          <div class="post_content">
+<p>You can add arbitrary data in the identity schema, therefore also group membership. You can then use the <code>/whoami</code> endpoint in some other service to check if the identity belongs to a specific group. But it is really up to the implementation as Kratos itself does not know how to interpret any of that.</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

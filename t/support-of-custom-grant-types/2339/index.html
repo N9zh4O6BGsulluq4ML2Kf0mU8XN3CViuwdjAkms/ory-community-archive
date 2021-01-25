@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Support of custom grant types</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Support of custom grant types</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/89_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">avasenin</div>
+          <div class="post_content">
+<p>Is it any way how I can extend Hydra to support completely custom grant types?</p>
+<p>I know ROPC is not supported, but my question about completely custom grant types and the way how we can provide my custom implementation to hydra (similar to consent app for UI).</p>
+<p>For example we have a use case when we want to do a token exchange with legacy systems and authenticate it. One of the legacy system uses opaque tokens and we trust them and want to do token exchange to Hydra token to be compatible. Ideally will be to have custom grant for /token endpoint which accepts the legacy token, do all checks and returns hydra token.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Unfortunately not, ORY Hydra is built to support state of the art OAuth2 and OIDC flows - any bespoke legacy or custom integrations need to be handled otherwise!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/89_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">avasenin</div>
+          <div class="post_content">
+<p>Any advice how we can handle such cases?</p>
+<p>In fact we are looking something similar to token exchange (RFC 8693) but with ability to decide should we allow the token for exchange or nope from sided application (e.g. consent app).</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>We could generally add token exchange to fosite (the oauth2 framework hydra uses) but it is currently not implemented. We do welcome contributions though towards this feature but I just want to caution that it will most likely take a lot of time in terms of implementation!</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Config for ORY Hydra behind multiple proxies</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Config for ORY Hydra behind multiple proxies</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">abeer.u</div>
+          <div class="post_content">
+<p>As mentioned <a href="https://www.ory.sh/hydra/docs/production/#ory-hydra-behind-an-api-gateway" rel="noopener nofollow ugc">here</a>, setting up Hydra behind an API Gateway will require adding the gateway’s ip under the <code>allow_termination_from</code> setting. However in my use-case, I have a Load Balancer between the API Gateway and Hydra. The flow looks something like this</p>
+<pre><code>API Gateway ----[http]----&gt; Load Balancer ----[http]----&gt; Hydra
+</code></pre>
+<p>As the request coming to the Load Balancer is a <code>http</code> call, the <code>X-Forwarded-Proto</code> header is always set to <code>http</code> and NOT <code>https</code>. So, if I have to support <code>http</code> calls to Hydra, I am forced to use the <code>--dangerous-force-http</code> setting which is not recommended for production environments.</p>
+<p>Is there any configuration in Hydra to support this use-case ?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Hm this could be a bit tricky to implement at the moment unless your Load Balancer talks HTTPS or is able to not set the X-Forwarded-Proto. However, we’re thinking of disabling the X-Forwarded-Proto check to enable such environments, although it is of course a big downside for security enforcement.</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

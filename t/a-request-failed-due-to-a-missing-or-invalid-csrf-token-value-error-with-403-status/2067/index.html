@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>&ldquo;A request failed due to a missing or invalid csrf_token value&rdquo; Error with 403 status</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">&ldquo;A request failed due to a missing or invalid csrf_token value&rdquo; Error with 403 status</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/500_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">monarkatfactly</div>
+          <div class="post_content">
+<p>We have deployed Kratos(dev mode because of http) and Oathkeeper using helm chart.<br/>
+We have SPA react app (which also connect to oathkeeper) on <a href="http://kavach.factly.org" rel="nofollow noopener">http://kavach.factly.org</a><br/>
+We have kratos public on <a href="http://kratos.factly.org/" rel="nofollow noopener">http://kratos.factly.org/</a></p>
+<p>When <a href="http://kavach.factly.org/auth/login?request=xyz" rel="nofollow noopener">http://kavach.factly.org/auth/login?request=xyz</a> page page send AJAX request to <a href="http://kratos.factly.org/self-service/browser/flows/requests/login?request=xyz" rel="nofollow noopener">http://kratos.factly.org/self-service/browser/flows/requests/login?request=xyz</a> it returning 403 Forbidden and console is printing below error message</p>
+<pre><code class="lang-auto">access to fetch at 'http://kratos.factly.org/self-service/browser/flows/requests/login?request=96b8de67-09fb-4118-b743-107d63860396' from origin 'http://kavach.factly.org' has been blocked by CORS policy: The value of the 'Access-Control-Allow-Origin' header in the response must not be the wildcard '*' when the request's credentials mode is 'include'.
+index.js:31 GET http://kratos.factly.org/self-service/browser/flows/requests/login?request=96b8de67-09fb-4118-b743-107d63860396 net::ERR_FAILED
+</code></pre>
+<p>When i opened same link with same request id (<a href="http://kratos.factly.org/self-service/browser/flows/requests/login?request=xyz" rel="nofollow noopener">http://kratos.factly.org/self-service/browser/flows/requests/login?request=xyz</a>) in separate tab it’s returning below error</p>
+<pre><code class="lang-auto">{
+  "error": {
+    "code": 403,
+    "status": "Forbidden",
+    "reason": "A request failed due to a missing or invalid csrf_token value.",
+    "message": "The requested action was forbidden"
+  }
+}
+</code></pre>
+<p>and as mentioned in doc I have added <code>credentials: 'include'</code> into fetch requests and still same error.</p>
+<p>Kratos config for helm</p>
+<pre><code class="lang-auto">kratos:
+  development: true
+  autoMigrate: true
+  config:
+    selfservice:
+      strategies:
+        password:
+          enabled: true
+
+      flows:
+        login:
+          ui_url: http://kavach.factly.org/auth/login
+          request_lifespan: 10m
+
+        registration:
+          ui_url: http://kavach.factly.org/auth/registration
+          request_lifespan: 10m
+          after:
+            password:
+              hooks:
+                - hook: session
+            oidc:
+              hooks:
+                - hook: session
+        settings:
+          ui_url: http://kavach.factly.org/web/password
+        verification:
+          ui_url: http://kavach.factly.org/web/verify
+
+      default_browser_return_url: http://kavach.factly.org/
+
+    log:
+      level: debug
+
+    secrets:
+      default:
+        - PLEASE-CHANGE-ME-I-AM-VERY-INSECURE
+      cookie:
+        - secret-to-encrypt-session-cookies
+
+    serve:
+      public:
+        base_url: http://kratos.factly.org
+      admin:
+        base_url: http://kratos:4434/
+
+    hashers:
+      argon2:
+        parallelism: 1
+        memory: 131072
+        iterations: 2
+        salt_length: 16
+        key_length: 16
+
+
+</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/500_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">monarkatfactly</div>
+          <div class="post_content">
+<p>Here logs from kratos</p>
+<p>time=2020-08-08T07:39:54Z level=info msg=started handling request method=GET name=public#<a href="http://kratos.factly.org" rel="nofollow noopener">http://kratos.factly.org</a> remote=10.8.2.22:37004 request=/self-service/browser/flows/login</p>
+<p>time=2020-08-08T07:39:54Z level=info msg=completed handling request method=GET name=public#<a href="http://kratos.factly.org" rel="nofollow noopener">http://kratos.factly.org</a> remote=10.8.2.22:37004 request=/self-service/browser/flows/login status=302 text_status=Found took=25.299972ms</p>
+<p>time=2020-08-08T07:39:55Z level=info msg=started handling request method=GET name=public#<a href="http://kratos.factly.org" rel="nofollow noopener">http://kratos.factly.org</a> remote=10.8.2.22:37004 request=/self-service/browser/flows/requests/login?request=cc335828-2635-4f77-a185-fbbf75edb3c7</p>
+<p>time=2020-08-08T07:39:55Z level=info msg=completed handling request method=GET name=public#<a href="http://kratos.factly.org" rel="nofollow noopener">http://kratos.factly.org</a> remote=10.8.2.22:37004 request=/self-service/browser/flows/requests/login?request=cc335828-2635-4f77-a185-fbbf75edb3c7 status=200 text_status=OK took=4.480295ms</p>
+<p>time=2020-08-08T07:39:55Z level=info msg=started handling request method=GET name=public#<a href="http://kratos.factly.org" rel="nofollow noopener">http://kratos.factly.org</a> remote=10.8.2.22:37004 request=/self-service/browser/flows/login</p>
+<p>time=2020-08-08T07:39:55Z level=info msg=completed handling request method=GET name=public#<a href="http://kratos.factly.org" rel="nofollow noopener">http://kratos.factly.org</a> remote=10.8.2.22:37004 request=/self-service/browser/flows/login status=302 text_status=Found took=25.539261ms</p>
+<p>time=2020-08-08T07:39:56Z level=info msg=started handling request method=GET name=public#<a href="http://kratos.factly.org" rel="nofollow noopener">http://kratos.factly.org</a> remote=10.8.2.22:37004 request=/self-service/browser/flows/requests/login?request=f52faa99-a535-4b38-b1a1-9fb248844162</p>
+<p>time=2020-08-08T07:39:56Z level=info msg=completed handling request method=GET name=public#<a href="http://kratos.factly.org" rel="nofollow noopener">http://kratos.factly.org</a> remote=10.8.2.22:37004 request=/self-service/browser/flows/requests/login?request=f52faa99-a535-4b38-b1a1-9fb248844162 status=200 text_status=OK took=4.712578ms</p>
+<p>time=2020-08-08T07:39:56Z level=info msg=started handling request method=GET name=public#<a href="http://kratos.factly.org" rel="nofollow noopener">http://kratos.factly.org</a> remote=10.8.2.22:37004 request=/self-service/browser/flows/login</p>
+<p>time=2020-08-08T07:39:56Z level=info msg=completed handling request method=GET name=public#<a href="http://kratos.factly.org" rel="nofollow noopener">http://kratos.factly.org</a> remote=10.8.2.22:37004 request=/self-service/browser/flows/login status=302 text_status=Found took=24.616887ms</p>
+<p>time=2020-08-08T07:40:05Z level=info msg=started handling request method=GET name=public#<a href="http://kratos.factly.org" rel="nofollow noopener">http://kratos.factly.org</a> remote=10.8.2.22:37004 request=/self-service/browser/flows/requests/login?request=5c99c836-60ec-4d3a-9329-73afbb785a4c</p>
+<p>time=2020-08-08T07:40:05Z level=info msg=completed handling request method=GET name=public#<a href="http://kratos.factly.org" rel="nofollow noopener">http://kratos.factly.org</a> remote=10.8.2.22:37004 request=/self-service/browser/flows/requests/login?request=5c99c836-60ec-4d3a-9329-73afbb785a4c status=200 text_status=OK took=3.858371ms</p>
+<p>time=2020-08-08T07:40:07Z level=info msg=started handling request method=GET name=public#<a href="http://kratos.factly.org" rel="nofollow noopener">http://kratos.factly.org</a> remote=10.8.2.22:37004 request=/self-service/browser/flows/login</p>
+<p>time=2020-08-08T07:40:07Z level=info msg=completed handling request method=GET name=public#<a href="http://kratos.factly.org" rel="nofollow noopener">http://kratos.factly.org</a> remote=10.8.2.22:37004 request=/self-service/browser/flows/login status=302 text_status=Found took=26.531435ms</p>
+<p>time=2020-08-08T07:40:14Z level=info msg=started handling request method=GET name=public#<a href="http://kratos.factly.org" rel="nofollow noopener">http://kratos.factly.org</a> remote=10.8.2.22:37004 request=/self-service/browser/flows/requests/login?request=19506980-0c50-4385-91e1-61d9eb3f133e</p>
+<p>time=2020-08-08T07:40:14Z level=info msg=completed handling request method=GET name=public#<a href="http://kratos.factly.org" rel="nofollow noopener">http://kratos.factly.org</a> remote=10.8.2.22:37004 request=/self-service/browser/flows/requests/login?request=19506980-0c50-4385-91e1-61d9eb3f133e status=200 text_status=OK took=5.03124ms</p>
+<p>time=2020-08-08T07:40:14Z level=info msg=started handling request method=GET name=public#<a href="http://kratos.factly.org" rel="nofollow noopener">http://kratos.factly.org</a> remote=10.8.2.22:37004 request=/self-service/browser/flows/login</p>
+<p>time=2020-08-08T07:40:14Z level=info msg=completed handling request method=GET name=public#<a href="http://kratos.factly.org" rel="nofollow noopener">http://kratos.factly.org</a> remote=10.8.2.22:37004 request=/self-service/browser/flows/login status=302 text_status=Found took=26.038319ms</p>
+<p>time=2020-08-08T07:40:14Z level=info msg=started handling request method=GET name=public#<a href="http://kratos.factly.org" rel="nofollow noopener">http://kratos.factly.org</a> remote=10.8.2.22:37004 request=/self-service/browser/flows/requests/login?request=dff2164f-1dcf-4eb0-870b-db06dd66f19f</p>
+<p>time=2020-08-08T07:40:14Z level=info msg=completed handling request method=GET name=public#<a href="http://kratos.factly.org" rel="nofollow noopener">http://kratos.factly.org</a> remote=10.8.2.22:37004 request=/self-service/browser/flows/requests/login?request=dff2164f-1dcf-4eb0-870b-db06dd66f19f status=200 text_status=OK took=5.08812ms</p>
+<p>time=2020-08-08T07:40:14Z level=info msg=started handling request method=GET name=public#<a href="http://kratos.factly.org" rel="nofollow noopener">http://kratos.factly.org</a> remote=10.8.2.22:37004 request=/self-service/browser/flows/login</p>
+<p>time=2020-08-08T07:40:14Z level=info msg=completed handling request method=GET name=public#<a href="http://kratos.factly.org" rel="nofollow noopener">http://kratos.factly.org</a> remote=10.8.2.22:37004 request=/self-service/browser/flows/login status=302 text_status=Found took=31.480311ms</p>
+<p>time=2020-08-08T07:40:15Z level=info msg=started handling request method=GET name=public#<a href="http://kratos.factly.org" rel="nofollow noopener">http://kratos.factly.org</a> remote=10.8.2.22:37004 request=/self-service/browser/flows/requests/login?request=09a65c85-08d8-44dc-968a-d3b2dd6d47ce</p>
+<p>time=2020-08-08T07:40:15Z level=info msg=completed handling request method=GET name=public#<a href="http://kratos.factly.org" rel="nofollow noopener">http://kratos.factly.org</a> remote=10.8.2.22:37004 request=/self-service/browser/flows/requests/login?request=09a65c85-08d8-44dc-968a-d3b2dd6d47ce status=200 text_status=OK took=4.188526ms</p>
+<p>time=2020-08-08T07:40:15Z level=info msg=started handling request method=GET name=public#<a href="http://kratos.factly.org" rel="nofollow noopener">http://kratos.factly.org</a> remote=10.8.2.22:37004 request=/self-service/browser/flows/login</p>
+<p>time=2020-08-08T07:40:15Z level=info msg=completed handling request method=GET name=public#<a href="http://kratos.factly.org" rel="nofollow noopener">http://kratos.factly.org</a> remote=10.8.2.22:37004 request=/self-service/browser/flows/login status=302 text_status=Found took=24.693784ms</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/500_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">monarkatfactly</div>
+          <div class="post_content">
+<p>When I hit registration page it’s print below log in kratos</p>
+<p>time=2020-08-08T08:26:47Z level=info msg=started handling request method=GET name=public#<a href="http://kratos.factly.org" rel="nofollow noopener">http://kratos.factly.org</a> remote=10.8.2.22:40246 request=/self-service/browser/flows/registration</p>
+<p>time=2020-08-08T08:26:47Z level=error msg=An error occurred and is being forwarded to the error user interface. audience=application error=map[message:no Loader registered for scheme gs] http_request=map[headers:map[accept:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,<em>/</em>;q=0.8,application/signed-exchange;v=b3;q=0.9 accept-encoding:gzip, deflate accept-language:en-GB,en-US;q=0.9,en;q=0.8,gu;q=0.7,hi;q=0.6 cookie:Value is sensitive and has been redacted. To see the value set config key “log.leak_sensitive_values = true” or environment variable “LOG_LEAK_SENSITIVE_VALUES=true”. user-agent:Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36 x-forwarded-for:10.160.0.34] host:kratos.factly.org method:GET path:/self-service/browser/flows/registration query: remote:10.8.2.22:40246 scheme:http] service_name=kratos service_version=</p>
+<p>time=2020-08-08T08:26:47Z level=info msg=completed handling request method=GET name=public#<a href="http://kratos.factly.org" rel="nofollow noopener">http://kratos.factly.org</a> remote=10.8.2.22:40246 request=/self-service/browser/flows/registration status=302 text_status=Found took=9.827533ms</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>This fails because CORS is not configured - the problem is that you have two domains (<code>kratos.</code> and <code>kavach.</code>) which requires CORS to be configured. You can configure CORS with a reverse proxy such as Nginx or Apache2.</p>
+<p>Currently, ORY Kratos does not support configuring CORS itself but we plan to add that functionality with the next release!</p>
+<p>Hope this helps</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/500_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">monarkatfactly</div>
+          <div class="post_content">
+<p>Thanks,</p>
+<p>I solved that issue by adding below code into oathkeeper config</p>
+<pre><code class="lang-auto">cors:
+  enabled: true
+  allowed_origins:
+    - http://kavach.factly.org
+    - http://kratos.factly.org
+</code></pre>
+<p>But new issue cookie after login cookie is being set to <a href="http://kratos.factly.org" rel="nofollow noopener">http://kratos.factly.org</a> so I am not able to use <a href="http://kavach.factly.org" rel="nofollow noopener">http://kavach.factly.org</a>(because of oathkeeper rules). and I think you already solved issue here <a href="https://github.com/ory/kratos/commit/faeb3328dab343c6ef3974065ba0c5c590a8817e" rel="nofollow noopener">https://github.com/ory/kratos/commit/faeb3328dab343c6ef3974065ba0c5c590a8817e</a> , right??</p>
+<p>When can we expect the next version of kratos?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Yes, that’s the patch! The next version includes API and mobile auth and still needs a bit of time. But if you want you can build the docker image yourself for now using <code>make docker</code> in the ORY Kratos root directory and then referencing <code>oryd/kratos:latest-sqlite</code> in docker.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/500_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">monarkatfactly</div>
+          <div class="post_content">
+<p>Thanks,</p>
+<p>Actually we are using ory/kratos helm chart in staging.</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

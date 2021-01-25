@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Authorization for Admin API of Kratos (M2M authorization)</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Authorization for Admin API of Kratos (M2M authorization)</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">jcamp</div>
+          <div class="post_content">
+<p>Hello,</p>
+<p>I’m rather new to the whole identity management and security, so please be patient with me if this question is stupid.</p>
+<p>Usually, there are some authorization steps done (e.g. via tokens) when communicating with an API and in our setup we definitely need that. We don’t want to fully rely on just securing the network within our Kubernetes cluster.</p>
+<p>So are there possibilities to do that? And to authorize write and read access separately for example? I am pretty sure that Kratos has a similar feature, but I couldn’t find it in the docs.</p>
+<p>Thank you for your help!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>If you use something like ORY Oathkeeper in front of ORY Kratos then you would be able to expose the ORY Kratos Admin APIs to the public internet <img alt=":slight_smile:" class="emoji" src="../../../images/slight_smile.png" title=":slight_smile:"/></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">jcamp</div>
+          <div class="post_content">
+<p>I will have a look at Oathkeeper then! This can certainly be a workaround for managing internal accounts for the admin section… Thanks!</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

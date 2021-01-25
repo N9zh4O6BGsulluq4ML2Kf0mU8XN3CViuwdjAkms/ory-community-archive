@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Login challenge</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Login challenge</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">notNeo</div>
+          <div class="post_content">
+<p>as far as I understood. one creates a challenge, which in turn is stored on a mysql/postgres instance<br/>
+by querying “GET oauth2/auth/requests/login?login_challenge=%s” for example.</p>
+<p>while %s could be anything representing the challenge.</p>
+<p>It seems I cannot create a challenge as I am confronted with such error:</p>
+<blockquote>
+<p>{“error”:“Not Found”,“error_description”:“Unable to located the requested resource”,“status_code”:404,“request_id”:""}</p>
+</blockquote>
+<p>the logs show the request like this:</p>
+<blockquote>
+<p><a href="http://termbin.com/dtd7" rel="nofollow noopener">termbin.com/dtd7</a></p>
+</blockquote>
+<p>I am using the 5 minute tutorial and the docker-compose quickstart.yml as basis and<br/>
+using the <a href="https://www.ory.sh/hydra/docs/implementing-consent/" rel="nofollow noopener">https://www.ory.sh/hydra/docs/implementing-consent/</a> as documentation.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">notNeo</div>
+          <div class="post_content">
+<p>the login challenge endpoint is predetermined by the Quickstart.yaml file in the root folder of the project.<br/>
+correcting it allows you to connect to the shipped demo login provider for testing purposes</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Deploying to &lt;domain&gt;/hydra</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Deploying to &lt;domain&gt;/hydra</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/625_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">Zohreh</div>
+          <div class="post_content">
+<p>I am trying to setup Hydra in a k8s cluster where the top level domain is shared by several applications and each application gets traffic at a directory path, e.g.</p>
+<p>Any traffic to <code>https://domain.com/web-application</code> gets redirected to the <code>web-application</code> pod</p>
+<p>I have similarly setup Hydra issuer_url to include a ‘/hydra/’ postfix.<br/>
+However, Hydra application doesn’t seem to be able to correctly separate this part from the path and therefore returns <strong>404</strong>. e.g. <code>curl https://domain.com/hydra/.well-known/openid-configuration</code> returns 404/</p>
+<p>From the logs:</p>
+<pre><code class="lang-auto">host:domain.com method:GET path:/hydra/.well-known/openid-configuration query:&lt;nil&gt; ...] http_response=map[status:404 text_status:Not Found took:299.925µs]
+</code></pre>
+<p>when I ssh to the pod and run <code>curl http://localhost:4444/.well-known/openid-configuration</code><br/>
+I see the correct URLs being generated:</p>
+<pre><code class="lang-auto">{
+"issuer":"https://domain.com/hydra/",
+"authorization_endpoint":"https://&lt;domain&gt;/hydra/oauth2/auth",
+...
+}```
+ similar to the example results here: https://www.ory.sh/hydra/docs/reference/api#200-response-1
+
+
+Is there a different config that needs to be set in addition to the `URLS_SELF_ISSUER` for this setup to work?</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>You need to enable path stripping in your proxy/ingress!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/625_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">Zohreh</div>
+          <div class="post_content">
+<aside class="quote no-group" data-post="2" data-topic="2304" data-username="hackerman">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" class="avatar" height="20" src="../../../images/5_2.png" width="20"/> hackerman:</div>
+<blockquote>
+<p>enable path stripping in your proxy/ingress</p>
+</blockquote>
+</aside>
+<p>That’s a good suggestion for a workaround; unfortunately gke ingress doesn’t support url-rewrite at the moment but there are probably similar solutions that I can look into.</p>
+<p>Does this mean that Hydra does not support path prefixes?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>No Ory Hydra does not support that. We replaced GKE ingress with NGinx as it has also many other shortcomings, despite vocal <a href="https://github.com/kubernetes/ingress-gce/issues/109">community pushback</a>.</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

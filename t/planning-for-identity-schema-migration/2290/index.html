@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Planning for identity schema migration</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Planning for identity schema migration</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">douglas</div>
+          <div class="post_content">
+<p>I’ve worked with custom built identity systems before, and one of the eventual pain points is always the migration of user accounts from one identity model to another.  This happens, for example, when you support user accounts and later you add the support for business accounts  (e.g. email-based vs role-based).</p>
+<p>I know that Kratos supports different identity schemas, but I’m unable to figure out if it supports migrating a user from one identity schema to another, or whether I’ll have to plan a system that can manage the migration process (creating a duplicate identity under the new schema, and then re-mapping user data from one identity to the other).</p>
+<p>Ideally, I’d be able to treat the Kratos Id as a unique account identifier, and then migrate just the idenitity schema, which would remove the entire state machine of account transitions.  In that way, Kratos would be my ‘account’, whether it was user or some other role.</p>
+<p>Failing that, I will want to create an account abstraction in my data model, and de-couple the Kratos identity from the account in question.</p>
+<p>So… does Kratos support migrating the identity schema?  I would make sure that the fields are compatible before migration (e.g. both schemas would have the email and username field, where users have the email as identifier and username as a field, and a ‘company account’ would have the username as identifier and email as a field.)</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>It doesn’t right now, but one of the ideas we had was to leverage JsonNet to make migrations possible. JsonNet can be linted, formatted, is typed, and can be tested. We could probably add something that would make translation from schemaA to schemaB possible when a JsonNet for that operation is found. What do you think?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">douglas</div>
+          <div class="post_content">
+<p>That’s actually pretty ingenious.  I’ll definitely try that out if you make it available.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>You could write this on your own at the moment - just get the identity using the Kratos CLI as JSON. Then write the JsonNet transformator so that the output is written to another file, then update the identity using the Kratos CLI!</p>
+<p>The automation we would build in would just make this a bit less manual.</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

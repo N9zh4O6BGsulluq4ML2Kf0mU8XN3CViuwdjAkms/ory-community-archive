@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Unable to send email using SMTP connection</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Unable to send email using SMTP connection</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/592_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">nash</div>
+          <div class="post_content">
+<p>I use this configuration line for my SMTP server:</p>
+<pre><code class="lang-auto">connection_uri: smtps://&lt;username&gt;:&lt;password&gt;@mail.gmx.net:587/?skip_ssl_verify=false
+from_address: my-app@gmx.de
+</code></pre>
+<p>I get the following error message:</p>
+<pre><code class="lang-auto">level=error msg=Unable to send email using SMTP connection. audience=application error=map[message:tls: either ServerName or InsecureSkipVerify must be specified in the tls.Config] message_from=my-app@gmx.de service_name=kratos service_version= smtp_server=mail.gmx.net:587 smtp_ssl_enabled=true
+</code></pre>
+<p>Any idea why it doesn’t work? Should I inform Kratos about SSL certificates that I have?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Hey there, it’s unfortunately not possible to disable ssl verify for domains that aren’t localhost!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/592_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">nash</div>
+          <div class="post_content">
+<p>Thanks for the reply. According to my understanding, since <code>skip_ssl_verify</code> is set to <code>false</code>, then I state that I don’t wish to disable the SSL verification. Did I get it wrong?</p>
+<p>If I set it to <code>true</code>, then I get the following error:</p>
+<pre><code class="lang-auto">level=error msg=Unable to send email using SMTP connection. audience=application error=map[message:tls: first record does not look like a TLS handshake] message_from=my-app@gmx.de service_name=kratos service_version= smtp_server=mail.gmx.net:587 smtp_ssl_enabled=true
+</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/592_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">nash</div>
+          <div class="post_content">
+<p>By going over the docs, <code>skip_ssl_verify</code> seems relevant for self-signed certificates. Therefore my last message is probably irrelevant.<br/>
+Since I’m using Nginx, in which I configure the SSL certificates, my current guess is that the communication to the SMTP server should go through that Nginx server, but is it possible to configure this in Kratos? <span class="mention">@hackerman</span> (sorry to nag on this)</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Hey, yes you’re right - it’s disabled (I misread it as <code>true</code>). I assume you’re not using NGINX to proxy the SMTP server though, right?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/592_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">nash</div>
+          <div class="post_content">
+<p>Correct. I will need to look into how this can be done.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>I mean GMX should support SMTPS by default without the need to proxy it with NGinx?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/592_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">nash</div>
+          <div class="post_content">
+<p>It indeed supports it. And so, if I understand correctly so far, the problem is caused due to the fact that the outgoing SMTPS communication from the Kratos service to the GMX service is done not on top of SSL. I’m baffled why is it so. Am I supposed to provide my own SSL certificate, or is it a problem with the GMX server? Unfortunately, I don’t know enough about this.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>No, it should just be enough to use <code> smtps://&lt;username&gt;:&lt;password&gt;@mail.gmx.net:587</code> (make sure 587 is actually the port at gmx which does do TLS). It’s also important to check what type of TLS gmx supports, if it’s a really old version it might be rejected by the Golang mail library because it’s insecure.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/592_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">nash</div>
+          <div class="post_content">
+<p>Thanks for the info. I tried to use another smtp server (<a href="http://sendgrid.com" rel="nofollow noopener">sendgrid.com</a>), but I get the same error. Is there perhaps an smtp service provider (preferably a free one) in which you know/believe this works?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>So we use mailgun where this works normally. Our config looks like this (we actually use <code>smtp</code> and not <code>smtps</code> - it might be a bug in Kratos…):</p>
+<pre><code class="lang-auto">    courier:
+      smtp:
+        connection_uri: "smtp://postmaster%40**:***@smtp.mailgun.org:587"
+</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/592_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">nash</div>
+          <div class="post_content">
+<p>It works! I’m really happy <img alt=":grinning:" class="emoji" src="../../../images/grinning.png" title=":grinning:"/> Thanks a lot!</p>
+<p>To summarize: indeed changing from <code>smtps</code> to <code>smtp</code> solved the problem, and now it works for both <a href="http://gmx.net" rel="noopener nofollow ugc">gmx.net</a> and <a href="http://sendgrid.com" rel="noopener nofollow ugc">sendgrid.com</a>.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Congratulations! I created an issue to track this ( <a href="https://github.com/ory/kratos/issues/781">https://github.com/ory/kratos/issues/781</a> ) - imo it should not fail with <code>smtps</code>!</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

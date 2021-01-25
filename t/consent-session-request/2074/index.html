@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Consent session request</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Consent session request</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">notNeo</div>
+          <div class="post_content">
+<p>is there a reason the elements (access_token, id_token)<br/>
+in consent sessino request are empty interfaces?</p>
+<aside class="onebox githubblob">
+<header class="source">
+<a href="https://github.com/ory/hydra-client-go/blob/master/models/consent_request_session.go#L22" rel="nofollow noopener" target="_blank">github.com</a>
+</header>
+<article class="onebox-body">
+<h4><a href="https://github.com/ory/hydra-client-go/blob/master/models/consent_request_session.go#L22" rel="nofollow noopener" target="_blank">ory/hydra-client-go/blob/master/models/consent_request_session.go#L22</a></h4>
+<pre class="onebox"><code class="lang-go"><ol class="start lines" start="12" style="counter-reset: li-counter 11 ;">
+<li>
+</li><li>// ConsentRequestSession Used to pass session data to a consent request.</li>
+<li>//</li>
+<li>// swagger:model consentRequestSession</li>
+<li>type ConsentRequestSession struct {</li>
+<li>
+</li><li>	// AccessToken sets session data for the access and refresh token, as well as any future tokens issued by the</li>
+<li>	// refresh grant. Keep in mind that this data will be available to anyone performing OAuth 2.0 Challenge Introspection.</li>
+<li>	// If only your services can perform OAuth 2.0 Challenge Introspection, this is usually fine. But if third parties</li>
+<li>	// can access that endpoint as well, sensitive data from the session might be exposed to them. Use with care!</li>
+<li class="selected">	AccessToken interface{} `json:"access_token,omitempty"`</li>
+<li>
+</li><li>	// IDToken sets session data for the OpenID Connect ID token. Keep in mind that the session'id payloads are readable</li>
+<li>	// by anyone that has access to the ID Challenge. Use with care!</li>
+<li>	IDToken interface{} `json:"id_token,omitempty"`</li>
+<li>}</li>
+<li>
+</li><li>// Validate validates this consent request session</li>
+<li>func (m *ConsentRequestSession) Validate(formats strfmt.Registry) error {</li>
+<li>	return nil</li>
+<li>}</li>
+</ol></code></pre>
+</article>
+<div class="onebox-metadata">
+</div>
+<div style="clear: both"></div>
+</aside>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Yes because they are polymorph types</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

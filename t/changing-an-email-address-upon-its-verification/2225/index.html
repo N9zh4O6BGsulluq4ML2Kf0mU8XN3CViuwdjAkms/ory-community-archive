@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Changing an email address upon its verification</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Changing an email address upon its verification</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/592_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">nash</div>
+          <div class="post_content">
+<p>Is it possible to allow a user to change her/his e-mail address only upon its verification? currently it changes upon editing, but this, in some cases, is not preferable.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>I see, that’s currently not possible. Kratos only knows logged in and not logged in and does not have a concept of permissions yet.</p>
+<p>Why would you want to do that though in the first place? I think if you set up an email, and you have a typo, and you notice that typo, you should be able to change the email address to the correct one. With your approach, you would effectively lock out users who have a typo in their email!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/592_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">nash</div>
+          <div class="post_content">
+<p><span class="mention">@hackerman</span>, if a user changes from one valid email address to another (in case he has several), then if her/he mistyped the new one, then he will have no way to recover his password if needed, or perhaps even blocked, in case the application logic requires a verified email account in order to proceed.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>I see, that makes sense! We have a feature planned which would update the identity only after the verification email was clicked. This is currently not implemented but I assume would cover your use case, right?</p>
+<p>The issue is this one: <a href="https://github.com/ory/kratos/issues/292">https://github.com/ory/kratos/issues/292</a></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/592_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">nash</div>
+          <div class="post_content">
+<p>Great, thanks.</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

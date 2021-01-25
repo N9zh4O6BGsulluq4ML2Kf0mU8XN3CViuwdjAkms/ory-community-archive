@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Kratos + selfservice node domain-dependent redirect loop</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Kratos + selfservice node domain-dependent redirect loop</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/508_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">programmador</div>
+          <div class="post_content">
+<p>Hello! I’m using development setup with self-generated root certificate and lots of domain certificates generated on top of it. So I almost never use port in favour of domain names which is not so far from producition environment.</p>
+<p>On top of all docker services I have traefik which is set up to forward:<br/>
+https ://api.kratos.local -&gt; http ://kratos:4433<br/>
+https ://admin.kratos.local -&gt; http ://kratos:4434<br/>
+https ://ui.kratos.local -&gt; http ://secured-app # self service ui node</p>
+<p>With next config ui-node works like a charm:</p>
+<p>environment:<br/>
+KRATOS_PUBLIC_URL: http ://kratos:4433/<br/>
+KRATOS_ADMIN_URL: http ://kratos:4434/<br/>
+PORT: 80<br/>
+SECURITY_MODE: cookie<br/>
+labels:<br/>
+traefik.enable: true<br/>
+traefik.frontend.rule: “Host: ui.kratos.local”<br/>
+traefik.port: ‘80’<br/>
+traefik.protocol: ‘http’<br/>
+traefik.frontend.headers.SSLRedirect: true</p>
+<p>Notice that they are on different domains! ui-node is <a href="https://ui.kratos.local" rel="nofollow noopener">https://ui.kratos.local</a> and kratos-api is just <a href="http://kratos:4433" rel="nofollow noopener">http://kratos:4433</a>. And it does work nicely. I’ve read “common cookie and csrf pitfails” and actually do not understand how that info affects my configuration - as for me there is no difference in domains because anyway ui-node should just re-assemble all requests and send them to kratos.</p>
+<p>When I set ui-node to interact with kratos by it’s own domain with https:</p>
+<pre><code>environment:
+  KRATOS_PUBLIC_URL: https://api.kratos.local/
+  KRATOS_ADMIN_URL: https://admin.kratos.local/
+  PORT: 80
+  SECURITY_MODE: cookie
+  NODE_EXTRA_CA_CERTS: /usr/local/share/ca-certificates/internalone.ca.crt
+volumes:
+  - '../../certificates/ca.crt:/usr/local/share/ca-certificates/internalone.ca.crt:ro'
+networks:
+  - traefik
+external_links:
+  - traefik:api.kratos.local
+  - traefik:admin.kratos.local
+</code></pre>
+<p>I encounter redirect loop. I can’t understand what causes it. Both configurations have kratos and app on different domain. And only one of them is working as expected.</p>
+<p>Here is diff of docker (stdout) logs:</p>
+<p><div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/qdGVTHskDh8Zwfm8SGnkhckx6MV.png?dl=1" href="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/original/1X/b7c4c29b829dcddd472461c991546a9029b01ce9.png" rel="nofollow noopener" title="2020-07-11-11:32:09"><img alt="2020-07-11-11:32:09" data-base62-sha1="qdGVTHskDh8Zwfm8SGnkhckx6MV" data-small-upload="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/b7c4c29b829dcddd472461c991546a9029b01ce9_2_10x10.png" height="294" src="../../../images/b7c4c29b829dcddd472461c991546a9029b01ce9_2_690x294.png" srcset="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/b7c4c29b829dcddd472461c991546a9029b01ce9_2_690x294.png, //ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/b7c4c29b829dcddd472461c991546a9029b01ce9_2_1035x441.png 1.5x, //ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/b7c4c29b829dcddd472461c991546a9029b01ce9_2_1380x588.png 2x" width="690"/><div class="meta"><svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use xlink:href="#far-image"></use></svg><span class="filename">2020-07-11-11:32:09</span><span class="informations">1872×800 184 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use xlink:href="#discourse-expand"></use></svg></div></a></div></p>
+<p>I can’t attach a diff of HAR request fragments from a browser debugger due to limitations for ne users. It contains strange data but it does not seem to be fery useful.<br/>
+The latest response is just a redirect to ‘/auth/login’ while for the working config it is 200 with HTML response body. The preceding request diff is much more interesting - they are both identical redirects but the failing one has zero content size. The content itself is not visible for both cases in HAR exported from Firefox so it’s not very useful or I don’t understand it.</p>
+<p>So inspecting requests does not seem to give any useful results. Looping redirects are just happening in one case and do not happen in the other one.</p>
+<p>Maybe I can’t get some kind of a simple reason why it can’t work at all?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/508_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">programmador</div>
+          <div class="post_content">
+<p>Sorry guys it seems like I’ve misconfigured Traefik. When I query api.kratos.local with curl - kratos prints to stdout that request was to ui.kratos.local.</p>
+<p>I’ll try to fix that first and then will report results.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/508_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">programmador</div>
+          <div class="post_content">
+<p>Hm… No, traefik is okay. If I try the next request from inside of ui-node container:</p>
+<p>curl kratos:4433<br/>
+curl https ://api.kratos.local</p>
+<p>That’s what kratos prints to stdout:</p>
+<p>kratos               | time=2020-07-11T09:55:02Z level=info msg=started handling request method=GET name=public#<a href="https://ui.kratos.local/.ory/kratos/public/" rel="nofollow noopener">https://ui.kratos.local/.ory/kratos/public/</a> remote=172.20.0.17:49168 request=/<br/>
+kratos               | time=2020-07-11T09:55:02Z level=info msg=completed handling request method=GET name=public#<a href="https://ui.kratos.local/.ory/kratos/public/" rel="nofollow noopener">https://ui.kratos.local/.ory/kratos/public/</a> remote=172.20.0.17:49168 request=/ status=404 text_status=Not Found took=63.98µs</p>
+<p>kratos               | time=2020-07-11T09:55:27Z level=info msg=started handling request method=GET name=public#https ://ui.kratos.local/.ory/kratos/public/ remote=172.20.0.17 request=/<br/>
+kratos               | time=2020-07-11T09:55:27Z level=info msg=completed handling request method=GET name=public#https ://ui.kratos.local/.ory/kratos/public/ remote=172.20.0.17 request=/ status=404 text_status=Not Found took=89.513µs</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/508_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">programmador</div>
+          <div class="post_content">
+<p>Oh, I’ve got it. It seems like a bug in kratos-selfservice-ui-node.<br/>
+And it looks like it’s common for nodejs apps due to wrong documentation.</p>
+<p>You can not “just pipe” an http request. You have to change “Host” header because actually it was added exactly for HTTP server to determine the virtualhost where single destination could have multiple virtualhosts.</p>
+<p>That broken request worked fine for me in nginx but it’s only because nginx does’nt know about all the hosts which traefik knows about in my environment config.</p>
+<p>I’ll experiment alittle more with nginx and then post an issue.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/508_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">programmador</div>
+          <div class="post_content">
+<p>Fixed <a href="https://github.com/ory/kratos-selfservice-ui-node/issues/60" rel="nofollow noopener">https://github.com/ory/kratos-selfservice-ui-node/issues/60</a></p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

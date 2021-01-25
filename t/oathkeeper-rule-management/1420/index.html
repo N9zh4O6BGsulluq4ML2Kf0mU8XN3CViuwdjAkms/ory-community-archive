@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Oathkeeper rule management</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Oathkeeper rule management</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">authQ</div>
+          <div class="post_content">
+<p>Hi,</p>
+<p>What the recommended way to keep Oathkeeper rules up to date?<br/>
+I see from <a href="https://www.ory.sh/docs/oathkeeper/api-access-rules" rel="nofollow noopener">the docs</a> that Oathkeeper reads rules from a file or an https url, but is there any logic implemented around detecting changes to these sources?</p>
+<p>Does Oathkeeper poll the given https url for updates to the ruleset, or watch the file source for changes and then reload it automatically?</p>
+<p>If not, how do people manage updates to their rulesets?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Yes, the filesystem does watch for changes. HTTPS does not at the moment.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">stevepnscott</div>
+          <div class="post_content">
+<aside class="quote no-group" data-post="2" data-topic="1420" data-username="hackerman">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" class="avatar" height="20" src="../../../images/5_2.png" width="20"/> hackerman:</div>
+<blockquote>
+<p>HTTPS does not at the mome</p>
+</blockquote>
+</aside>
+<p>Does this work with EFS mount across nodes in a K8s cluster - we have oathkeeper running in multiple pods/nodes across a cluser with configs located in EFS mount - the rule changes are not detected on all nods - funnily enough only one of the nodes triggers a reload - even when the EFS mount is updated on all nodes.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>What is EFS?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">stevepnscott</div>
+          <div class="post_content">
+<p>Hi,</p>
+<p>We are deploying into K8s inside ec2 instances in AWS and therefore are using <a href="https://aws.amazon.com/efs/" rel="nofollow noopener">https://aws.amazon.com/efs/</a> (cloud NFS) for our pods to allow the config/rules etc to be persisted across the cluster.</p>
+<p>We are running 2 instances and noticed that if we modify the rules in the nfs mount directly or from one of the nodes it does not trigger a reload, however on one of the oathkeeper pods it always detects changes. I assume its something related to the way AWS EFS updates the file modification dates or the way oathkeeper is notified about change events on the file system.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Yeah Kubernetes has an “AtomicWriter” that uses symbolic links to update files. This can be quite tricky to work with but I think it should be working properly. We were actually working on a k8s-able filewatcher outside of viper (our config management) the last few days.</p>
+<p>I’m not sure what EKS is doing differently there. Are you using config maps or are you mounting the volume manually and updating the files on the volume manually as well?</p>
+<p>One possible option is that fsnotify/inotify don’t properly work with network volumes but it’s a guessing game for me honestly, as I never use AWS. My recommendation would be to check for fsnotify/inofitfy issues in relation to NFS/EFS/EKS.</p>
+<p>Since you said that one node detects the change and the other doesn’t, giving more detail here (and possibly detecting a pattern - e.g. the first instance always reloads, the second doesn’t) would be of tremendous help to get a gut feeling of what’s going on.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">stevepnscott</div>
+          <div class="post_content">
+<p>Hi thanks for the feedback, we have to focus on some demo we are preparing now, so i can’t put much time in this week, but I will keep this on my task list to analyze further and get back to you.</p>
+<p>We were doing a manual volume mount from all nodes into EFS, not config maps, but we might also try some other storage option like <a href="https://github.com/longhorn/longhorn" rel="nofollow noopener">https://github.com/longhorn/longhorn</a>.</p>
+<p>I will get back you on this thread when we get time to gather more info on EFS and fsnotify/inotify issues.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>I recommend using the official helm charts, that use config maps and make all of this much easier for you. You can find them here: <a href="https://k8s.ory.sh/helm/">https://k8s.ory.sh/helm/</a></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">stevepnscott</div>
+          <div class="post_content">
+<p>Thanks for that info, we did install with Helm and like you say, much easier to install and the config maps are easier to manipulate.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Ok so I assume that this then resolved your problems? <img alt=":slight_smile:" class="emoji" src="../../../images/slight_smile.png" title=":slight_smile:"/></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">stevepnscott</div>
+          <div class="post_content">
+<p>Not exactly - now Im installing with the same config Ive been testing locally in docker but for some reason its not allowing my config for introspection;</p>
+<pre><code class="lang-auto">msg=“The configuration is invalid and could not be loaded.” [config_key=authenticators.oauth2_introspection.config]=“doesn’t validate with \“#/definitions/configAuthenticatorsOauth2Introspection\“” [config_key=authenticators.oauth2_introspection.enabled]=“value must be false” [config_key=authenticators.oauth2_introspection]=“oneOf failed” config_file=/etc/config/config.yaml
+</code></pre>
+<p>For some reason it wants me to disable oauth2_introspection</p>
+<p>The config is simple and works on Docker locally</p>
+<pre><code class="lang-auto">  oauth2_introspection:
+    enabled: true
+
+    config:
+      introspection_url: http://x.x.x.x/auth/realms/Developer/protocol/openid-connect/token/introspect
+      scope_strategy: exact
+#      required_scope:
+#        - email
+#        - profile
+      pre_authorization:
+        enabled: false
+#        client_id: 
+#        client_secret: 
+#        scope:
+#          - email
+        token_url: http://x.x.x.x/auth/realms/Developer/protocol/openid-connect/token
+      token_from:
+        header: Authorization
+        # or
+        # query_parameter: auth-token
+        # or
+        # cookie: auth-token
+      introspection_request_headers:
+        x-forwarded-proto: http
+
+      cache:
+        enabled: true
+        ttl: 60s
+</code></pre>
+<p>We’re trying to figure out now why this is not valid if it works locally.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">stevepnscott</div>
+          <div class="post_content">
+<p>figured this out , the json schema mentions these fields as required for pre_authorization.</p>
+<pre><code class="lang-auto">         "required": [
+            "client_id",
+            "client_secret",
+            "token_url"
+          ],
+</code></pre>
+<p>Im running with this setting, so did not set those mandatory fields.</p>
+<pre><code class="lang-auto">      pre_authorization:
+           enabled: false
+</code></pre>
+<p>Seems to work locally but in K8s under helm I had to add these fields and put in dummy values.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">stevepnscott</div>
+          <div class="post_content">
+<aside class="quote no-group" data-post="11" data-topic="1420" data-username="stevepnscott">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" class="avatar" height="20" src="../../../images/40.png" width="20"/> stevepnscott:</div>
+<blockquote>
+<p>oauth2_introspecti</p>
+</blockquote>
+</aside>
+<p>Actually - this is not a working fix - even with this pre_authorization the problem still exists – any ideas ?</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Subject field accept</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Subject field accept</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">notNeo</div>
+          <div class="post_content">
+<p>what is the purpose for the subject field.</p>
+<p>my challenge request returns an empty subject field and given any random string<br/>
+the accept request gets a 200.</p>
+<p>the documentation wasn’t explaining much except that the subject is the “resource owner”.</p>
+<p>most confusion I get putting it in context with the client.<br/>
+is the client_id string representative for the service using the oauth2 protocol provider(hydra)<br/>
+while the subject is the user on the service authenticating using the oauth2 protocol provider(hydra)?</p>
+<p>just for clarification</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>The subject field is the end-user’s unique identifier. If you have a table of users in your database, you probably have a primary key for every one of your users that never changes. That should be the value of the <code>subject</code> field:</p>
+<div class="md-table">
+<table>
+<thead>
+<tr>
+<th>pk</th>
+<th>email</th>
+<th>password_hash</th>
+<th>…</th>
+<th>…</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1234</td>
+<td>foo@ory.sh</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+</tr>
+<tr>
+<td>4321</td>
+<td>bar@ory.sh</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+</tr>
+<tr>
+<td>5151</td>
+<td>baz@ory.sh</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+</tr>
+</tbody>
+</table>
+</div><p>If use <code>foo@ory.sh</code> completes the login challenge, then you set the subject to <code>1234</code>, and so on.</p>
+<p><strong>Never use</strong> things such as email addresses, usernames, or other things that may change over time for this field as that will have unintended consequences and may lead to people being able to sign into other people’s accounts!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">notNeo</div>
+          <div class="post_content">
+<p>thank you very much</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

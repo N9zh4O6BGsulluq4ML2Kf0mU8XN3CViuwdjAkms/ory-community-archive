@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Question about integration of Hydra with Kratos</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Question about integration of Hydra with Kratos</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">fenix01</div>
+          <div class="post_content">
+<p>Hi,</p>
+<p>First, I’d like to thank you for this amazing open source project. I’m working on a personal project and was looking for a complete IAM solution. I was not satisfied by most products on the market because most of the time it is a monolithic software based on java. I’m very concerned by memory consumption, and can’t rely on solutions that require 2 Go of RAM to startup.</p>
+<p>Right now, I have successfully deploy hydra, kratos, and kratos-selfservice-ui-node behind a reverse proxy on three subdomains. It works correctly with kratos-selfservice-ui-node on branch (hydra-integration). I compiled kratos with the master branch because I had to configure the domain for the cookie. And I had to add CORS headers for Kratos on my nginx proxy.</p>
+<p>I started to implement user interface with single page application (vuejs). In the documentation of Hydra, it is advised to implement the login, consent, logout page with server side application (like in kratos-selfservice-ui-node with express.js)<br/>
+However, Kratos offers public api for SPA.</p>
+<p>So, should I keep the login, consent, and logout page with a server side application and other pages (register, profile management) with my SPA? Today, most of my frontends are developed with vuejs so I would like to reduce the need of server side pages.</p>
+<p>What would be the best security design for this ?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Hi there, we have an example of writing an app that integrates Hydra and Kratos on this branch: <a href="https://github.com/ory/kratos-selfservice-ui-node/tree/hydra-integration">https://github.com/ory/kratos-selfservice-ui-node/tree/hydra-integration</a></p>
+<p>Please treat this as a workaround for now, we will add proper integration of Hydra into Kratos in the future - so you won’t need to write a lot of code to get this done!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">fenix01</div>
+          <div class="post_content">
+<p>Hi,</p>
+<p>Thank you for this answer. This was not exactly my question because I was already working on this branch. It was more about if it would be safe to develop a single page application for user management and oauth2 consent ?<br/>
+In the documentation of Hydra, it is advised to use Server Side Rendering.</p>
+<p>Upon reflection, I will organize all my services in this way :</p>
+<ul>
+<li>A very small website for user management (Login, Register, Profile/Password update) : it will be based on Kratos and a full SSR solution</li>
+<li>All my others “business” services (mobile application, API, website): it will use oauth2/OpenID with hydra and SPA application</li>
+</ul>
+<p>Finally, I’m going to develop a SSR solution because of the following points :</p>
+<ul>
+<li>It will reduce the attack surface for all flows (consent, user login, registration, etc.)</li>
+<li>I discovered that VueJS could be used for SSR (It’s a good news because I can reuse components, and my theme without too much extra work).</li>
+</ul>
+<p>I started to develop the SSR with VueJS and it works perfectly. Currently, I have successfully handled the following flows (login, register, profile and password updates).</p>
+<p>For those who are working with VueJS I used the following framework/plugins :</p>
+<ul>
+<li>
+<a href="https://fr.nuxtjs.org/" rel="nofollow noopener">https://fr.nuxtjs.org/</a> : To build SSR with VueJS</li>
+<li>
+<a href="https://github.com/nuxt-community/vuetify-module" rel="nofollow noopener">https://github.com/nuxt-community/vuetify-module</a> : Vuetify module for NuxtJS (It is my UI framework for SPA and SSR)</li>
+<li>cookie-universal-nuxt : To handle more easily the kratos cookie</li>
+</ul>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

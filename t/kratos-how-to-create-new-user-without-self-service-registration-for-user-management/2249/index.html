@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>[Kratos] How to create new user without self-service registration for user management</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">[Kratos] How to create new user without self-service registration for user management</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/599_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">itsgitz</div>
+          <div class="post_content">
+<p>Hello,</p>
+<p>I’ve been using this about 4 months, really enjoy using ORY Kratos as Login provider. This is a great tool!</p>
+<p>Ok, I want to create a new user or identity without self-service registration on my user management. Well, for example, I have an identity or user with role as Administrator. This admin want to create a new user from user management page. I’ve read the API documentation and mentioned that we can create a new identity but it’s not possible to set the password <a href="https://www.ory.sh/kratos/docs/reference/api#create-an-identity" rel="nofollow noopener">https://www.ory.sh/kratos/docs/reference/api#create-an-identity</a>.</p>
+<blockquote>
+<p>This endpoint creates an identity. It is NOT possible to set an identity’s credentials (password, …) using this method! A way to achieve that will be introduced in the future.</p>
+</blockquote>
+<p>I’ve tried to set registration flow config like this:</p>
+<pre><code>registration:
+  ui_url: http://127.0.0.1:4455/customer/addcustomer
+  after:
+    default_browser_return_url: http://127.0.0.1:4455/customer
+</code></pre>
+<p>But yes, it should be redirected to the main page or home page if the user (admin) has logged in when the application access the initialize registration url (<code>/self-service/browser/flows/registration</code>).</p>
+<p>I hope I can create a new identity from the API and set the credential’s password.</p>
+<p>Have any ideas? Am I missed some steps from documentation.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Have you seen <a href="https://www.ory.sh/kratos/docs/admin/managing-users-identities">https://www.ory.sh/kratos/docs/admin/managing-users-identities</a> ?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/599_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">itsgitz</div>
+          <div class="post_content">
+<p>Wow, this is fresh! Thank you very much. As I thought before, I’ve to using Account Recovery for inviting user via e-mail. Well, I’ll learn the documentation from your link.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/599_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">itsgitz</div>
+          <div class="post_content">
+<p>I’m trying to looking for oryd/kratos docker image with tag/version 5 for use Create Recovery Link API endpoint (administrative) <a href="https://www.ory.sh/kratos/docs/reference/api#create-a-recovery-link" rel="nofollow noopener">https://www.ory.sh/kratos/docs/reference/api#create-a-recovery-link</a>. But it still v0.5.0-alpha.pre.0-sqlite for SQLite. I’m looking forward for the latest tag of kratos docker image <img alt=":slight_smile:" class="emoji" src="../../../images/slight_smile.png" title=":slight_smile:"/></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Hey there, the release is now out - enjoy <img alt=":slight_smile:" class="emoji" src="../../../images/slight_smile.png" title=":slight_smile:"/></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/599_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">itsgitz</div>
+          <div class="post_content">
+<p>Thank you very much! Sorry for my late response.</p>
+<p>I’ve tried the latest version of ORY Kratos, but I faced a problem. My web application and ORY Kratos is using PostgreSQL. When I rebuild the service, ORY Kratos cannot migrated and produce this error:</p>
+<p><div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/6TmieX2qOtEKAWjB8CVbnFPCV0g.jpeg?dl=1" href="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/original/1X/304f0e355878565da532b06b52a5c02be5a67814.jpeg" rel="noopener nofollow ugc" title="image"><img alt="image" data-base62-sha1="6TmieX2qOtEKAWjB8CVbnFPCV0g" data-small-upload="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/304f0e355878565da532b06b52a5c02be5a67814_2_10x10.png" height="83" src="../../../images/304f0e355878565da532b06b52a5c02be5a67814_2_690x83.jpeg" srcset="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/304f0e355878565da532b06b52a5c02be5a67814_2_690x83.jpeg, //ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/304f0e355878565da532b06b52a5c02be5a67814_2_1035x124.jpeg 1.5x, //ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/original/1X/304f0e355878565da532b06b52a5c02be5a67814.jpeg 2x" width="690"/><div class="meta"><svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use xlink:href="#far-image"></use></svg><span class="filename">image</span><span class="informations">1280×154 139 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use xlink:href="#discourse-expand"></use></svg></div></a></div></p>
+<p>The error log said “unsupported dialect sqlite3”, even though I’m not using SQLite.</p>
+<p>Here is the piece of my docker-compose configuration for ORY Kratos command:</p>
+<p><div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/h94AxPTpijIeqIM3SquphnA4TYr.png?dl=1" href="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/original/1X/782b8b4ff1c448ec05ecd6ecfc74cd6ee1f5617f.png" rel="noopener nofollow ugc" title="image"><img alt="image" data-base62-sha1="h94AxPTpijIeqIM3SquphnA4TYr" data-small-upload="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/782b8b4ff1c448ec05ecd6ecfc74cd6ee1f5617f_2_10x10.png" height="74" src="../../../images/782b8b4ff1c448ec05ecd6ecfc74cd6ee1f5617f.png" width="690"/><div class="meta"><svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use xlink:href="#far-image"></use></svg><span class="filename">image</span><span class="informations">769×83 4.58 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use xlink:href="#discourse-expand"></use></svg></div></a></div></p>
+<p>This warning appeared when the system used the previous version but it was still running and ORY Kratos worked properly.</p>
+<p>Is the latest version of ORY Kratos still support PostgreSQL for database / identity storage?</p>
+<p>Thank you!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">MalyshevValery</div>
+          <div class="post_content">
+<p>Hi. As far as I understand the flows, to set a password for freshly created account we create recovery link. But is there any way to use admin API to generate link without sending it to a user email? I would like to avoid setting up an SMTP server for now.</p>
+<p>For now, I get the <code>The identity does not have any recovery addresses set.</code> error.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>You can set up a recovery address and just set a stub <code>smtp://foo:bar@baz.com/</code> smtp server. The guide I link explains clearly that you will receive a link.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">MalyshevValery</div>
+          <div class="post_content">
+<p>Oh, ok. Will try, thanks.</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

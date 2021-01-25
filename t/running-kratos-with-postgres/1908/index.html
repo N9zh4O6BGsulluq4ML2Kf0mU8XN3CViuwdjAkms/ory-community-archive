@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Running Kratos with Postgres</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Running Kratos with Postgres</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/410_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">anuveyatsu</div>
+          <div class="post_content">
+<p>I’ve been looking at how would I setup postgres db instead of default sqlite provided in the quickstart example. Note that default quickstart worked for me so after that I ran:</p>
+<p><code>docker-compose -f quickstart.yml -f quickstart-standalone.yml -f quickstart-postgres.yml up --build --force-recreate</code></p>
+<p>I’m getting <code>Unable to ping database, retrying.</code> message. Any suggestions would be helpful. Below is full logs I have:</p>
+<pre><code class="lang-auto">Creating network "kratos_default" with the default driver
+Creating network "kratos_intranet" with the default driver
+Creating kratos_kratos-selfservice-ui-node_1 ... done
+Creating kratos_kratos-migrate_1             ... done
+Creating kratos_postgresd_1                  ... done
+Creating kratos_mailslurper_1                ... done
+Creating kratos_kratos_1                     ... done
+Attaching to kratos_kratos-selfservice-ui-node_1, kratos_kratos-migrate_1, kratos_postgresd_1, kratos_mailslurper_1, kratos_kratos_1
+kratos-migrate_1              | time="2020-06-16T04:58:46Z" level=info msg="Config file loaded successfully." path=/etc/config/kratos/.kratos.yml
+kratos-migrate_1              | time="2020-06-16T04:58:46Z" level=warning msg="Unable to ping database, retrying." error="dial tcp: lookup postgresd on 127.0.0.11:53: no such host"
+kratos-migrate_1              | time="2020-06-16T04:58:46Z" level=warning msg="Unable to ping database, retrying." error="dial tcp: lookup postgresd on 127.0.0.11:53: no such host"
+kratos-migrate_1              | time="2020-06-16T04:58:47Z" level=warning msg="Unable to ping database, retrying." error="dial tcp: lookup postgresd on 127.0.0.11:53: no such host"
+kratos-migrate_1              | time="2020-06-16T04:58:48Z" level=warning msg="Unable to ping database, retrying." error="dial tcp: lookup postgresd on 127.0.0.11:53: no such host"
+kratos-migrate_1              | time="2020-06-16T04:58:50Z" level=warning msg="Unable to ping database, retrying." error="dial tcp: lookup postgresd on 127.0.0.11:53: no such host"
+kratos-migrate_1              | time="2020-06-16T04:58:53Z" level=warning msg="Unable to ping database, retrying." error="dial tcp: lookup postgresd on 127.0.0.11:53: no such host"
+kratos-migrate_1              | time="2020-06-16T04:58:56Z" level=warning msg="Unable to ping database, retrying." error="dial tcp: lookup postgresd on 127.0.0.11:53: no such host"
+kratos_1                      | time="2020-06-16T04:59:44Z" level=info msg="Config file loaded successfully." path=/etc/config/kratos/.kratos.yml
+kratos_1                      | time="2020-06-16T04:59:44Z" level=warning msg="\n\nYOU ARE RUNNING ORY KRATOS IN DEV MODE.\nSECURITY IS DISABLED.\nDON'T DO THIS IN PRODUCTION!\n\n"
+kratos_1                      | time="2020-06-16T04:59:44Z" level=warning msg="Unable to ping database, retrying." error="dial tcp: lookup postgresd on 127.0.0.11:53: no such host"
+kratos-selfservice-ui-node_1  | 
+kratos-selfservice-ui-node_1  | &gt; kratos-selfservice-ui-node@0.0.1 serve /usr/src/app
+kratos-selfservice-ui-node_1  | &gt; node lib/index.js
+kratos-selfservice-ui-node_1  | 
+kratos_1                      | time="2020-06-16T04:59:45Z" level=warning msg="Unable to ping database, retrying." error="dial tcp: lookup postgresd on 127.0.0.11:53: no such host"
+mailslurper_1                 | time="2020-06-16T04:58:51Z" level=info msg="Starting MailSlurper Server v1.14.1" who=MailSlurper
+kratos-selfservice-ui-node_1  | Listening on http://0.0.0.0:4455
+kratos-migrate_1              | time="2020-06-16T04:59:02Z" level=warning msg="Unable to ping database, retrying." error="dial tcp: lookup postgresd on 127.0.0.11:53: no such host"
+mailslurper_1                 | time="2020-06-16T04:58:51Z" level=info msg="Connecting to database" who=MailSlurper
+postgresd_1                   | The files belonging to this database system will be owned by user "postgres".
+postgresd_1                   | This user must also own the server process.
+postgresd_1                   | 
+postgresd_1                   | The database cluster will be initialized with locale "en_US.utf8".
+postgresd_1                   | The default database encoding has accordingly been set to "UTF8".
+postgresd_1                   | The default text search configuration will be set to "english".
+postgresd_1                   | 
+postgresd_1                   | Data page checksums are disabled.
+postgresd_1                   | 
+kratos-migrate_1              | time="2020-06-16T04:59:15Z" level=warning msg="Unable to ping database, retrying." error="dial tcp: lookup postgresd on 127.0.0.11:53: no such host"
+postgresd_1                   | fixing permissions on existing directory /var/lib/postgresql/data ... ok
+mailslurper_1                 | time="2020-06-16T04:58:51Z" level=info msg="Creating database tables..." who=MailSlurper
+kratos-migrate_1              | time="2020-06-16T04:59:22Z" level=warning msg="Unable to ping database, retrying." error="dial tcp: lookup postgresd on 127.0.0.11:53: no such host"
+kratos-selfservice-ui-node_1  | Security mode: cookie
+kratos_1                      | time="2020-06-16T04:59:45Z" level=warning msg="Unable to ping database, retrying." error="dial tcp: lookup postgresd on 127.0.0.11:53: no such host"
+mailslurper_1                 | time="2020-06-16T04:59:01Z" level=info msg="Created tables successfully." who=MailSlurper
+mailslurper_1                 | time="2020-06-16T04:59:01Z" level=info msg="Worker pool configured for 1000 workers" who="SMTP Server Pool"
+kratos-migrate_1              | time="2020-06-16T04:59:39Z" level=warning msg="Unable to ping database, retrying." error="dial tcp: lookup postgresd on 127.0.0.11:53: no such host"
+postgresd_1                   | creating subdirectories ... ok
+postgresd_1                   | selecting default max_connections ... 100
+postgresd_1                   | selecting default shared_buffers ... 128MB
+postgresd_1                   | selecting default timezone ... Etc/UTC
+postgresd_1                   | selecting dynamic shared memory implementation ... posix
+kratos_1                      | time="2020-06-16T04:59:46Z" level=warning msg="Unable to ping database, retrying." error="dial tcp: lookup postgresd on 127.0.0.11:53: no such host"
+kratos_1                      | time="2020-06-16T04:59:48Z" level=warning msg="Unable to ping database, retrying." error="dial tcp: lookup postgresd on 127.0.0.11:53: no such host"
+mailslurper_1                 | ⇨ http server started on [::]:4437
+mailslurper_1                 | time="2020-06-16T04:59:01Z" level=info msg="SMTP listener running on SSL 0.0.0.0:1025" who="SMTP Listener"
+mailslurper_1                 | time="2020-06-16T04:59:01Z" level=info msg="1 receiver(s) listening" who="SMTP Listener"
+mailslurper_1                 | time="2020-06-16T04:59:01Z" level=info msg="HTTP admin listener running on 0.0.0.0:4436" who=MailSlurper
+mailslurper_1                 | ⇨ http server started on [::]:4436
+postgresd_1                   | creating configuration files ... ok
+postgresd_1                   | running bootstrap script ... ok
+postgresd_1                   | performing post-bootstrap initialization ... ok
+kratos_1                      | time="2020-06-16T04:59:50Z" level=warning msg="Unable to ping database, retrying." error="dial tcp: lookup postgresd on 127.0.0.11:53: no such host"
+kratos_1                      | time="2020-06-16T04:59:55Z" level=warning msg="Unable to ping database, retrying." error="dial tcp: lookup postgresd on 127.0.0.11:53: no such host"
+kratos-migrate_1              | time="2020-06-16T04:59:58Z" level=warning msg="Unable to ping database, retrying." error="dial tcp: lookup postgresd on 127.0.0.11:53: no such host"
+kratos_1                      | time="2020-06-16T05:00:00Z" level=warning msg="Unable to ping database, retrying." error="dial tcp: lookup postgresd on 127.0.0.11:53: no such host"
+kratos_1                      | time="2020-06-16T05:00:12Z" level=warning msg="Unable to ping database, retrying." error="dial tcp: lookup postgresd on 127.0.0.11:53: no such host"
+kratos_1                      | time="2020-06-16T05:00:22Z" level=warning msg="Unable to ping database, retrying." error="dial tcp: lookup postgresd on 127.0.0.11:53: no such host"
+xkratos_1                      | time="2020-06-16T05:00:35Z" level=warning msg="Unable to ping database, retrying." error="dial tcp: lookup postgresd on 127.0.0.11:53: no such host"
+^CGracefully stopping... (press Ctrl+C again to force)
+</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Looks like a bug in the docker-compose files, fixes/issues welcomed <img alt=":slight_smile:" class="emoji" src="../../../images/slight_smile.png" title=":slight_smile:"/></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/412_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">nickcampbell18</div>
+          <div class="post_content">
+<p>Just need to connect them to the same network in the docker-compose files. Fix here: <a href="https://github.com/ory/kratos/pull/522" rel="nofollow noopener">https://github.com/ory/kratos/pull/522</a></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">matthewmcneely</div>
+          <div class="post_content">
+<p><s>I noticed running the docker-compose command that <span class="mention">@anuveyatsu</span> posted also starts sqlite, even though postgres seems to be the prefered store. Is sqlite needed for some other Kratos storage need?</s></p>
+<p>Correction: actually sqlite is never actually running in a separate container but I guess embedded in the kratos image tagged as <code>oryd/kratos:latest-sqlite</code>. Just got confused when <code>docker ps</code> listed <em>latest-sqlite</em>.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Yes, SQLite is an embedded database.</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

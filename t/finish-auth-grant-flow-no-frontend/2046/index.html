@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Finish auth grant flow, no frontend</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Finish auth grant flow, no frontend</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">notNeo</div>
+          <div class="post_content">
+<p>I try to finish the grant flow communicating directly with hydra.<br/>
+I had almost success meaning, I do following calls:</p>
+<ul>
+<li>GET <a class="inline-onebox-loading">http://:4444$hydraIP/oauth2/auth?audience=&amp;client_id</a>… etc<br/>
+returns a login challenge and cookie</li>
+<li>GET <a class="inline-onebox-loading">http://:4445$hydraIP/oauth2/auth/requests/login?$login_challenge</a><br/>
+returns a json</li>
+<li>PUT <a class="inline-onebox-loading">http://:4445$hydraIP/oauth2/auth/requests/login/accept?$login_challenge</a><br/>
+returns a “redirect_to”</li>
+<li>GET $redirect_to<br/>
+returns consent_challenge and cookie</li>
+<li>GET <a class="inline-onebox-loading">http://:4445$hydraIP/oauth2/auth/requests/consent?$consent_challenge</a><br/>
+returns json</li>
+<li>PUT <a class="inline-onebox-loading">http://:4445$hydraIP/oauth2/auth/requests/consent/accept?$consent_challenge</a><br/>
+returns redirect_to</li>
+</ul>
+<p>now the last redirect_to has a code as seen in the last request before receiving the auth cookie.<br/>
+I have looked intensely into the code of the hydra_login_consent_node but couldn’t find any indication it responding to the callback uri (calling to the hydra admin client)</p>
+<p>also the admin client couldn’t give me any insights on how this response comes to life.</p>
+<p>tl;dr<br/>
+I received the redirect to my callback uri endpoint and don’t know how to convert the code in the url.query to a full fledged authentication token</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p><a href="https://www.oauth.com/oauth2-servers/server-side-apps/authorization-code/">https://www.oauth.com/oauth2-servers/server-side-apps/authorization-code/</a> is probably worth a read!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">notNeo</div>
+          <div class="post_content">
+<p>it appears the redirect_uri, the grant_type and the code is forced upon<br/>
+if an access_token is requested.</p>
+<p>the documentation insinuates otherwise.</p>
+<p>thanks for the read</p>
+<p>the last request call would be</p>
+<ul>
+<li>POST http://:4444$hydraIP/oauth2/token<br/>
+returns access_token</li>
+</ul>
+<p>(weird I can’t recall to mixed up ports and host anyways that ones for the format)</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

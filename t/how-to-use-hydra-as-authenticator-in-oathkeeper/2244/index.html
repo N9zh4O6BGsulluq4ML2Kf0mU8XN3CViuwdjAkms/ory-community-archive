@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>How to use hydra as authenticator in oathkeeper</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">How to use hydra as authenticator in oathkeeper</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">CTO</div>
+          <div class="post_content">
+<p>Hi</p>
+<p>we try to create an docker compose with hydra, oathkeeper and keto using the authorization code flow of oauth. It’s almost working, we can log in and we get an authorization code, only when oathkeeper has to call the hydra for authentication, the oathkeeper doesn’t call hydra.<br/>
+It would be great if someone could take an look on it, the docker compose with a readme how we start it and do the login is here: <a href="https://mega.nz/file/80ZFzaSR#fDi403TD9YURNizcK2hQ4v7B55PMlDuRkk6lvta47QM" rel="nofollow noopener">OryDemo</a></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/597_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">Blackclaws</div>
+          <div class="post_content">
+<p>So taking a quick look at what you are doing there it seems you might be misunderstand what OAUTH is actually about.</p>
+<p>I recommend reading this: <a href="https://www.ory.sh/hydra/docs/concepts/before-oauth2" rel="nofollow noopener">https://www.ory.sh/hydra/docs/concepts/before-oauth2</a></p>
+<p>Looking at step 4 in your “How to Start” it seems you are attempting to login to hydra like it is a user management system. It is not.</p>
+<p>Oauth is all about authorizing one application to act on behalf of a user in a certain context. Your browser in this case, is not an application. What you need to write in order for this to make any sense is an application that runs in your browser that actually performs the Oauth flow and aquires a token.</p>
+<p>What you get as a response in your flow is an authorization code that is never exchanged for a token. Oathkeeper (to the best of my knowledge) is not able to do anything with an authorization code because its designed to work with tokens. You are NOT authorizing oathkeeper. Oathkeeper only checks that you’ve BEEN authorized already.</p>
+<p>That of course also means that oathkeeper basically sees your request, doesn’t see a token attached to it and thus rejects it.</p>
+<p>The correct flow would be:</p>
+<p>Have an application, for example a javascript single page application, or another webservice that itself has some form of session management (<a href="http://ASP.Net" rel="nofollow noopener">ASP.Net</a> Core with Cookie and OpenIDConnect authentication for example) that actually gets the token from Hydra at the end of the flow.</p>
+<p>That application would redirect the user through the oauth flow and at the end retrieve the token via a POST request to Hydra. This token can then be presented to Oathkeeper who will check it against Hydra and afterwards apply your Keto policies for authorization.</p>
+<p>Sidenote: If you think implicit flow is going to solve your issue because there is no second step involved to get the token, that isn’t going to work either. Implicit flow has the token in the # part of the URL. That is a security consideration so it DOESN’T get sent to the server. You are at least going to need a simple piece of javascript running on the frontend (the browser) that would pick that Token and turn it into a query parameter. Please note that this is not anything I recommend you do as the security implications of the implicit flow are real and should not be dismissed.</p>
+<p>TL;DR; You need an application that actually gets authorized, be it a serverside or client side application. Don’t use implicit flow as it has serious security issues if used improperly.</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

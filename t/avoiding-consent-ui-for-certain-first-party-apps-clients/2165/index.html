@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Avoiding Consent UI for certain first party Apps/Clients</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Avoiding Consent UI for certain first party Apps/Clients</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/589_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">sagarshah1983</div>
+          <div class="post_content">
+<p>What options do we have with Hydra to avoid consent UI being shown to users with certain apps/clients?<br/>
+It does not support resource owner grant.<br/>
+What are the best practices to resolve this and how does hydra address this issue?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>You control the UI. Just don’t show it.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/589_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">sagarshah1983</div>
+          <div class="post_content">
+<p>Q.1 - You mean, we can just call the hydra admin endpoint with granted scopes values same as whatever scope were requested by the client when consent endpoint (URLS_CONSENT endpoint) is called?</p>
+<p>Q.2 - During this endpoint invocation (configured as URLS_CONSENT), can we determine what scopes were earlier authorized by that logged user for that client (if those were authorized before)</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/596_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">ezerw</div>
+          <div class="post_content">
+<p>You can find info about this in the <a href="https://www.ory.sh/hydra/docs/concepts/consent/" rel="nofollow noopener">Hydra docs</a></p>
+<blockquote>
+<p>In certain scenarios (e.g. a special OAuth2 Client) you might not want to show the consent screen at all. In those cases you can choose to skip showing the UI and just accept the consent. Please keep in mind that OAuth2 is a delegation protocol and that it makes most sense for third-party access. Not showing the consent screen will break OpenID Connect Certification.</p>
+</blockquote>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/589_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">sagarshah1983</div>
+          <div class="post_content">
+<p>Thank you for sharing the details. I was little confused about consent App. I downloaded the example nodejs app and that explained all my questions on how that flow is working.<br/>
+Appreciate!</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

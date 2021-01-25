@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>How to add custom claims to client_credentials grant access token</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">How to add custom claims to client_credentials grant access token</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">ab316</div>
+          <div class="post_content">
+<p>Hi,<br/>
+For the Auth Code flow, we can add custom claims in the access / id token when accepting the Consent.<br/>
+How can we add custom claims when issuing a token through the client_credentials grant.<br/>
+The use case is that I want to fetch permissions from the database for the client service and store them in the token so that the service’s permissions can be verified by the API just like it verifies the user’s permissions from the token that were stored in the token when the consent was accepted.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<aside class="onebox allowlistedgeneric">
+<header class="source">
+<img class="site-icon" data-small-upload="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/f7dbb79e0119eda4ffea81b3b681c6363ba05bb3_2_10x10.png" height="500" src="../../../images/f7dbb79e0119eda4ffea81b3b681c6363ba05bb3_2_499x500.png" srcset="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/f7dbb79e0119eda4ffea81b3b681c6363ba05bb3_2_499x500.png, //ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/f7dbb79e0119eda4ffea81b3b681c6363ba05bb3_2_748x750.png 1.5x, //ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/f7dbb79e0119eda4ffea81b3b681c6363ba05bb3_2_998x1000.png 2x" width="499"/>
+<a href="https://www.ory.sh/hydra/docs/guides/consent/" rel="noopener" target="_blank">ory.sh</a>
+</header>
+<article class="onebox-body">
+<img class="thumbnail" height="" src="../../../images/missing_image.png" width=""/>
+<h3><a href="https://www.ory.sh/hydra/docs/guides/consent/" rel="noopener" target="_blank">Implementing the Consent Endpoint &amp; UI | ORY Hydra</a></h3>
+<p>Please read the Consent Flow Documentation first!</p>
+</article>
+<div class="onebox-metadata">
+</div>
+<div style="clear: both"></div>
+</aside>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">ab316</div>
+          <div class="post_content">
+<p>As far as I see, the consent endpoint and UI is not used with the client_credentials grant type. Please let me know if I am missing something here.<br/>
+To get the token with client_credentials grant, I make the following request:</p>
+<pre><code>curl --location --request POST 'localhost:10000/oauth2/token' --header 'Content-Type: application/x-www-form-urlencoded' --data-urlencode 'grant_type=client_credentials' --data-urlencode 'client_id=sample-client-backend' --data-urlencode 'client_secret=Syz0bSDiwForUHLV~SxTUPKG-D'
+</code></pre>
+<p>How is the consent flow involved here?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Ah sorry, I misread - yes that is currently not possible, see: <a href="https://github.com/ory/hydra/issues/1748">https://github.com/ory/hydra/issues/1748</a></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">ab316</div>
+          <div class="post_content">
+<p>Okay, thank you. Seems like a long discussion there.<br/>
+Now, I am trying to use the authorization server containing the consent/login flows to work as a proxy for Hydra. So when a client_credentials token is requested, it takes the response from Hydra and modifies the token and then returns it.</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

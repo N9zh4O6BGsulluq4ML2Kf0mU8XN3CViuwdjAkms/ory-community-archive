@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Fosite: Token introspect [help needed]</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Fosite: Token introspect [help needed]</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/596_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">ezerw</div>
+          <div class="post_content">
+<p>Hi,<br/>
+I’m trying to setup an internal endpoint to introspect tokens but it seems that is not possible for public clients as they have no secret.</p>
+<p>I’ve tried to check what Hydra does but couldn’t find where the <code>NewIntrospectionRequest</code> is called or how this is implemented as in the docs for hydra doesn’t require Authorization headers. (<a href="https://www.ory.sh/hydra/docs/guides/oauth2-token-introspection" rel="nofollow noopener">https://www.ory.sh/hydra/docs/guides/oauth2-token-introspection</a>)</p>
+<p>Ideally I will put this not through the API and to be an RPC call instead but not able to figure out how to implement it.</p>
+<p>Did anyone did this? Any ideas on how get this to work without authorization?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">rhinmass</div>
+          <div class="post_content">
+<p>Introspect is called on the admin server, which must be protected. There is no auth for the admin server.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/596_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">ezerw</div>
+          <div class="post_content">
+<p>Fosite <code>NewIntrospectionRequest </code> requires auth headers to do the introspection (<a href="https://github.com/ory/fosite/blob/4b81316a1dbb0c5246bac39ecbaff749b00e4efa/introspection_request_handler.go#L112" rel="nofollow noopener">check here</a>). Maybe you’re talking about hydra?</p>
+<p>I ended up implementing my own introspection based on hydra (look <a href="https://github.com/ory/hydra/blob/0ee3c10cc1950ee80d4e1677aec933f53ae7d585/oauth2/handler.go#L404" rel="nofollow noopener">here</a>)</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

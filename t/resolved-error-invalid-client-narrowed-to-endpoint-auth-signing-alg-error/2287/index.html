@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>[RESOLVED] ERROR invalid_client (narrowed to endpoint_auth_signing_alg error)</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">[RESOLVED] ERROR invalid_client (narrowed to endpoint_auth_signing_alg error)</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/615_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">honzapatCZ</div>
+          <div class="post_content">
+<p>Any idea why I get<br/>
+The OAuth2 request resulted in an error.</p>
+<ul>
+<li>Error: invalid_client</li>
+<li>Description: Client authentication failed (e.g., unknown client, no client authentication included, or unsupported authentication method)</li>
+<li>Hint: The requested OAuth 2.0 Client does not exist.</li>
+</ul>
+<p>using<br/>
+<a class="onebox" href="http://127.0.0.1:4444/oauth2/auth?audience=&amp;client_id=auth-code-client&amp;redirect_uri=https://openidconnect.net/callback&amp;response_type=code&amp;scope=openid+offline&amp;state=pnaqqipwwpbrdkosbqflsnya" rel="noopener nofollow ugc" target="_blank">http://127.0.0.1:4444/oauth2/auth?audience=&amp;client_id=auth-code-client&amp;redirect_uri=https://openidconnect.net/callback&amp;response_type=code&amp;scope=openid+offline&amp;state=pnaqqipwwpbrdkosbqflsnya</a><br/>
+after doing<br/>
+<code>docker-compose -f quickstart.yml exec hydra hydra clients create --endpoint </code> <code>http://127.0.0.1:4445</code> <code>--id auth-code-client --secret secret --grant-types authorization_code,refresh_token --response-types code,id_token --scope openid,offline --callbacks</code> <code>http://127.0.0.1:5555/callback</code></p>
+<p>EDIT:<br/>
+Maybe Iam getting somewhere, i found out that hydra complains about endpoint_auth_signing_alg  missing in Client[] *, it does this when starting the flow or even GET /clients which in turn returns 500 generic error</p>
+<p>EDIT:<br/>
+Resolved, I had wrong hydra version in my compose</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

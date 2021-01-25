@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Cookie domain setting</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Cookie domain setting</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">azhang</div>
+          <div class="post_content">
+<aside class="onebox githubblob">
+<header class="source">
+<a href="https://github.com/ory/kratos/blob/master/docs/docs/guides/configuring-cookies.mdx" rel="nofollow noopener" target="_blank">github.com</a>
+</header>
+<article class="onebox-body">
+<h4><a href="https://github.com/ory/kratos/blob/master/docs/docs/guides/configuring-cookies.mdx" rel="nofollow noopener" target="_blank">ory/kratos/blob/master/docs/docs/guides/configuring-cookies.mdx</a></h4>
+<pre><code class="lang-mdx">---
+id: configuring-cookies
+title: Configuring Cookies
+---
+
+When working with cookies, keep the following in mind:
+
+1. HTTP Cookies **are not port specific**. If a cookie is set on
+   `https://mydomain.com:1234` it is also valid for `https://mydomain.com:4321`
+   and `https://mydomain.com`.
+2. Unless `--dev` is set, ORY Kratos' cookies are only sent over HTTPS.
+3. Cookies in ORY Kratos are always `httpOnly`.
+4. It is possible to set a cookie for `mydomain.com` when the original request
+   was made to `subdomain.mydomain.com`. It is however not possible to set a
+   cookie for `anotherdomain.com` when the original request was made to
+   `mydomain.com`. See also [this answer] on
+   [SackOverflow](https://stackoverflow.com/questions/18492576/share-cookie-between-subdomain-and-domain).
+
+:::note
+
+</code></pre>
+
+  This file has been truncated. <a href="https://github.com/ory/kratos/blob/master/docs/docs/guides/configuring-cookies.mdx" rel="nofollow noopener" target="_blank">show original</a>
+</article>
+<div class="onebox-metadata">
+</div>
+<div style="clear: both"></div>
+</aside>
+<p>This doc says that domain is configurable. I’d like to use more subdomains with the same cookie but I get</p>
+<p>session: map[cookie:map[domain:asdf.com] cookie_same_site:Lax lifespan:1h]<br/>
+^-- additionalProperties “cookie” not allowed</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Which version are you running?</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

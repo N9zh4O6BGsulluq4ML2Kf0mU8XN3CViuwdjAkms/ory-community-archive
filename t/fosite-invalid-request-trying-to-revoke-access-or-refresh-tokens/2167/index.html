@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Fosite | invalid_request trying to revoke access or refresh tokens</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Fosite | invalid_request trying to revoke access or refresh tokens</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/596_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">ezerw</div>
+          <div class="post_content">
+<p>Hello,<br/>
+I’m using Fosite as my company’s Authorization Server and implemented our own sql storage. Everything works fine but the revoke token.<br/>
+I’ve tried using <code>access_token</code> and <code>refresh_token</code> as hint and passing the corresponding token as well without luck.</p>
+<p>I have to mention that this is also failing in the fosite-example repo.</p>
+<h3>This is what the request looks like:</h3>
+<p>Client is public and I’m also sending the authorization header:</p>
+<pre><code class="lang-auto">authHash := base64.StdEncoding.EncodeToString(
+    []byte(fmt.Sprintf("%s:%s", oAuth2Config.ClientID, "")),
+)
+r.Header.Set("Authorization", "Basic "+authHash)
+</code></pre>
+<h3>Payload</h3>
+<p>POST request with <code>"application/x-www-form-urlencoded"</code> Content-Type header<br/>
+<code>token</code>=valid-existing-non-revoked-access-token-or-refresh-token<br/>
+<code>token_type_hint</code>=tried-with-access-and-refresh-tokens-same-result</p>
+<h3>Response</h3>
+<pre><code class="lang-json">{"error":"invalid_request","error_description":"The request is missing a required parameter, includes an invalid parameter value, includes a parameter more than once, or is otherwise malformed","error_hint":"Make sure that the various parameters are correct, be aware of case sensitivity and trim your parameters. Make sure that the client you are using has exactly whitelisted the redirect_uri you specified.","status_code":400}
+</code></pre>
+<p>Any idea of what I’m missing or doing wrong <span class="mention">@hackerman</span> ?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>A stack trace would be helpful</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/596_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">ezerw</div>
+          <div class="post_content">
+<p>Thanks!, yeah forgot to add that.</p>
+<p>Also raised the issue on <a href="https://github.com/ory/fosite-example/issues/32" rel="nofollow noopener">Github</a></p>
+<p>Have tom mention that I’m using <code>compose.ComposeAllEnabled(cnf, store, secret, privateKey)</code>as in the example to initialise the provider instead of <code>compose.Compose</code> which is maybe the problem?</p>
+<pre><code class="lang-auto">Error: invalid_request
+github.com/ory/fosite.(*Fosite).NewRevocationRequest
+        /Users/eze/Workspace/pkg/mod/github.com/ory/fosite@v0.32.2/revoke_handler.go:79
+main.revoke
+        /Users/eze/Workspace/src/github.com/ezrw/server/cmd/server/handlers.go:86
+net/http.HandlerFunc.ServeHTTP
+        /usr/local/Cellar/go/1.14.6/libexec/src/net/http/server.go:2041
+github.com/bouk/httprouter.(*Router).ServeHTTP
+        /Users/eze/Workspace/pkg/mod/github.com/bouk/httprouter@v0.0.0-20160817010721-ee8b3818a7f5/router.go:308
+net/http.serverHandler.ServeHTTP
+        /usr/local/Cellar/go/1.14.6/libexec/src/net/http/server.go:2836
+net/http.(*conn).serve
+        /usr/local/Cellar/go/1.14.6/libexec/src/net/http/server.go:1924
+runtime.goexit
+        /usr/local/Cellar/go/1.14.6/libexec/src/runtime/asm_amd64.s:1373
+</code></pre>
+<p>And same in the <code>fosite-example</code>:</p>
+<pre><code class="lang-auto">Error: invalid_request
+github.com/ory/fosite.(*Fosite).NewRevocationRequest
+        /Users/eze/Workspace/pkg/mod/github.com/ory/fosite@v0.32.1/revoke_handler.go:79
+github.com/ory/fosite-example/authorizationserver.revokeEndpoint
+        /Users/eze/Workspace/src/github.com/ory/fosite-example/authorizationserver/oauth2_revoke.go:13
+net/http.HandlerFunc.ServeHTTP
+        /usr/local/Cellar/go/1.14.6/libexec/src/net/http/server.go:2041
+net/http.(*ServeMux).ServeHTTP
+        /usr/local/Cellar/go/1.14.6/libexec/src/net/http/server.go:2416
+net/http.serverHandler.ServeHTTP
+        /usr/local/Cellar/go/1.14.6/libexec/src/net/http/server.go:2836
+net/http.(*conn).serve
+        /usr/local/Cellar/go/1.14.6/libexec/src/net/http/server.go:1924
+runtime.goexit
+        /usr/local/Cellar/go/1.14.6/libexec/src/runtime/asm_amd64.s:1373
+
+</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/596_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">ezerw</div>
+          <div class="post_content">
+<p>Found the issue and created a PR on fosite repo: <a href="https://github.com/ory/fosite/pull/472" rel="nofollow noopener">https://github.com/ory/fosite/pull/472</a></p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

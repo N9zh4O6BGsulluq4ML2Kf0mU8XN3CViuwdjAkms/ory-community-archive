@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>ORY Hydra with ORY Kratos as IDP</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">ORY Hydra with ORY Kratos as IDP</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">_jb</div>
+          <div class="post_content">
+<p>Hi,</p>
+<p>I recently started diving into the Ory ecosystem and am very impressed with the work and love the active development going on!</p>
+<p>I saw a few topics like this, so maybe it is being addressed and I might be thinking ahead, but I was looking at integrating ORY Hydra and Kratos (and later Oauthkeeper in front). I was adapting the example Kratos UI and Hydra example UIs to essentially use Kratos as the IPD for Hydra Oauth2 flor.</p>
+<p>There were 2 issues I was seeing</p>
+<ol>
+<li>
+<p>Hydra and Kratos both do session management. I saw somewhere it mentioned that it was imperative that we do not have session management in both our Oath2.0 service and IDP service. I have not thought through exactly why but I can agree it might not make sense to be storing this in both places. It seems ideal to keep this in Hydra (since it will also be remembering user consent and is initiated first in the Oauth2 flow) but I am unsure how we can turn this off in Kratos. Hydra has the “remember” params which we could not use I guess. I am also a bit unclear, so hydra just using a session cookie to remember that this user (subject) has already given consent to this app, whereas Kratos would be verifying this user has logged in already in Kratos. These do seem fundamentally different and potentially okay to keep both (i.e. a user wants to delegate something to an app, and then sign into another app using that same IDP) but not sure how to deal with the sessions cookies getting in a state where it has User A in Hydra but User B in Kratos session.</p>
+</li>
+<li>
+<p>Hydra is supposed to redirect to a login UI when initializing the ouath2 flow. The Kratos login approach seems to require then redirecting to Kratos (<a href="http://127.0.0.1:4455/.ory/kratos/public/self-service/browser/flows/requests/(login%7Cregistration)" rel="nofollow noopener">http://127.0.0.1:4455/.ory/kratos/public/self-service/browser/flows/requests/(login|registration)</a>) to set CSRF cookies and initialize the login request there before getting redirected back with request id. The issue I was running into was that this redirect would remove the login_challenge query param from Hydra, so I would need to store it in a cookie to make it work. This doesn’t seem like the best way to do this and I was wondering if there is a recommended way to use these two flows like this.</p>
+</li>
+</ol>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>These are really good questions! So what you can do in ORY Kratos is adding a <code>prompt=login</code> parameter when redirecting your user to the login init endpoint. This will always force a login, regardless if there’s already a session or not.</p>
+<p>ORY Kratos supports a <code>return_to</code> argument which will take you back to that URL once the flow is completed. You can find documentation for this here: <a href="https://www.ory.sh/kratos/docs/concepts/selfservice-flow-completion">https://www.ory.sh/kratos/docs/concepts/selfservice-flow-completion</a></p>
+<p>Hope this helps!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">_jb</div>
+          <div class="post_content">
+<p>Hi,</p>
+<p>Great! ya I will try this – sounds like exactly what I was missing. So you are suggesting that then for Ouath flow we can have ORY Hydra manage the sessions with the “prompt=login” query param.</p>
+<p>And we can use the return_to param to give it the full url with the challenge in it so that Kratos will redirect back with the challenge after successful login?</p>
+<p>I am also happy to maybe help contribute something to one of the example apps or a new example app if appropriate since I’m basically just merging the two UI demo apps to play around with hydra+kratos. Seems like something documentation could maybe use when explaining the architecture of the Ory ecosystem and how to use them together since I didn’t see anything explicit on combining them</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Yup, that’s what I think should work. I haven’t tried it out myself but we get increasing requests for combining the two. Long-term we of course want to connect the two so that less work is required but for now I think some documentation around this would be absolutely stellar! If you’re down to help with this I’ll try to help out as best as I can if you have questions <img alt=":slight_smile:" class="emoji" src="../../../images/slight_smile.png" title=":slight_smile:"/></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">_jb</div>
+          <div class="post_content">
+<p>Hey,</p>
+<p>Looking at this again I have gotten it to work with Kratos and Hydra using prompt=login to force Kratos to always login, and then allowing hydra to check sessions.</p>
+<p>However, I still have to use cookies to keep the hydra challenge, since I lose it in this flow</p>
+<ol>
+<li>Hydra initiates login, redirects to login UI</li>
+<li>Login UI must initiate login with Kratos, so it redirects to Kratos and gets redirected back. We can use the ?redirect_to=https://{domain}?login_challenge={challenge} to get it after the login has succeeded</li>
+<li>If the user then decides they actually want to register, they click register, which must initiate a new flow with Kratos for registration, however, we do not have the challenge anymore so cannot set the redirect_to URL.</li>
+</ol>
+<p>My workaround for now has been using a cookie shown here <a href="https://github.com/jpbogle/kratos-selfservice-ui-node/blob/edd2a478fb7880de0b92101dc98e1e8cc7a15444/src/routes/auth.ts#L31" rel="nofollow noopener">https://github.com/jpbogle/kratos-selfservice-ui-node/blob/edd2a478fb7880de0b92101dc98e1e8cc7a15444/src/routes/auth.ts#L31</a></p>
+<p>Another option I see is that when we lookup the login request in Kratos, we get this</p>
+<pre><code class="lang-auto">RegistrationRequest {
+  active: undefined,
+  expiresAt: 2020-06-20T19:34:27.203Z,
+  id: '105b6d51-5a02-4974-ad69-f6d192bc12f7',
+  issuedAt: 2020-06-20T19:24:27.203Z,
+  messages: undefined,
+  methods: {
+    oidc: { method: 'oidc', config: [Object] },
+    password: { method: 'password', config: [Object] }
+  },
+  requestUrl: 'http://kratos:4433/self-service/browser/flows/registration?prompt=login&amp;return_to=http://localhost:3000/auth/registration?login_challenge=140ddac60d914e36b8473682d4ba6d2d'
+}
+</code></pre>
+<p>so we could parse this request and get the login challenge and add that to the registration url, so if the user clicks register from the login back it will redirect with the same challenge</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Great summary, that looks exactly correct! As an intermediate solution, why not use the <code>redirect_to</code> of the <code>request_url</code>?</p>
+<p>In your app you could render the “registration” button with <code>?return_to=...</code> (coming from the request_url). I think that would remove the need for a cookie?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/472_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">k9ert</div>
+          <div class="post_content">
+<p>Awesome work, <span class="mention">@_jb</span>  ! I’ve tried to replicate this solution trying to dig in the details of how it’s working. I’ve pushed my changes here on top of jb’s ones:</p>
+<aside class="onebox githubcommit">
+<header class="source">
+<a href="https://github.com/ory/kratos-selfservice-ui-node/commit/dd37af92f5d3f64d13acbed2a2e8b1f968d01152" rel="nofollow noopener" target="_blank">github.com/ory/kratos-selfservice-ui-node</a>
+</header>
+<article class="onebox-body">
+<div class="github-row">
+<div class="github-icon-container" title="Commit">
+<svg aria-hidden="true" class="github-icon" height="60" viewbox="0 0 14 16" width="60"><path d="M10.86 7c-.45-1.72-2-3-3.86-3-1.86 0-3.41 1.28-3.86 3H0v2h3.14c.45 1.72 2 3 3.86 3 1.86 0 3.41-1.28 3.86-3H14V7h-3.14zM7 10.2c-1.22 0-2.2-.98-2.2-2.2 0-1.22.98-2.2 2.2-2.2 1.22 0 2.2.98 2.2 2.2 0 1.22-.98 2.2-2.2 2.2z"></path></svg>
+</div>
+<div class="github-info-container">
+<h4>
+<a href="https://github.com/ory/kratos-selfservice-ui-node/commit/dd37af92f5d3f64d13acbed2a2e8b1f968d01152" rel="nofollow noopener" target="_blank">refactor: 127.0.01 instead of localhost,</a>
+</h4>
+<div class="github-info">
+<div class="date">
+        committed <span class="discourse-local-date" data-date="2020-06-29" data-format="ll" data-time="13:32:55" data-timezone="UTC">01:32PM - 29 Jun 20 UTC</span>
+</div>
+<div class="user">
+<a href="https://github.com/k9ert" rel="nofollow noopener" target="_blank">
+<img alt="k9ert" class="onebox-avatar-inline" height="20" src="../../../images/87fe8affed1c95dd87a25e70cd339f9da20f520e.png" width="20"/>
+          k9ert
+        </a>
+</div>
+<div class="lines" title="changed 8 files with 169 additions and 136 deletions">
+<a href="https://github.com/ory/kratos-selfservice-ui-node/commit/dd37af92f5d3f64d13acbed2a2e8b1f968d01152" rel="nofollow noopener" target="_blank">
+<span class="added">+169</span>
+<span class="removed">-136</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class="github-row">
+<pre class="github-content" style="white-space: normal;">hydra-specific stuff to extra-endpoint,
+more verbose logging</pre>
+</div>
+</article>
+<div class="onebox-metadata">
+</div>
+<div style="clear: both"></div>
+</aside>
+<p>The main-change was to separate the hydra-functionality from the rest of the app. So now i’ve created a new endpoint /auth/hydra/login which acts as the redirection-target from hydra, starts the flow with kratos with a different return_to url and accepts the Login-request towards hydra.</p>
+<p>I think that separation makes sense? If i have some time, i’ll also create a PR thinking about how we can standardize that more.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">_jb</div>
+          <div class="post_content">
+<p>ya I think that makes sense. So that route handles the redirect for after kratos has succeeded and it needs to redirect back to the UI which then accepts the login with hydra and immediately redirects again to the authorization screen (if auth is needed).</p>
+<p>I was thinking when separating it, we could keep both flows working like you could initiate the login from hydra, through oauth2 flow, but also could use the demo UI just hitting kratos, not using Hydra at all, the way it used to work where you would initiate the login and get redirected to the dashboard. Not sure if thats necessary.</p>
+<p>It also could exist as a separate demo UI so theres like the Hydra-demo-ui, Kratos-demo-ui, and then this one which uses kratos and hydra. I have also experimented with adding Oathkeeper to this as well to verify the hydra tokens</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>We did some preliminary work on this in the kratos selfservice app - please be aware that a full integration is coming to ORY Kratos at some point, but you can use it as a workaround for now: <a href="https://github.com/ory/kratos-selfservice-ui-node/tree/hydra-integration/contrib/hydra">https://github.com/ory/kratos-selfservice-ui-node/tree/hydra-integration/contrib/hydra</a></p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

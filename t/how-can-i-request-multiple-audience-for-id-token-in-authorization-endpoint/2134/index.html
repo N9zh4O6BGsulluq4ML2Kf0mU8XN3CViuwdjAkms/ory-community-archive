@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>How can I request multiple audience for ID Token in Authorization Endpoint?</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">How can I request multiple audience for ID Token in Authorization Endpoint?</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">rocketk</div>
+          <div class="post_content">
+<p>I have a front-end SPA and several backend services with different client_id, let’s say “spa”, “service1”, “service2”. I initiate the authentication flow  with my SPA, and I wanna get an ID Token that “aud” equals to [“service1”, “service2”] and “azp” equals to “spa”.</p>
+<p>So, how can I do that? I didn’t find where I can specify the audience values in an id_token.</p>
+<p>I have tried to add an audience parameter appended to the authorization endpoint but I got the audience in the access_token, not the id_token. I know that there are two types of audience concept of id_token and access_token. My service1 and service2 are both Relying Party Client, not Resource Service, so they should consume id tokens.</p>
+<p>Thanks.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>I think that’s currently not possible, if you open an issue we can discuss how to implement that <img alt=":slight_smile:" class="emoji" src="../../../images/slight_smile.png" title=":slight_smile:"/></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">rocketk</div>
+          <div class="post_content">
+<p>Thanks, I will write a new issue to hydra’s github project.</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

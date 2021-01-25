@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>How to revoke token</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">How to revoke token</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">uggo</div>
+          <div class="post_content">
+<p>Hi all,<br/>
+I am trying to set up a client using Ruby.<br/>
+It gets a token from hydra (after user consent), this works.<br/>
+Now clients wants the user to logout and therefore revoking the access token is required.</p>
+<pre><code class="lang-auto">docker-compose exec hydra hydra clients create \
+	--endpoint http://127.0.0.1:4445 \
+	--id test-1 \
+	--secret secret \
+	--grant-types authorization_code,refresh_token \
+	--response-types code,id_token \
+	--scope openid,offline hydra,hydra.clients,hydra.introspect \
+	--callbacks http://localhost:3000/callback \
+	--token-endpoint-auth-method client_secret_post
+</code></pre>
+<p>I have not created any policy (not sure, what was required for revoke).</p>
+<p>now when I call hydra.revokeOAuth2Token(token)<br/>
+it gives me following error -</p>
+<pre><code class="lang-ruby">  def revoke(access_token)
+    agent = Faraday.new(url: 'http://hydra:4444/')
+    res = agent.post('/oauth2/revoke') do |req|
+      req.headers['Accept'] = 'application/json'
+      req.headers['Content-Type'] = 'application/x-www-form-urlencoded'
+      req.headers['Authorization'] = "Bearer #{access_token}"
+      req.body = { token: access_token }.to_json
+    end
+    JSON.parse(res.body)
+  end
+</code></pre>
+<p><aside class="onebox whitelistedgeneric">
+<header class="source">
+<img class="site-icon" height="32" src="../../../images/d67d06c9836d2533638b13668172a648c048232c.png" width="32"/>
+<a href="https://www.ory.sh/docs/hydra/sdk/api#revoke-oauth2-tokens" rel="nofollow noopener" target="_blank">ory.sh</a>
+</header>
+<article class="onebox-body">
+<h3><a href="https://www.ory.sh/docs/hydra/sdk/api#revoke-oauth2-tokens" rel="nofollow noopener" target="_blank">REST API · ORY Documentation</a></h3>
+<p>Welcome to the ORY Hydra HTTP API documentation. You will find documentation for</p>
+</article>
+<div class="onebox-metadata">
+</div>
+<div style="clear: both"></div>
+</aside>
+<br/>
+I think the header and parameters are implemented correctly, but the following error is returned.</p>
+<pre><code class="lang-auto">[4] pry(main)&gt; Hydra::Client.revoke(t)
+=&gt; {"error"=&gt;"invalid_request",
+ "error_description"=&gt;"The request is missing a required parameter, includes an invalid parameter value, includes a parameter more than once, or is otherwise malformed",
+ "error_hint"=&gt;"Make sure that the various parameters are correct, be aware of case sensitivity and trim your parameters. Make sure that the client you are using has exactly whitelisted the redirect_uri you specified.",
+ "status_code"=&gt;400}
+</code></pre>
+<p>Did I make a mistake in what I requested?<br/>
+Please help me.<br/>
+Thanks for reading.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/290_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">samus</div>
+          <div class="post_content">
+<p>I just spent a day on this same problem.  Your client was created with <em>–token-endpoint-auth-method client_secret_post</em>.  That means you need to include the client and secret as parameters in the for body.  Note, that the form body is not json.  It should be form url encoded.  Something like this ought to work:</p>
+<pre><code>res = Faraday.post(url.to_s) do |req|
+    req.headers['Content-Type'] = 'application/x-www-form-urlencoded'
+    req.headers['Accept'] = 'application/json'
+    req.body = "client_id=#{client}&amp;client_secret#{client_secret}&amp;token=#{token}"
+end
+</code></pre>
+<p>Alternatively you can recreate your client without the token-endpoint-auth-method parameter and it will default to client_secret_basic.  Then you can encode it in the Authorization header like so:</p>
+<pre><code>res = Faraday.post(url.to_s) do |req|
+    req.headers['Content-Type'] = 'application/x-www-form-urlencoded'
+    req.headers['Accept'] = 'application/json'
+    auth = Base64.encode64([client, client_secret].join(':'))
+    auth.delete!("\n")
+    req.headers['Authorization'] = "Basic #{auth}"
+    req.body = "client_id=#{client}&amp;client_secret#{client_secret}&amp;token=#{token}"
+end
+</code></pre>
+<p>If like me, you’re writing this code because the <code>oauth2</code> gem doesn’t have a token revocation method and you switch to basic auth for the token endpoint, you’ll need to change how you initialize your OAuth client and pass in <code>:auth_scheme =&gt; :basic_auth</code> when you create the client.  My code for creating the client is:</p>
+<pre><code>client = OAuth2::Client.new(config.client_id, config.client_secret, :site =&gt; config.auth_server_url, :authorize_url =&gt; '/oauth2/auth', :token_url =&gt; '/oauth2/token', :auth_scheme =&gt; :basic_auth)
+</code></pre>
+<p>It’s rather a mess and not easy figuring out all of this.  Good luck.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">yogesh</div>
+          <div class="post_content">
+<aside class="quote no-group" data-post="2" data-topic="1394" data-username="samus">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" class="avatar" height="20" src="../../../images/290_2.png" width="20"/> samus:</div>
+<blockquote>
+<p>auth_scheme</p>
+</blockquote>
+</aside>
+<p>I have registered my client through <em>token-endpoint-auth-method private_key_jwt</em>. Do i need to generate a new client_assertion for and send it in the request for revoking the access_token?</p>
+<p>Issue I am facing is even after revoking the access_token; introspect is shwoing that access token is valid.</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Backchannel logout, connect to HTTPS endpoint</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Backchannel logout, connect to HTTPS endpoint</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/232_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">eskava</div>
+          <div class="post_content">
+<p>Hello,</p>
+<p>When trying to POST to external URI, I get that error from Hydra:</p>
+<p>time=2020-12-07T12:28:02Z level=warning msg=Unable to execute OpenID Connect Back-Channel Logout Request audience=application backchannel_logout_url=https://xxx.net/backchannel client_id=x-x-x-x-x error=map[message:Post “<a href="https://xxx.net//backchannel" rel="noopener nofollow ugc">https://xxx.net//backchannel</a>”: x509: certificate signed by unknown authority] service_name= service_version=</p>
+<p>How do you setup custom TLS certificates into Hydra (Docker)</p>
+<p>Thanks for your help</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>From slack - you got it working by adding the CA certificates to the Docker Container (e.g. with a volume mount) and then reloading the CA certificates using:</p>
+<pre><code class="lang-auto">docker exec -i --user=root  $hydraContainer /bin/sh -c "update-ca-certificates"
+</code></pre>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

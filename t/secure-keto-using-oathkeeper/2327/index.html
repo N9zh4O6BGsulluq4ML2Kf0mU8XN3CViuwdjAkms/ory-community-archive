@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Secure Keto using Oathkeeper</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Secure Keto using Oathkeeper</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/640_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">skylfer</div>
+          <div class="post_content">
+<p>Hello</p>
+<p>I would like to setup ORY stack (Kratos, Keto, Oathkeeper).<br/>
+As of current I have Kratos going through Oathkeeper and Keto being alone on the side.</p>
+<p>I suppose simply adding - KETO_URL=http://keto:4466/ in Oathkeeper environment and creating access rule won’t make it.<br/>
+Would you be able to help securing access to Keto with Oathkeeper?</p>
+<p>Thanks.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Depends on what you’re looking for exactly <img alt=":slight_smile:" class="emoji" src="../../../images/slight_smile.png" title=":slight_smile:"/></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/640_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">skylfer</div>
+          <div class="post_content">
+<p>Hi <span class="mention">@hackerman</span> thanks for the response.</p>
+<p>I was thinking about securing it in pretty much the same manner as Kratos in the quickstart guide. If there is no RS256 token present for your machine you can’t access Keto endpoints.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/669_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">vinckr</div>
+          <div class="post_content">
+<p>From our private conversation:</p>
+<p>To give you some background me and my team are creating a gamemode for GTA V. We decided to create an API so we could reuse it if current gamemode doesn’t work out and we would like to try different games.<br/>
+An API is built in Go utilizing gRPC.<br/>
+As we found the ORY project it became clear there is no point reinventing the wheel hence we would like to try to utilize Kratos for user management and Keto for roles.<br/>
+The setup we are after is Oathkeeper being the gateway to access Kratos and Keto.<br/>
+Currently we have Kratos hooked up to Oathkeeper as in the quickstart guide. We quite like that way of restricting access via JWKS token.<br/>
+I think if we had a simple example of restricting access to Keto endpoints using Oathkeeper we would manage to take it forward into some advanced implementation.<br/>
+If it’s possible to set it up pretty much the same way it is right now with Kratos it would be awesome.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>In that case you set up ORY Oathkeeper as a proxy in front of ORY Keto and configure the JWT Authenticator, as explained:</p>
+<ul>
+<li><a href="https://www.ory.sh/oathkeeper/docs/configure-deploy">https://www.ory.sh/oathkeeper/docs/configure-deploy</a></li>
+<li><a href="https://www.ory.sh/oathkeeper/docs/api-access-rules">https://www.ory.sh/oathkeeper/docs/api-access-rules</a></li>
+<li><a href="https://www.ory.sh/oathkeeper/docs/pipeline/authn#jwt">https://www.ory.sh/oathkeeper/docs/pipeline/authn#jwt</a></li>
+</ul>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

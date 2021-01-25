@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Expose match rules as HATEOAS</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Expose match rules as HATEOAS</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/536_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">placplac</div>
+          <div class="post_content">
+<p>Hey there!</p>
+<p>This is a random question.</p>
+<p>Is there any simple way to expose another API into Ory Oathkeeper? We are using Oathkeeper behind our component that handles HATEOAS services and it’s pain register every match url from rules into our component.</p>
+<p>I was thinking to add a new route into Oathkeeper to return matches URLs as HATEOAS format. If you think it makes sense, I could open a PR to you.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Could you go a bit into an example of HATEOAS use and why it’s difficult to implement as rules in Oathkeeper?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/536_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">placplac</div>
+          <div class="post_content">
+<p>We are exposing Oathkeeper behind our security component that encrypt routes - for every request, it’s created a session and available resources are encrypted for that session.</p>
+<p>The main idea of our security component is to call the root entry point that you set and retrieve all resources available for that resource.</p>
+<p>In our case, we are setting root entry point to ory oathkeeper proxy but we can’t retrieve every “route” available so we need to set every single url match into our security component - for now, it’s not a problem because we have just a few rules.</p>
+<p>I was about to create an external API that was going to respond on <code>/</code> and do a kind of parse into <code>/rules</code> to respond it in hateoas format but it could be nice have something native in oathkeeper instead of you need to create an external API and need to add a new rule to bypass authenticator, authorizer and mutators just to get list of “resources” available.</p>
+<p>Basically, I would like to handle a “match url” from oathekeeper rules as a resource. My idea is to expose something extra in case of other persons face the same point that we are but I’m not sure if makes sense to expose this kind of route to solve a problem that probably is not a “real problem”.</p>
+<p>Do you think makes sense to have something like that in Oathkeeper in scenarios that you can not expose nothing directly?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Thank you for the explanation. It’s still a bit abstract for me to understand so I think the best would probably be to do a proposal around what you’d like to change and how. That way I think it will become much clearer to me and easier to judge if it makes sense to add or not <img alt=":slight_smile:" class="emoji" src="../../../images/slight_smile.png" title=":slight_smile:"/></p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

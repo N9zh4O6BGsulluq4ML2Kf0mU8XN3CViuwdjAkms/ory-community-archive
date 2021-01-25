@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Error Testing sample JWT validation authenticator</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Error Testing sample JWT validation authenticator</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">stevepnscott</div>
+          <div class="post_content">
+<p>Im using the config in the docs : <a href="https://www.ory.sh/oathkeeper/docs/pipeline/authn" rel="nofollow noopener">https://www.ory.sh/oathkeeper/docs/pipeline/authn</a> to setup a simple JWT validator but it is giving the error ?</p>
+<p>‘The matched rule uses a feature which is not enabled in the server configuration’</p>
+<p>Note I have added spaces in the config below in the URLs as i cannot add URLs to this post as a new user.</p>
+<p>The server config section for jwt is ;</p>
+<p>jwt:<br/>
+# Set enabled to true if the authenticator should be enabled and false to disable the authenticator.<br/>
+enabled: true</p>
+<pre><code>config:
+  jwks_urls:
+    - http ://x.x.x.x:8080/auth/realms/Developer/protocol/openid-connect/certs
+  scope_strategy: none
+  required_scope:
+    - profile
+    - email
+  target_audience:
+    - account 
+  trusted_issuers:
+    - http ://x.x.x.x:8080/auth/realms/Developer
+  allowed_algorithms:
+    - RS256
+  token_from:
+    header: Authorization
+    # or
+    # query_parameter: auth-token
+    # or
+    # cookie: auth-token
+</code></pre>
+<p>And the simple rule is ;</p>
+<p>{<br/>
+“id”: “standard-jwt”,<br/>
+“upstream”: {<br/>
+“url”: “https ://httpbin.org/anything/header”<br/>
+},<br/>
+“match”: {<br/>
+“url”: “http ://&lt;127.0.0.1|localhost&gt;:4455/auth/jwt”,<br/>
+“methods”: [<br/>
+“GET”<br/>
+]<br/>
+},<br/>
+“authenticators”: [{<br/>
+“handler”: “jwt”,<br/>
+“config”: {<br/>
+“required_scope”: [“profile”],<br/>
+“target_audience”: [“account”],<br/>
+“trusted_issuers”: [“http ://x.x.x.x:8080/auth/realms/Developer”]<br/>
+}<br/>
+}],<br/>
+“authorizer”: { “handler”: “allow” },<br/>
+“mutators”: [{ “handler”: “noop” }]<br/>
+}</p>
+<p>–<br/>
+Seems so simple - how can I get more info from oathkeeper on the issue ?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">stevepnscott</div>
+          <div class="post_content">
+<p>It was a simple config change - the scope strategy had been set default none …</p>
+<p>Corrected by</p>
+<p>scope_strategy: exact</p>
+<p>Now the rule works</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Glad you were able to figure it out! If you have any ideas how to improve the docs there please make suggestions <img alt=":slight_smile:" class="emoji" src="../../../images/slight_smile.png" title=":slight_smile:"/></p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

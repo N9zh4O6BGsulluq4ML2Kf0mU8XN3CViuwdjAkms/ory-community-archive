@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>First-Party Viability</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">First-Party Viability</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">davidr</div>
+          <div class="post_content">
+<p>Hello,</p>
+<p>I apologize if this is more of a general OAuth2 related question.</p>
+<p>My current project is to set up an OAuth2 system using Hydra, but it will initially only be used for first-party apps. Is there anyone in this community who has done this? Is using Hydra with first-party apps viable?</p>
+<p>So far I am very impressed with Hydra, and I think it provides a very robust service that also allows for quite a lot of customization. But during my work, I can’t help but feel like there are cases where using only OAuth2 tokens would create issues, because it cant always take details from the Identity Provider into consideration. For example, from looking at the documents, it seems like an issue could arise when a user updates their password in the follow case:</p>
+<p>If the user is logged in and changes their password from inside the application, there is no way to invalidate other sessions tied to that user.</p>
+<p>This may be a lack of understanding on my part, but is it common to tie OAuth2 access tokens to a local session system in order to provide more granular control over a user’s session? Or do the OAuth2 specifications provide all the control you need? How are people using Hydra handling this?</p>
+<p>My current view of OAuth2 is to mainly be a method for authenticating a user via a third party system without having to gain access to that user’s credentials, but I have talked to others who say it is a viable first-party authentication system.</p>
+<p>I would really appreciate any insight from the community!</p>
+<p>Thank you</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Hey there, glad to see you enjoy the stack! First of all, I think what you’re looking for is <strong><a href="http://github.com/ory/kratos">ORY Kratos</a></strong> because it solves everything you said you need <img alt=":slight_smile:" class="emoji" src="../../../images/slight_smile.png" title=":slight_smile:"/></p>
+<p>OAuth2 and OpenID Connect are delegation protocols, meaning they specify how third parties can access your users’ data. For most first-party use, OAuth2 and OpenID Connect is not the right tool unless you have a ton of ways people interact with your system (e.g. Smart TV, CLIs, …).</p>
+<p>Also, check out this: <a href="https://www.ory.sh/hydra/docs/concepts/before-oauth2">https://www.ory.sh/hydra/docs/concepts/before-oauth2</a></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">davidr</div>
+          <div class="post_content">
+<p>Hello,</p>
+<p>Thank you for all the hard work.</p>
+<p>I see. I thought that was probably the case. Kratos looks very interesting. I will look into it this weekend.</p>
+<p>Thank you for that link. I didn’t see it when I first started working with Hydra a few months ago. I feel like it sums up the feelings I had! Thank you for writing that. It makes it easy to convey!</p>
+<p>Thank you</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

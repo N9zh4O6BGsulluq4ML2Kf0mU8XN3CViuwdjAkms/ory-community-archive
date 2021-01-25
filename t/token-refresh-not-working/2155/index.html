@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Token Refresh not working</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Token Refresh not working</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">Nigel</div>
+          <div class="post_content">
+<p>I am using a dart oauth2 library to attempt token refresh. The code grant works and gets a refresh token but I am unable to refresh access tokens using the refresh token and token auth endpoint method : none</p>
+<p>Hydra version: v1.7.4</p>
+<p>Here is the trace</p>
+<pre><code class="lang-auto">2020-09-08 02:24:12.025 EDT
+time=2020-09-08T06:24:12Z level=info msg=started handling request func=github.com/ory/x/reqlog.(*Middleware).ServeHTTP file=/go/pkg/mod/github.com/ory/x@v0.0.144/reqlog/middleware.go:131 http_request=map[headers:map[accept-encoding:gzip user-agent:Dart/2.9 (dart:io) x-forwarded-for:10.128.0.2 x-forwarded-proto:https x-request-id:5ec8e4e5-ee28-4b55-932e-5944e7c52c8a] host:oauth.confab.im method:POST path:/oauth2/token query:&lt;nil&gt; remote:127.0.0.1:59434 scheme:http]
+Error
+2020-09-08 02:24:12.057 EDT
+time=2020-09-08T06:24:12Z level=debug msg=Got an empty session in toRequest func=github.com/ory/hydra/oauth2.(*SQLData).toRequest file=/home/ory/oauth2/fosite_store_sql.go:181 audience=application service_name= service_version=
+Error
+2020-09-08 02:24:13.908 EDT
+time=2020-09-08T06:24:13Z level=error msg=An error occurred func=github.com/ory/hydra/x.LogError file=/home/ory/x/errors.go:49 audience=application error=map[message:server_error reason: status:Internal Server Error status_code:500 trace:
+Error
+2020-09-08 02:24:13.908 EDT
+github.com/ory/fosite/handler/oauth2.handleRefreshTokenEndpointResponseStorageError.func1
+Error
+2020-09-08 02:24:13.908 EDT
+/go/pkg/mod/github.com/ory/fosite@v0.32.2/handler/oauth2/flow_refresh.go:176
+Error
+2020-09-08 02:24:13.908 EDT
+github.com/ory/fosite/handler/oauth2.handleRefreshTokenEndpointResponseStorageError
+Error
+2020-09-08 02:24:13.908 EDT
+/go/pkg/mod/github.com/ory/fosite@v0.32.2/handler/oauth2/flow_refresh.go:193
+Error
+2020-09-08 02:24:13.908 EDT
+github.com/ory/fosite/handler/oauth2.(*RefreshTokenGrantHandler).PopulateTokenEndpointResponse
+Error
+2020-09-08 02:24:13.908 EDT
+/go/pkg/mod/github.com/ory/fosite@v0.32.2/handler/oauth2/flow_refresh.go:143
+Error
+2020-09-08 02:24:13.908 EDT
+github.com/ory/fosite.(*Fosite).NewAccessResponse
+Error
+2020-09-08 02:24:13.908 EDT
+/go/pkg/mod/github.com/ory/fosite@v0.32.2/access_response_writer.go:36
+Error
+2020-09-08 02:24:13.908 EDT
+github.com/ory/hydra/oauth2.(*Handler).TokenHandler
+Error
+2020-09-08 02:24:13.908 EDT
+/home/ory/oauth2/handler.go:588
+Error
+2020-09-08 02:24:13.908 EDT
+net/http.HandlerFunc.ServeHTTP
+Error
+2020-09-08 02:24:13.908 EDT
+/usr/local/go/src/net/http/server.go:2041
+2020-09-08 02:24:13.908 EDT
+github.com/rs/cors.(*Cors).Handler.func1
+Error
+2020-09-08 02:24:13.908 EDT
+/go/pkg/mod/github.com/rs/cors@v1.6.0/cors.go:207
+Error
+2020-09-08 02:24:13.908 EDT
+net/http.HandlerFunc.ServeHTTP
+</code></pre>
+<p>Using postman<br/>
+<div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/nj1hK02H23sz7Zg3FqT8apwVMta.png?dl=1" href="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/original/1X/a3586dd9a0bdaa5100d47edbf8591767f8796168.png" rel="nofollow noopener" title="Screenshot from 2020-09-08 02-51-29"><img alt="Screenshot from 2020-09-08 02-51-29" data-base62-sha1="nj1hK02H23sz7Zg3FqT8apwVMta" data-small-upload="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/a3586dd9a0bdaa5100d47edbf8591767f8796168_2_10x10.png" height="454" src="../../../images/a3586dd9a0bdaa5100d47edbf8591767f8796168_2_690x454.png" srcset="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/a3586dd9a0bdaa5100d47edbf8591767f8796168_2_690x454.png, //ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/a3586dd9a0bdaa5100d47edbf8591767f8796168_2_1035x681.png 1.5x, //ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/a3586dd9a0bdaa5100d47edbf8591767f8796168_2_1380x908.png 2x" width="690"/><div class="meta"><svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use xlink:href="#far-image"></use></svg><span class="filename">Screenshot from 2020-09-08 02-51-29</span><span class="informations">1561×1029 64.7 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use xlink:href="#discourse-expand"></use></svg></div></a></div></p>
+<pre><code class="lang-auto">2020-09-08 02:49:22.898 EDT
+time=2020-09-08T06:49:22Z level=info msg=started handling request func=github.com/ory/x/reqlog.(*Middleware).ServeHTTP file=/go/pkg/mod/github.com/ory/x@v0.0.144/reqlog/middleware.go:131 http_request=map[headers:map[accept:application/json accept-encoding:gzip, deflate cache-control:no-cache origin:https://app.confab.im user-agent:PostmanRuntime/7.1.1 x-forwarded-for:10.128.0.6 x-forwarded-proto:https x-request-id:754338da-5849-46a2-8588-0ba789c10857] host:oauth.confab.im method:POST path:/oauth2/token query:&lt;nil&gt; remote:127.0.0.1:41690 scheme:http]
+Error
+2020-09-08 02:49:22.908 EDT
+time=2020-09-08T06:49:22Z level=debug msg=Got an empty session in toRequest func=github.com/ory/hydra/oauth2.(*SQLData).toRequest file=/home/ory/oauth2/fosite_store_sql.go:181 audience=application service_name= service_version=
+Error
+2020-09-08 02:49:27.911 EDT
+time=2020-09-08T06:49:27Z level=error msg=An error occurred func=github.com/ory/hydra/x.LogError file=/home/ory/x/errors.go:49 audience=application error=map[message:server_error reason: status:Internal Server Error status_code:500 trace:
+Error
+2020-09-08 02:49:27.911 EDT
+github.com/ory/fosite/handler/oauth2.handleRefreshTokenEndpointResponseStorageError.func1
+... same stacktrace
+</code></pre>
+<p>Sanity check log</p>
+<pre><code class="lang-auto">2020-09-08 03:00:51.822 EDT
+Thank you for using ORY Hydra v1.7.4!
+</code></pre>
+<p>This makes the user experience bad because users are kicked out of sessions and have to wait for a few un-expected redirects where a code grant is performed to give them a new token.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">Nigel</div>
+          <div class="post_content">
+<p>Extending the timeout duration to 30 seconds does not help. So this is also a bug because hydra does not return error feedback when it encounters <code>level=debug msg=Got an empty session in toRequest</code> and the server is forced to terminate the request.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Please open a bug report on GitHub with a reproducible demo, thank you!</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

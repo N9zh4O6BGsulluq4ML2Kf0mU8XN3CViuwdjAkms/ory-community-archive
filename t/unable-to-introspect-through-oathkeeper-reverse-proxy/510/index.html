@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Unable to introspect through oathkeeper reverse proxy</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Unable to introspect through oathkeeper reverse proxy</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/76_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">maxx</div>
+          <div class="post_content">
+<p>Hello</p>
+<p>I want to use “oauth2_introspection” authenticator handler to limit access to my custom api.</p>
+<p>After several days of playing around I ended up with the following error:</p>
+<pre><code class="lang-auto">oathkeeper-proxy_1  | time="2018-06-20T12:29:58Z" level=info msg="started handling request" method=GET remote="192.168.76.5:12336" request=/api/Values
+hydra_1             | time="2018-06-20T12:29:58Z" level=info msg="started handling request" method=POST remote="172.19.249.121:55012" request=/oauth2/introspect
+hydra_1             | time="2018-06-20T12:29:58Z" level=info msg="completed handling request" measure#http://localhost:4444.latency=327700 method=POST remote="172.19.249.121:55012" request=/oauth2/introspect status=200 text_status=OK took="327.7µs"
+oathkeeper-proxy_1  | time="2018-06-20T12:29:58Z" level=warning msg="The authentication handler encountered an error" access_url="http://localhost:4455/api/Values" authentication_handler=oauth2_introspection error="json: cannot unmarshal string into Go struct field IntrospectionResponse.aud of type []string" granted=false reason_id=authentication_handler_error
+oathkeeper-proxy_1  | time="2018-06-20T12:29:58Z" level=warning msg="Access request denied" access_url="http://localhost:4455/api/Values" error="json: cannot unmarshal string into Go struct field IntrospectionResponse.aud of type []string" granted=false
+oathkeeper-proxy_1  | time="2018-06-20T12:29:58Z" level=error msg="An error occurred while handling a request" code=500 details="map[]" error="json: cannot unmarshal string into Go struct field IntrospectionResponse.aud of type []string" reason= request-id= status= trace="Stack trace: \ngithub.com/ory/oathkeeper/vendor/github.com/ory/keto/authentication.(*OAuth2IntrospectionAuthentication).Introspect\n\t/go/src/github.com/ory/oathkeeper/vendor/github.com/ory/keto/authentication/oauth2_introspection.go:173\ngithub.com/ory/oathkeeper/proxy.(*AuthenticatorOAuth2Introspection).Authenticate\n\t/go/src/github.com/ory/oathkeeper/proxy/authenticator_oauth2_introspection.go:68\ngithub.com/ory/oathkeeper/proxy.(*RequestHandler).HandleRequest\n\t/go/src/github.com/ory/oathkeeper/proxy/request_handler.go:99\ngithub.com/ory/oathkeeper/proxy.(*Proxy).Director\n\t/go/src/github.com/ory/oathkeeper/proxy/proxy.go:121\ngithub.com/ory/oathkeeper/proxy.(*Proxy).Director-fm\n\t/go/src/github.com/ory/oathkeeper/cmd/serve_proxy.go:213\nnet/http/httputil.(*ReverseProxy).ServeHTTP\n\t/usr/local/go/src/net/http/httputil/reverseproxy.go:169\ngithub.com/ory/oathkeeper/vendor/github.com/urfave/negroni.Wrap.func1\n\t/go/src/github.com/ory/oathkeeper/vendor/github.com/urfave/negroni/negroni.go:46\ngithub.com/ory/oathkeeper/vendor/github.com/urfave/negroni.HandlerFunc.ServeHTTP\n\t/go/src/github.com/ory/oathkeeper/vendor/github.com/urfave/negroni/negroni.go:29\ngithub.com/ory/oathkeeper/vendor/github.com/urfave/negroni.middleware.ServeHTTP\n\t/go/src/github.com/ory/oathkeeper/vendor/github.com/urfave/negroni/negroni.go:38\ngithub.com/ory/oathkeeper/vendor/github.com/urfave/negroni.(middleware).ServeHTTP-fm\n\t/go/src/github.com/ory/oathkeeper/vendor/github.com/urfave/negroni/negroni.go:38\ngithub.com/ory/oathkeeper/vendor/github.com/ory/metrics-middleware.(*MetricsManager).ServeHTTP\n\t/go/src/github.com/ory/oathkeeper/vendor/github.com/ory/metrics-middleware/middleware.go:160\ngithub.com/ory/oathkeeper/vendor/github.com/urfave/negroni.middleware.ServeHTTP\n\t/go/src/github.com/ory/oathkeeper/vendor/github.com/urfave/negroni/negroni.go:38\ngithub.com/ory/oathkeeper/vendor/github.com/urfave/negroni.(middleware).ServeHTTP-fm\n\t/go/src/github.com/ory/oathkeeper/vendor/github.com/urfave/negroni/negroni.go:38\ngithub.com/ory/oathkeeper/vendor/github.com/meatballhat/negroni-logrus.(*Middleware).ServeHTTP\n\t/go/src/github.com/ory/oathkeeper/vendor/github.com/meatballhat/negroni-logrus/middleware.go:136\ngithub.com/ory/oathkeeper/vendor/github.com/urfave/negroni.middleware.ServeHTTP\n\t/go/src/github.com/ory/oathkeeper/vendor/github.com/urfave/negroni/negroni.go:38\ngithub.com/ory/oathkeeper/vendor/github.com/urfave/negroni.(*Negroni).ServeHTTP\n\t/go/src/github.com/ory/oathkeeper/vendor/github.com/urfave/negroni/negroni.go:96\ngithub.com/ory/oathkeeper/vendor/github.com/rs/cors.(*Cors).Handler.func1\n\t/go/src/github.com/ory/oathkeeper/vendor/github.com/rs/cors/cors.go:200\nnet/http.HandlerFunc.ServeHTTP\n\t/usr/local/go/src/net/http/server.go:1947\nnet/http.serverHandler.ServeHTTP\n\t/usr/local/go/src/net/http/server.go:2694\nnet/http.(*conn).serve\n\t/usr/local/go/src/net/http/server.go:1830\nruntime.goexit\n\t/usr/local/go/src/runtime/asm_amd64.s:2361" writer=JSON
+oathkeeper-proxy_1  | time="2018-06-20T12:29:58Z" level=info msg="completed handling request" measure#oathkeeper-proxy.latency=11641500 method=GET remote="192.168.76.5:12336" request=/api/Values status=500 text_status="Internal Server Error" took=11.6415ms
+</code></pre>
+<p>The error itself is: json: cannot unmarshal string into Go struct field IntrospectionResponse.aud of type []string</p>
+<p>Any ideas?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Please share some details, what configuration are you using (environment variables), what access rules do you have defined, what request are you making (show the e.g. curl command). Thanks!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/76_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">maxx</div>
+          <div class="post_content">
+<p>Thanks for response.</p>
+<p>Everything below is supposed to run on windows (of course you may use linux, just change command syntax)</p>
+<p><strong>This is docker compose file:</strong></p>
+<pre><code class="lang-auto">version: '2.4'
+
+services:
+    hydra:
+        image: oryd/hydra
+        ports:
+            - "4444:4444"
+        platform: linux
+        environment:
+            - LOG_LEVEL=debug
+            - DATABASE_URL=memory
+            - SYSTEM_SECRET=changemechangemechangemechangeme
+            - ISSUER_URL=http://localhost:4444/
+            - FORCE_ROOT_CLIENT_CREDENTIALS=admin:demo-password
+            - ACCESS_TOKEN_LIFESPAN=24h
+            - OAUTH2_SHARE_ERROR_DEBUG=1
+        volumes:
+            - ./data:/shared-data
+        entrypoint: hydra
+        command:
+          host --dangerous-force-http
+
+    oathkeeper-api:
+        image: oryd/oathkeeper
+        depends_on:
+            - hydra
+        ports:
+            - "4456:4456"
+        platform: linux
+        environment:
+            - LOG_LEVEL=debug
+            - DATABASE_URL=memory
+            - PORT=4456
+            - CREDENTIALS_ISSUER_ID_TOKEN_HS256_SECRET=changemechangemechangemechangeme
+        volumes:
+          - ./data:/shared-data
+        command:
+          serve api
+    
+    oathkeeper-proxy:
+        image: oryd/oathkeeper
+        depends_on:
+            - oathkeeper-api
+        ports:
+            - "4455:4455"
+        platform: linux
+        environment:
+            - LOG_LEVEL=debug
+            - DATABASE_URL=memory
+            - PORT=4455
+            - OATHKEEPER_API_URL=http://oathkeeper-api:4456
+            - CREDENTIALS_ISSUER_ID_TOKEN_HS256_SECRET=changemechangemechangemechangemedo
+            - AUTHENTICATOR_OAUTH2_INTROSPECTION_CLIENT_ID=oathkeeper-client
+            - AUTHENTICATOR_OAUTH2_INTROSPECTION_CLIENT_SECRET=something-secure
+            - AUTHENTICATOR_OAUTH2_INTROSPECTION_TOKEN_URL=http://hydra:4444/oauth2/token
+            - AUTHENTICATOR_OAUTH2_INTROSPECTION_INTROSPECT_URL=http://hydra:4444/oauth2/introspect
+        volumes:
+          - ./data:/shared-data
+        command:
+          serve proxy
+</code></pre>
+<p><strong>api-client.json (usual API user, used in user-curl-script)</strong></p>
+<pre><code class="lang-auto">{
+  "id": "api-client",
+  "client_secret": "api-secret",
+  "scope": "scope-api offline",
+  "grant_types": ["authorization_code", "client_credentials", "refresh_token"],
+  "response_types": ["code", "token"]
+}
+</code></pre>
+<p><strong>oathkeeper-client.json (client for oathkeeper)</strong></p>
+<pre><code class="lang-auto">{
+  "id": "oathkeeper-client",
+  "client_secret": "something-secure",
+  "scope": "hydra.introspect offline",
+  "grant_types": ["client_credentials"],
+  "response_types": ["token"]
+}
+</code></pre>
+<p><strong>policy.json</strong></p>
+<pre><code class="lang-auto">{
+  "subjects": ["oathkeeper-client"],
+  "effect": "allow",
+  "resources": [
+    "rn:hydra:keys:oathkeeper:id-token&lt;.*&gt;",
+    "rn:hydra:warden:&lt;.*&gt;",
+    "rn:hydra:oauth2:tokens"
+  ],
+  "actions": [
+    "decide",
+    "get",
+    "create",
+    "introspect",
+    "update",
+    "delete"
+  ]
+}
+</code></pre>
+<p><strong>rules.json</strong></p>
+<pre><code class="lang-auto">[
+{
+    "id": "id-test-ap",
+    "upstream": {
+        "url": "http://192.168.76.5:8088"
+    },
+    "match": {
+        "url": "http://localhost:4455/&lt;.*&gt;",
+        "methods": [
+            "GET"
+        ]
+    },
+    "authenticators": [
+	{ 
+		"handler": "oauth2_introspection" ,
+		"config": {
+        	    "required_scope": ["scope-api"]
+        	}
+	}
+	],
+    "authorizer": {
+	 "handler": "allow"
+	},
+    "credentials_issuer": {
+  	 "handler": "noop"
+	}
+}
+]
+</code></pre>
+<p>I have <a href="http://ASP.NET" rel="nofollow noopener">ASP.NET</a> simple Rest API that sits on <a href="http://192.168.76.5:8088" rel="nofollow noopener">http://192.168.76.5:8088</a>, this is subject to change, but for my test purposes it works fine.</p>
+<p>These lines are supposed to populate hydra with clients and policy</p>
+<pre><code class="lang-auto">docker exec -i -t authenticate-tests_hydra_1 hydra connect --url http://localhost:4444 --id admin --secret demo-password
+docker exec -i -t authenticate-tests_hydra_1 hydra clients import /shared-data/oathkeeper-client.json /shared-data/api-client.json --skip-tls-verify
+docker exec -i -t authenticate-tests_hydra_1 hydra policies create -f /shared-data/policy.json --skip-tls-verify
+</code></pre>
+<p>Update oathkeeper rules:</p>
+<pre><code class="lang-auto">docker exec -i -t authenticate-tests_oathkeeper-proxy_1  oathkeeper rules import /shared-data/rules.json --endpoint http://authenticate-tests_oathkeeper-api_1:4456
+</code></pre>
+<p>Obtain token:</p>
+<pre><code class="lang-auto">curl -v -k -d "@token.txt" -H "Content-Type: application/x-www-form-urlencoded" -H "Authorization: Basic YXBpLWNsaWVudDphcGktc2VjcmV0" -X POST http://localhost:4444/oauth2/token
+</code></pre>
+<p>token.txt:</p>
+<pre><code class="lang-auto">client_id=api-client&amp;client_secret=api-secret&amp;grant_type=client_credentials&amp;scope=scope-api%20offline
+</code></pre>
+<p>Call API with following command: (you need to replace token with the one from prev. command. Please note, that I am using <a href="http://localhost:4455" rel="nofollow noopener">http://localhost:4455</a> URL (that’s where oathkeeper lives)</p>
+<pre><code class="lang-auto">curl -v -k -H "Authorization:bearer 5ebu_We5-MRMuIebyES5el_oMdtuaaieU13WX6DqiBw.3rQy6PAosIS-PT58cqq5Afsa1ZFpHz3B55ntJN8jeJs" -X GET http://localhost:4455/api/Values
+</code></pre>
+<p>And get the followint result:</p>
+<pre><code class="lang-auto">* Curl_addHandleToPipeline: length: 1
+* - Conn 0 (0x2995cf0) send_pipe: 1, recv_pipe: 0
+* About to connect() to localhost port 4455 (#0)
+*   Trying ::1...
+* Connection refused
+*   Trying 127.0.0.1...
+* Connected to localhost (127.0.0.1) port 4455 (#0)
+&gt; GET /api/Values HTTP/1.1
+&gt; User-Agent: curl/7.33.0
+&gt; Host: localhost:4455
+&gt; Accept: */*
+&gt; Authorization:bearer 5ebu_We5-MRMuIebyES5el_oMdtuaaieU13WX6DqiBw.3rQy6PAosIS-PT58cqq5Afsa1ZFpHz3B55ntJN8jeJs
+&gt;
+&lt; HTTP/1.1 500 Internal Server Error
+&lt; Content-Type: application/json
+&lt; Vary: Origin
+&lt; Date: Thu, 21 Jun 2018 11:11:38 GMT
+&lt; Content-Length: 129
+&lt;
+{"error":{"code":500,"message":"json: cannot unmarshal string into Go struct field IntrospectionResponse.aud of type []s
+tring"}}
+* Connection #0 to host localhost left intact
+</code></pre>
+<p>Thanks</p>
+<p>PS<br/>
+I used these scripts for experiments, I think there are a lot of garbage in configs:(</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Thanks, one more thing, could you please set <code>LOG_LEVEL=debug</code> in the respective services and show the result of <code>docker log &lt;container-id&gt;</code>? It should include a stack trace which will help chase down the cause.</p>
+<p>ps: Seems like the log level is set already, so only the logs are needed.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/76_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">maxx</div>
+          <div class="post_content">
+<p>Please take a look<br/>
+In this scenario after starting composer I did the following:</p>
+<ol>
+<li>Configured hydra (add users, policy)</li>
+</ol>
+<pre><code class="lang-auto">docker exec -i -t authenticate-tests_hydra_1 hydra connect --url http://localhost:4444 --id admin --secret demo-password
+docker exec -i -t authenticate-tests_hydra_1 hydra clients import /shared-data/oathkeeper-client.json /shared-data/api-client.json --skip-tls-verify
+docker exec -i -t authenticate-tests_hydra_1 hydra policies create -f /shared-data/policy.json --skip-tls-verify
+</code></pre>
+<ol start="2">
+<li>imported rules into oathkeeper</li>
+</ol>
+<pre><code class="lang-auto">docker exec -i -t authenticate-tests_oathkeeper-proxy_1  oathkeeper rules import /shared-data/rules.json --endpoint http://authenticate-tests_oathkeeper-api_1:4456
+</code></pre>
+<ol start="3">
+<li>obtain client token from hydra:</li>
+</ol>
+<pre><code class="lang-auto">curl -v -k -d "@token.txt" -H "Content-Type: application/x-www-form-urlencoded" -H "Authorization: Basic YXBpLWNsaWVudDphcGktc2VjcmV0" -X POST http://localhost:4444/oauth2/token
+</code></pre>
+<ol start="4">
+<li>Tried to use API</li>
+</ol>
+<pre><code class="lang-auto">curl -v -k -H "IzDq0s9To1To6tqPMUDaTAhep--ZS_K9NqN5D9fBs9M.htNAZw6sS8BLFjKA_IXWijxovI3JUqpWq7qqMVnBsbc" -X GET http://localhost:4455/api/Values
+</code></pre>
+<p>Logs from all containers:</p>
+<pre><code class="lang-auto">Attaching to authenticate-tests_hydra_1, authenticate-tests_oathkeeper-api_1, authenticate-tests_oathkeeper-proxy_1
+hydra_1             | time="2018-06-21T13:16:56Z" level=info msg="DATABASE_URL set to memory, connecting to ephermal in-memory database."
+hydra_1             | time="2018-06-21T13:16:56Z" level=info msg="Key pair for signing hydra.openid.id-token is missing. Creating new one."
+hydra_1             | time="2018-06-21T13:16:58Z" level=info msg="Setting up telemetry - for more information please visit https://ory.gitbooks.io/hydra/content/telemetry.html"
+hydra_1             | time="2018-06-21T13:16:58Z" level=warning msg="No clients were found. Creating a temporary root client..."
+hydra_1             | time="2018-06-21T13:16:58Z" level=info msg="Temporary root client created."
+hydra_1             | time="2018-06-21T13:16:58Z" level=warning msg="No TLS Key / Certificate for HTTPS found. Generating self-signed certificate."
+hydra_1             | time="2018-06-21T13:16:58Z" level=info msg="Setting up http server on :4444"
+hydra_1             | time="2018-06-21T13:16:58Z" level=warning msg="HTTPS disabled. Never do this in production."
+oathkeeper-api_1    | time="2018-06-21T13:16:58Z" level=info msg="Transmission of telemetry data is enabled, to learn more go to: https://www.ory.sh/docs/guides/latest/telemetry/"
+oathkeeper-api_1    | time="2018-06-21T13:16:58Z" level=info msg="Listening on :4456"
+oathkeeper-api_1    | time="2018-06-21T13:16:58Z" level=info msg="Detected local environment, skipping telemetry commit"
+oathkeeper-api_1    | time="2018-06-21T13:16:58Z" level=info msg="Detected local environment, skipping telemetry commit"
+oathkeeper-api_1    | time="2018-06-21T13:17:00Z" level=info msg="started handling request" method=GET remote="172.29.160.57:54710" request="/rules?limit=50000&amp;offset=0"
+oathkeeper-api_1    | time="2018-06-21T13:17:00Z" level=info msg="completed handling request" measure#oathkeeper-api.latency=265900 method=GET remote="172.29.160.57:54710" request="/rules?limit=50000&amp;offset=0" status=200 text_status=OK took="265.9µs"
+oathkeeper-proxy_1  | time="2018-06-21T13:17:00Z" level=info msg="Transmission of telemetry data is enabled, to learn more go to: https://www.ory.sh/docs/guides/latest/telemetry/"
+oathkeeper-proxy_1  | time="2018-06-21T13:17:00Z" level=info msg="Listening on :4455.\n"
+oathkeeper-proxy_1  | time="2018-06-21T13:17:00Z" level=info msg="Detected local environment, skipping telemetry commit"
+oathkeeper-proxy_1  | time="2018-06-21T13:17:00Z" level=info msg="Detected local environment, skipping telemetry commit"
+hydra_1             | time="2018-06-21T13:17:24Z" level=info msg="started handling request" method=POST remote="127.0.0.1:52736" request=/oauth2/token
+hydra_1             | time="2018-06-21T13:17:24Z" level=info msg="completed handling request" measure#http://localhost:4444.latency=56612600 method=POST remote="127.0.0.1:52736" request=/oauth2/token status=200 text_status=OK took=56.6126ms
+hydra_1             | time="2018-06-21T13:17:24Z" level=info msg="started handling request" method=GET remote="127.0.0.1:52736" request=/
+hydra_1             | time="2018-06-21T13:17:24Z" level=info msg="completed handling request" measure#http://localhost:4444.latency=55000 method=GET remote="127.0.0.1:52736" request=/ status=404 text_status="Not Found" took="55µs"
+hydra_1             | time="2018-06-21T13:17:24Z" level=info msg="started handling request" method=POST remote="127.0.0.1:52738" request=/clients
+hydra_1             | time="2018-06-21T13:17:24Z" level=info msg="Access granted" client_id=admin request="&amp;{[] [] { 2018-06-21 13:17:24.6148484 +0000 UTC m=+28.054441401 0xc4203c2500 [hydra hydra.*] [hydra hydra.*] map[grant_type:[client_credentials] scope:[hydra hydra.*]] 0xc4201740e0}}" result="&amp;{admin [hydra hydra.*] http://localhost:4444 admin 2018-06-21 13:17:24.6148484 +0000 UTC m=+28.054441401 2018-06-22 13:17:24.6710316 +0000 UTC m=+86428.110624601 map[]}" subject=admin
+hydra_1             | time="2018-06-21T13:17:24Z" level=info msg="completed handling request" measure#http://localhost:4444.latency=56741000 method=POST remote="127.0.0.1:52738" request=/clients status=201 text_status=Created took=56.741ms
+hydra_1             | time="2018-06-21T13:17:24Z" level=info msg="started handling request" method=POST remote="127.0.0.1:52738" request=/clients
+hydra_1             | time="2018-06-21T13:17:24Z" level=info msg="Access granted" client_id=admin request="&amp;{[] [] { 2018-06-21 13:17:24.6148484 +0000 UTC m=+28.054441401 0xc4203c2500 [hydra hydra.*] [hydra hydra.*] map[grant_type:[client_credentials] scope:[hydra hydra.*]] 0xc4201740e0}}" result="&amp;{admin [hydra hydra.*] http://localhost:4444 admin 2018-06-21 13:17:24.6148484 +0000 UTC m=+28.054441401 2018-06-22 13:17:24.6710316 +0000 UTC m=+86428.110624601 map[]}" subject=admin
+hydra_1             | time="2018-06-21T13:17:24Z" level=info msg="completed handling request" measure#http://localhost:4444.latency=55909500 method=POST remote="127.0.0.1:52738" request=/clients status=201 text_status=Created took=55.9095ms
+hydra_1             | time="2018-06-21T13:17:25Z" level=info msg="started handling request" method=POST remote="127.0.0.1:52740" request=/oauth2/token
+hydra_1             | time="2018-06-21T13:17:25Z" level=info msg="completed handling request" measure#http://localhost:4444.latency=55654900 method=POST remote="127.0.0.1:52740" request=/oauth2/token status=200 text_status=OK took=55.6549ms
+hydra_1             | time="2018-06-21T13:17:25Z" level=info msg="started handling request" method=GET remote="127.0.0.1:52740" request=/
+hydra_1             | time="2018-06-21T13:17:25Z" level=info msg="completed handling request" measure#http://localhost:4444.latency=67000 method=GET remote="127.0.0.1:52740" request=/ status=404 text_status="Not Found" took="67µs"
+hydra_1             | time="2018-06-21T13:17:25Z" level=info msg="started handling request" method=POST remote="127.0.0.1:52742" request=/policies
+hydra_1             | time="2018-06-21T13:17:25Z" level=info msg="Access granted" client_id=admin request="&amp;{[] [] { 2018-06-21 13:17:25.0402841 +0000 UTC m=+28.479877101 0xc420144600 [hydra hydra.*] [hydra hydra.*] map[grant_type:[client_credentials] scope:[hydra hydra.*]] 0xc420174b60}}" result="&amp;{admin [hydra hydra.*] http://localhost:4444 admin 2018-06-21 13:17:25.0402841 +0000 UTC m=+28.479877101 2018-06-22 13:17:25.0958166 +0000 UTC m=+86428.535409601 map[]}" subject=admin
+hydra_1             | time="2018-06-21T13:17:25Z" level=info msg="completed handling request" measure#http://localhost:4444.latency=290300 method=POST remote="127.0.0.1:52742" request=/policies status=201 text_status=Created took="290.3µs"
+oathkeeper-api_1    | time="2018-06-21T13:17:25Z" level=info msg="started handling request" method=GET remote="172.29.160.57:54720" request="/rules?limit=50000&amp;offset=0"
+oathkeeper-api_1    | time="2018-06-21T13:17:25Z" level=info msg="completed handling request" measure#oathkeeper-api.latency=345500 method=GET remote="172.29.160.57:54720" request="/rules?limit=50000&amp;offset=0" status=200 text_status=OK took="345.5µs"
+oathkeeper-api_1    | time="2018-06-21T13:17:30Z" level=info msg="started handling request" method=GET remote="172.29.160.57:54722" request="/rules?limit=50000&amp;offset=0"
+oathkeeper-api_1    | time="2018-06-21T13:17:30Z" level=info msg="completed handling request" measure#oathkeeper-api.latency=229800 method=GET remote="172.29.160.57:54722" request="/rules?limit=50000&amp;offset=0" status=200 text_status=OK took="229.8µs"
+oathkeeper-api_1    | time="2018-06-21T13:17:32Z" level=info msg="started handling request" method=GET remote="172.29.160.57:54724" request=/rules/id-test-ap
+oathkeeper-api_1    | time="2018-06-21T13:17:32Z" level=error msg="An error occurred while handling a request" code=404 details="map[]" error="The requested resource could not be found" reason= request-id= status="Not Found" trace="Stack trace: \ngithub.com/ory/oathkeeper/rule.(*MemoryManager).GetRule\n\t/go/src/github.com/ory/oathkeeper/rule/manager_memory.go:50\ngithub.com/ory/oathkeeper/rule.(*Handler).Get\n\t/go/src/github.com/ory/oathkeeper/rule/handler.go:149\ngithub.com/ory/oathkeeper/rule.(*Handler).Get-fm\n\t/go/src/github.com/ory/oathkeeper/rule/handler.go:54\ngithub.com/ory/oathkeeper/vendor/github.com/julienschmidt/httprouter.(*Router).ServeHTTP\n\t/go/src/github.com/ory/oathkeeper/vendor/github.com/julienschmidt/httprouter/router.go:299\ngithub.com/ory/oathkeeper/vendor/github.com/urfave/negroni.Wrap.func1\n\t/go/src/github.com/ory/oathkeeper/vendor/github.com/urfave/negroni/negroni.go:46\ngithub.com/ory/oathkeeper/vendor/github.com/urfave/negroni.HandlerFunc.ServeHTTP\n\t/go/src/github.com/ory/oathkeeper/vendor/github.com/urfave/negroni/negroni.go:29\ngithub.com/ory/oathkeeper/vendor/github.com/urfave/negroni.middleware.ServeHTTP\n\t/go/src/github.com/ory/oathkeeper/vendor/github.com/urfave/negroni/negroni.go:38\ngithub.com/ory/oathkeeper/vendor/github.com/urfave/negroni.(middleware).ServeHTTP-fm\n\t/go/src/github.com/ory/oathkeeper/vendor/github.com/urfave/negroni/negroni.go:38\ngithub.com/ory/oathkeeper/vendor/github.com/ory/metrics-middleware.(*MetricsManager).ServeHTTP\n\t/go/src/github.com/ory/oathkeeper/vendor/github.com/ory/metrics-middleware/middleware.go:160\ngithub.com/ory/oathkeeper/vendor/github.com/urfave/negroni.middleware.ServeHTTP\n\t/go/src/github.com/ory/oathkeeper/vendor/github.com/urfave/negroni/negroni.go:38\ngithub.com/ory/oathkeeper/vendor/github.com/urfave/negroni.(middleware).ServeHTTP-fm\n\t/go/src/github.com/ory/oathkeeper/vendor/github.com/urfave/negroni/negroni.go:38\ngithub.com/ory/oathkeeper/vendor/github.com/meatballhat/negroni-logrus.(*Middleware).ServeHTTP\n\t/go/src/github.com/ory/oathkeeper/vendor/github.com/meatballhat/negroni-logrus/middleware.go:136\ngithub.com/ory/oathkeeper/vendor/github.com/urfave/negroni.middleware.ServeHTTP\n\t/go/src/github.com/ory/oathkeeper/vendor/github.com/urfave/negroni/negroni.go:38\ngithub.com/ory/oathkeeper/vendor/github.com/urfave/negroni.(*Negroni).ServeHTTP\n\t/go/src/github.com/ory/oathkeeper/vendor/github.com/urfave/negroni/negroni.go:96\ngithub.com/ory/oathkeeper/vendor/github.com/rs/cors.(*Cors).Handler.func1\n\t/go/src/github.com/ory/oathkeeper/vendor/github.com/rs/cors/cors.go:200\nnet/http.HandlerFunc.ServeHTTP\n\t/usr/local/go/src/net/http/server.go:1947\nnet/http.serverHandler.ServeHTTP\n\t/usr/local/go/src/net/http/server.go:2694\nnet/http.(*conn).serve\n\t/usr/local/go/src/net/http/server.go:1830\nruntime.goexit\n\t/usr/local/go/src/runtime/asm_amd64.s:2361" writer=JSON
+oathkeeper-api_1    | time="2018-06-21T13:17:32Z" level=info msg="completed handling request" measure#oathkeeper-api.latency=926600 method=GET remote="172.29.160.57:54724" request=/rules/id-test-ap status=404 text_status="Not Found" took="926.6µs"
+oathkeeper-api_1    | time="2018-06-21T13:17:32Z" level=info msg="started handling request" method=PUT remote="172.29.160.57:54726" request=/rules/id-test-ap
+oathkeeper-proxy_1  | time="2018-06-21T13:19:59Z" level=info msg="started handling request" method=GET remote="192.168.76.5:7513" request=/api/Values
+oathkeeper-proxy_1  | time="2018-06-21T13:19:59Z" level=warning msg="No authentication handler was responsible for handling the authentication request" access_url="http://localhost:4455/api/Values" error="Access credentials are either expired or missing a scope" granted=false reason_id=authentication_handler_no_match
+oathkeeper-proxy_1  | time="2018-06-21T13:19:59Z" level=warning msg="Access request denied" access_url="http://localhost:4455/api/Values" error="Access credentials are either expired or missing a scope" granted=false
+oathkeeper-proxy_1  | time="2018-06-21T13:19:59Z" level=error msg="An error occurred while handling a request" code=401 details="map[]" error="Access credentials are either expired or missing a scope" reason= request-id= status=Unauthorized trace="Stack trace: \ngithub.com/ory/oathkeeper/proxy.(*RequestHandler).HandleRequest\n\t/go/src/github.com/ory/oathkeeper/proxy/request_handler.go:126\ngithub.com/ory/oathkeeper/proxy.(*Proxy).Director\n\t/go/src/github.com/ory/oathkeeper/proxy/proxy.go:121\ngithub.com/ory/oathkeeper/proxy.(*Proxy).Director-fm\n\t/go/src/github.com/ory/oathkeeper/cmd/serve_proxy.go:213\nnet/http/httputil.(*ReverseProxy).ServeHTTP\n\t/usr/local/go/src/net/http/httputil/reverseproxy.go:169\ngithub.com/ory/oathkeeper/vendor/github.com/urfave/negroni.Wrap.func1\n\t/go/src/github.com/ory/oathkeeper/vendor/github.com/urfave/negroni/negroni.go:46\ngithub.com/ory/oathkeeper/vendor/github.com/urfave/negroni.HandlerFunc.ServeHTTP\n\t/go/src/github.com/ory/oathkeeper/vendor/github.com/urfave/negroni/negroni.go:29\ngithub.com/ory/oathkeeper/vendor/github.com/urfave/negroni.middleware.ServeHTTP\n\t/go/src/github.com/ory/oathkeeper/vendor/github.com/urfave/negroni/negroni.go:38\ngithub.com/ory/oathkeeper/vendor/github.com/urfave/negroni.(middleware).ServeHTTP-fm\n\t/go/src/github.com/ory/oathkeeper/vendor/github.com/urfave/negroni/negroni.go:38\ngithub.com/ory/oathkeeper/vendor/github.com/ory/metrics-middleware.(*MetricsManager).ServeHTTP\n\t/go/src/github.com/ory/oathkeeper/vendor/github.com/ory/metrics-middleware/middleware.go:160\ngithub.com/ory/oathkeeper/vendor/github.com/urfave/negroni.middleware.ServeHTTP\n\t/go/src/github.com/ory/oathkeeper/vendor/github.com/urfave/negroni/negroni.go:38\ngithub.com/ory/oathkeeper/vendor/github.com/urfave/negroni.(middleware).ServeHTTP-fm\n\t/go/src/github.com/ory/oathkeeper/vendor/github.com/urfave/negroni/negroni.go:38\ngithub.com/ory/oathkeeper/vendor/github.com/meatballhat/negroni-logrus.(*Middleware).ServeHTTP\n\t/go/src/github.com/ory/oathkeeper/vendor/github.com/meatballhat/negroni-logrus/middleware.go:136\ngithub.com/ory/oathkeeper/vendor/github.com/urfave/negroni.middleware.ServeHTTP\n\t/go/src/github.com/ory/oathkeeper/vendor/github.com/urfave/negroni/negroni.go:38\ngithub.com/ory/oathkeeper/vendor/github.com/urfave/negroni.(*Negroni).ServeHTTP\n\t/go/src/github.com/ory/oathkeeper/vendor/github.com/urfave/negroni/negroni.go:96\ngithub.com/ory/oathkeeper/vendor/github.com/rs/cors.(*Cors).Handler.func1\n\t/go/src/github.com/ory/oathkeeper/vendor/github.com/rs/cors/cors.go:200\nnet/http.HandlerFunc.ServeHTTP\n\t/usr/local/go/src/net/http/server.go:1947\nnet/http.serverHandler.ServeHTTP\n\t/usr/local/go/src/net/http/server.go:2694\nnet/http.(*conn).serve\n\t/usr/local/go/src/net/http/server.go:1830\nruntime.goexit\n\t/usr/local/go/src/runtime/asm_amd64.s:2361" writer=JSON
+oathkeeper-proxy_1  | time="2018-06-21T13:19:59Z" level=info msg="completed handling request" measure#oathkeeper-proxy.latency=2372200 method=GET remote="192.168.76.5:7513" request=/api/Values status=401 text_status=Unauthorized took=2.3722ms
+</code></pre>
+<p>I removed some log messages from oathkeeper-api container that stands for pooling rules like these<br/>
+<code>... request="/rules?limit=50000&amp;offset=0 ...</code></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Ok, I think I know what the issue is. You <strong>must</strong> make sure that the versions in your docker-compose.yml match. Right now, you’re not defining a version constraint so the <code>latest</code> image will be downloaded. So right now, you’re probably mixing incompatible versions.</p>
+<p>Instead, define the docker images like this: <code>image: ory/hydra:v1.0.0-beta.4</code></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Also it seems like you’re using an ORY Hydra version prior to 1.0.0-beta which is incompatible to the 1.0.0 branch of ORY Oathkeeper. Try to run all services in the same version, so <code>oryd/hydra:v1.0.0-beta.4</code>,  <code>oryd/oathkeeper:v1.0.0-beta.4</code>,  <code>oryd/keto:v1.0.0-beta.4</code>.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/76_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">maxx</div>
+          <div class="post_content">
+<p>Thanks<br/>
+I am trying to put all these things together</p>
+<p>I’m not sure if I understand all things in a right way.<br/>
+When using oauth2_introspection authenticator, do I need to run keto??<br/>
+I don’t see any env variables that should point to keto in this scenario.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/76_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">maxx</div>
+          <div class="post_content">
+<p>Finally I got it running, Thanks!</p>
+<p>There is one thing left:<br/>
+I cannot obtain “refresh_token” in any case.<br/>
+Of course I have offline scope in my client definition:</p>
+<pre><code class="lang-auto">"scope": "scope-api offline"
+</code></pre>
+<p>as well as I am obtaining my token using offline scope, like this:</p>
+<pre><code class="lang-auto">client_id=api-client&amp;client_secret=api-secret&amp;grant_type=client_credentials&amp;scope=scope-api%20offline
+</code></pre>
+<p>but I am receiving only access_token <img alt=":frowning:" class="emoji" src="../../../images/frowning.png" title=":frowning:"/></p>
+<p>(later on)<br/>
+Found that this is impossible <a href="https://tools.ietf.org/html/rfc6749#section-4.4" rel="nofollow noopener">https://tools.ietf.org/html/rfc6749#section-4.4</a></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>The client_credentials grant does not get a refresh token <img alt=":slight_smile:" class="emoji" src="../../../images/slight_smile.png" title=":slight_smile:"/> You can refresh it without user interaction by re-requesting the client_credentials grant.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">stevepnscott</div>
+          <div class="post_content">
+<p>Hi <span class="mention">@hackerman</span></p>
+<p>I am having exactly the same issue - using Keycloak to provide an introspeciton endpoint.</p>
+<p>Monitoring the network resposne I am getting this back from the introspection endpoint:<br/>
+{<br/>
+“exp”: 1596054756,<br/>
+“nbf”: 0,<br/>
+“iat”: 1596054456,<br/>
+“jti”: “581fb000-8fd9-4323-85c0-c0c8405f7c35”,<br/>
+“aud”: “account”,<br/>
+“typ”: “Bearer”,<br/>
+“acr”: “1”,<br/>
+“active”: true<br/>
+}</p>
+<p>just following up on this as I am seeing the same error in the oathkeeper logs when calling out to keycloak;</p>
+<p>{“error”:{“code”:500,“message”:“json: cannot unmarshal string into Go struct field AuthenticatorOAuth2IntrospectionResult.aud of type []string”}}</p>
+<p>Keycloak can return a single string or an array depending on the number of audiences defined.</p>
+<p>The RFC I think supports thids approach, shoud Oathkeeper support single strings also ?</p>
+<p>I have a work around by adding additional audience values to the token response, but this should not be necessary.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Yes, I think this was also resolved but not sure - what version do you use?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">stevepnscott</div>
+          <div class="post_content">
+<p>I was using : v0.38.2-beta.1 from 2 months ago, let me pull latest and see if there is any difference.</p>
+<p>Thanks.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">stevepnscott</div>
+          <div class="post_content">
+<p>I just pulled latest and built using :</p>
+<p>docker build -t ory-oathkeeper-demo .</p>
+<p>— dockerfile —<br/>
+FROM oryd/oathkeeper:latest</p>
+<p>ADD config.yaml /config.yaml</p>
+<p>ADD rules.json /rules.json</p>
+<p>ADD jwks.json /jwks.json</p>
+<p>— images –</p>
+<p>Stephens-MBP:Oathkeeper stephenscott$ docker image ls<br/>
+REPOSITORY                             TAG                 IMAGE ID            CREATED             SIZE<br/>
+ory-oathkeeper-demo                    latest              fcc88f4842ea        5 minutes ago       19.2MB<br/>
+oryd/oathkeeper                        latest              4cbb9c1f1ddd        29 hours ago        19.2MB</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">stevepnscott</div>
+          <div class="post_content">
+<p>Getting the same issue :</p>
+<p>{“error”:{“code”:500,“status”:“Internal Server Error”,“message”:“json: cannot unmarshal string into Go struct field AuthenticatorOAuth2IntrospectionResult.aud of type []string”}}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Would you mind opening an issue in ORY Oathkeeper with all the info? Thank you!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">stevepnscott</div>
+          <div class="post_content">
+<p>Sure - done : <a href="https://github.com/ory/oathkeeper/issues/491" rel="nofollow noopener">https://github.com/ory/oathkeeper/issues/491</a></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Thank you!</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

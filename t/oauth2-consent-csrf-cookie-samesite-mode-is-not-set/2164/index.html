@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Oauth2_consent_csrf cookie SameSite mode is not set</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Oauth2_consent_csrf cookie SameSite mode is not set</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/108_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">sumit7325</div>
+          <div class="post_content">
+<p>Hi,<br/>
+I am using hydra v1.7.4 and suffering from the pretty common Google Chrome Cookie issue  <img alt=":upside_down_face:" class="emoji" src="../../../images/upside_down_face.png" title=":upside_down_face:"/>  according to the <a href="https://www.ory.sh/hydra/docs/guides/cookies/" rel="nofollow noopener">hydra configuring cookie docs</a>, I have set <code>SERVE_COOKIES_SAME_SITE_MODE</code> env variable to <code>Lax</code> and tried the workaround property also <code>cookies.same_site_legacy_workaround</code>  still, csrf cookies coming without <code>SameSite</code> mode and same rejected by Google chrome version 84 only in windows.</p>
+<p>I have enabled the sensitive log property to get the logs</p>
+<pre><code>	"http_request": {
+		"headers": {
+			"accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
+			"accept-encoding": "gzip, deflate",
+			"accept-language": "en-US,en;q=0.9",
+			"cache-control": "no-cache",
+			"cookie": "oauth2_authentication_csrf=MTU5OTM2ODYxNHxEdi1CQkFFQ180SUFBUkFCRUFBQVB2LUNBQUVHYzNSeWFXNW5EQVlBQkdOemNtWUdjM1J5YVc1bkRDSUFJRFEyT1dZeE0yUXlOVEV3WlRSa04ySTRPVFV3WmpNMlpqTm1aV00xTURsaXx5DZlmoDVq1b9YtmFZIcRKjopsjdWJpmNyDsvbByuxZw==;
+			oauth2_consent_csrf=MTU5OTM2ODYyMHxEdi1CQkFFQ180SUFBUkFCRUFBQVB2LUNBQUVHYzNSeWFXNW5EQVlBQkdOemNtWUdjM1J5YVc1bkRDSUFJRFprTUdWa01ERTJZakk1WXpReE5XVmlObVJpT0RVNE5UY3pPVEl5TkdNenyL_aRWXzl-8dMrjOmQl3gX_kqFgNqNZeZ8ojkPFP25Fg==; 
+			oauth2_authentication_csrf_insecure=MTU5OTUzNzA2MHxEdi1CQkFFQ180SUFBUkFCRUFBQVB2LUNBQUVHYzNSeWFXNW5EQVlBQkdOemNtWUdjM1J5YVc1bkRDSUFJR001TXpCaU1qQXhZVE5rT0RRd05HRmhZakV6WldGaU0yTmxNREpqTUdRd3xUjJtU4H-8Z8BsyM37DTo9qcvbMuQvfviv0uKXbW9Msw==; 
+			oauth2_consent_csrf_insecure=MTU5OTUzNzA4NXxEdi1CQkFFQ180SUFBUkFCRUFBQVB2LUNBQUVHYzNSeWFXNW5EQVlBQkdOemNtWUdjM1J5YVc1bkRDSUFJRE5qTURKalpXRTNNVGRqWlRSak1qZzVaalJtWldVeE1qaG1ObU13WW1RM3xjl_P5LGEfTxMG4yxNTaiLdcnkCxpqJ7kM8aU-HyOkPQ==",
+			"referer": " http://xxx.biz/ ",
+			"user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36",
+			"x-forwarded-for": "192.168.xx.xx",
+			"x-forwarded-proto": "http"
+		},
+		"host": " xxx.hydra.gr8hr.biz ",
+		"method": "GET",
+		"path": "/oauth2/auth",
+		"query": "access_id=56362f4472394d3834456152702b2f774b584f32786c445739534263667146766a675533337451474c30513d\u0026client_id=greythr-gtcorehr\u0026consent_verifier=e451be6c80274ff995b68501db86401b\u0026gt_user_token=\u0026nonce=99jmX77EEDle21G0a2RwcioTct03x6QaQH8TFwY5\u0026origin_user=\u0026redirect_uri=http%3A%2F% 2Foauth.gtcorehr.gr8hr.biz %2Fuas%2Fportal%2Fauth%2Fcallback\u0026response_type=id_token+token\u0026scope=openid+offline\u0026state=99jmX77EEDle21G0a2RwcioTct03x6QaQH8TFwY5",
+		"remote": "10.43.80.150:45220",
+		"scheme": "http"
+	},
+	"http_response": {
+		"status": 302,
+		"text_status": "Found",
+		"took": 300339342
+	},
+	"level": "info",
+	"msg": "completed handling request",
+	"time": "2020-09-08T03:51:25Z"
+}
+</code></pre>
+<p>Am I doing something wrong ??<br/>
+Thanks in Advance</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Could you please share your complete config (without secrets)?</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

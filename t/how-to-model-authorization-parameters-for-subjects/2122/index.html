@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>How to model authorization parameters for subjects?</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">How to model authorization parameters for subjects?</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">marcin</div>
+          <div class="post_content">
+<p>Hello!</p>
+<p>I’m new to Kratos a need an advice.</p>
+<p>I have a case where each user of the system can be part of a organisation and can have a role in it (admin, normal member, etc).</p>
+<p>I thought that I should add this in identity schema as  traits:</p>
+<pre><code class="lang-auto">        "staff": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "org": {
+                "type": "string",
+                "pattern": "^[a-z0-9_-]+$",
+                "minLength": 1
+              },
+              "role": {
+                "type": "string",
+                "enum": ["admin", "member"]
+              }
+            }
+          }
+        }
+</code></pre>
+<p>However, when I use selfservice node app to register such user, the kratos registration flow asks for these role fields in the form. Of course, I do not want to ask a registering user to specify their role and in which org, I want to do this in the backend code.</p>
+<p>I could perhaps remove the staff fields from the set of required fields, but I am afraid this is just hiding the problem visually, and I am opening some sort of security hole here - the kratos api server expects to be given this information.</p>
+<p>Should I mess with the fields required by the self service flows? I guess I shouldn’t. But then - how should I add these pieces of information to user data? I am clearly missing something here. Help!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">marcin</div>
+          <div class="post_content">
+<p>Ok so I think the answer is: Kratos is not the place to put authorization data, the user–&gt;org mapping should be managed in another system</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Exactly!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">janwillies</div>
+          <div class="post_content">
+<p>Is there a recommended approach or existing solution where to store the user-&gt;org mapping?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>No it really depends on your system and environment and context <img alt=":slight_smile:" class="emoji" src="../../../images/slight_smile.png" title=":slight_smile:"/></p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

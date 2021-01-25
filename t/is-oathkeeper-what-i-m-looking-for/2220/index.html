@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Is Oathkeeper what I’m looking for?</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Is Oathkeeper what I’m looking for?</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/591_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">idcmp</div>
+          <div class="post_content">
+<p>I <em>think</em> I’d like to use oathkeeper as a forwardauth handler to Traefik 2.x. I’d like to to either accept externally minted JWT’s (from HashiCorp Vault) or humans. If it’s a human (ie, there’s no creds), they need to be auth’d via Okta. In both cases I’d like to mint fresh JWT’s and have that injected into the headers to the forwarded request.</p>
+<p>It <em>looks</em> like Oathkeeper is what I want, but I’ll be honest with you, I only get about knee-deep into OAuth2 on a good day; I’m in a maze of URLs and client keys - all similar.</p>
+<p>The Traefik integration I can handle, but right now I’m trying to extend the hello world example so it uses oauth2_introspection - and I’d like it if there’s neither a JWT or OAuth creds, that the request is redirected to Okta to be authenticated.</p>
+<p>Is Oathkeeper what I’m looking for? There’s almost no integration documentation, so I’m wondering if I’ve gone down the wrong path?</p>
+<p>JAmes</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Yeah looks like Oathkeeper can help - especially wrt JWT. One question is if you want Oathkeeper to also handle the oauth2 login flow - if that’s the case then that’s not something you can do with Oathkeeper. But maybe you can combine <a href="https://github.com/pomerium/pomerium">https://github.com/pomerium/pomerium</a> with Oathkeeper to achieve both!</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

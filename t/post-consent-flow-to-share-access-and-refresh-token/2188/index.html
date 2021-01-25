@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Post Consent Flow to share access and refresh token</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Post Consent Flow to share access and refresh token</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/589_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">sagarshah1983</div>
+          <div class="post_content">
+<p>As I understood, after consent is accepted, identity application needs to call PUT hydra admin endpoint (/consent/accept), which returns another url, which the browser needs to redirect to.<br/>
+Question: How does the client gets the access token and refresh token from Hydra? Is that using callback  endpoint that hydra calls to 3rd party app client?<br/>
+If so, is there an alternative way? In our use case, we have 3rd party app running in the facility (on-prem) and Hydra OAuth 2 needs to be put in cloud. Facility does not want to open up a port even for https. So trying to understand the last flow after consent is approved, how is the access token and refresh token shared with 3rd party app client and are there any alternatives?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Please check out the OAuth2 flows and specifications, which explain how this would work. On a high level, the client exchanges the authorization code for an access and optionally refresh token.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/589_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">sagarshah1983</div>
+          <div class="post_content">
+<p>Thank you for clarifying. I was trying to look for the client app code in github that handles /callback, but could not find out. Will look at auth 2 spec.</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

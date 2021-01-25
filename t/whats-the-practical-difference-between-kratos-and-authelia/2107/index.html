@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>What&rsquo;s the practical difference between Kratos and Authelia?</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">What&rsquo;s the practical difference between Kratos and Authelia?</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">unramk</div>
+          <div class="post_content">
+<p>Hi. I’m trying to develop a B2B webapp that will need a decent identity provider. I’d love to use an open source solution, but get as close to “plug and play” as possible, while retaining the option to get into the weeds later if it proves necessary.</p>
+<p>I’ve narrowed it down to these two services, but I can’t tell what the practical differences are at this point. Authelia doesn’t seem to be a platform you’ve made a direct comparison to before. Any advice is appreciated. <img alt=":slight_smile:" class="emoji" src="../../../images/slight_smile.png" title=":slight_smile:"/></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/669_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">vinckr</div>
+          <div class="post_content">
+<p>Hey umrank,<br/>
+Glad to have you here!</p>
+<p>A direct comparison of ORY Kratos to other auth products is not yet available.<br/>
+We have a stub in the documentation for this <a href="https://www.ory.sh/kratos/docs/further-reading/comparison">here</a>. <img alt=":point_left:" class="emoji" src="../../../images/point_left.png" title=":point_left:"/></p>
+<p>Since there is a good amount of changes coming to ORY Kratos in the near time, a direct comparison would require a lot of changes as well over time.<br/>
+So this is probably something we would tackle when we have reached a release candidate for ORY Kratos (1.0).</p>
+<p>Other than that, if ORY Kratos is a good fit for you depends on your use-case.<br/>
+If you are just looking solve login, this would work well out of the box.<br/>
+If you want something more complex or exotic, there is plenty of options in the ORY stack itself or possibilites to interface it with other auth products out there.</p>
+<p>I recommend you try out the <a href="https://www.ory.sh/kratos/docs/quickstart">Quickstart</a> and if you have further questions, <a href="https://www.ory.sh/chat">hop in the chat</a>. There you can directly interact with other developers, who are maybe trying to solve the same issues and the ORY team.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">unramk</div>
+          <div class="post_content">
+<p>Thanks a lot!</p>
+<p>Does “out of the box” mean that the API could directly be exposed to the internet and used from the frontend app, or does it still need a gateway like oathkeeper?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/669_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">vinckr</div>
+          <div class="post_content">
+<p>The public API can be used from the frontend app.</p>
+<p>Here is a rough representation of the application architecture:<br/>
+<div class="lightbox-wrapper"><a class="lightbox" data-download-href="/uploads/short-url/nsXBsUwByJjWm3o6rqWThOdRRzG.png?dl=1" href="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/original/1X/a47817efc28ba483e250d0a6c4a5f84673b90720.png" title="Capture"><img alt="Capture" data-base62-sha1="nsXBsUwByJjWm3o6rqWThOdRRzG" data-small-upload="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/a47817efc28ba483e250d0a6c4a5f84673b90720_2_10x10.png" height="500" src="../../../images/a47817efc28ba483e250d0a6c4a5f84673b90720.png" width="605"/><div class="meta"><svg aria-hidden="true" class="fa d-icon d-icon-far-image svg-icon"><use xlink:href="#far-image"></use></svg><span class="filename">Capture</span><span class="informations">710×586 21.7 KB</span><svg aria-hidden="true" class="fa d-icon d-icon-discourse-expand svg-icon"><use xlink:href="#discourse-expand"></use></svg></div></a></div></p>
+<p>Just read the <a href="https://www.ory.sh/kratos/docs/quickstart">Quickstart</a>, most of that is explained pretty well in there <img alt=":slight_smile:" class="emoji" src="../../../images/slight_smile.png" title=":slight_smile:"/> .</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

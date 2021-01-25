@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>API Support to get access token without login and consent UI for a user already logged into the system</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">API Support to get access token without login and consent UI for a user already logged into the system</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/589_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">sagarshah1983</div>
+          <div class="post_content">
+<p>Are there any REST API available in Hydra that allows creation of access tokens using API without going through login/consent UI flow, when user is already authenticated and session is established. I am not worried much for consent screen, but for the login flow.<br/>
+For example, I have one web application in which user is already logged in with his/her credentials (user &amp; identity managed by application itself without hydra). I now want to open a 3rd party app from this application, that will ask OAuth server (Hydra) to authorize app level access. I want to avoid the login flow again as user is already logged into the main system. Is there a way to avoid login UI and consent UI and still provide the token when auth is requested by 3rd party App based on existing session data?<br/>
+Note: If required, on the main application login flow, we could call hydra API (provided hydra supports such API) to establish login session</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>That is currently not possible unfortunately.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/589_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">sagarshah1983</div>
+          <div class="post_content">
+<p>Thanks for clarifying.<br/>
+Is there a plan to support this flow (login &amp; consent) via REST API (even admin API for that reason) that does not require user to input anything on UI?<br/>
+Or any alternative way to handle it differently and get login, consent and access token, etc set up behind the scenes (using Hydra CLI or Admin API) on application login?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>No, there is no such plan as it is not conformant with OpenID Connect Certification. But if you do not care about that, you control the login and consent UI and can modify it so that it does what you want, even if that is considered bad practice and weak security.</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

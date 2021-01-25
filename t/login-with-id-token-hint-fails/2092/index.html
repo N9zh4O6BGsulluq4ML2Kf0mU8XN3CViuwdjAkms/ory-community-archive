@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Login with id_token_hint fails</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Login with id_token_hint fails</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">jens.klinker</div>
+          <div class="post_content">
+<p>Hi,</p>
+<p>I try to make a new (second) login using id_token_hint, but I get always an error in the end. Is it not supported by hydra, or is there anything I make wrong? The first login with prompt and redirection to login-page always works. Pls help!</p>
+<p>curl --verbose --request GET ‘<a href="http://localhost:4444/oauth2/auth?client_id=my_client&amp;response_type=code&amp;scope=openid&amp;redirect_uri=https://my-service-provider&amp;state=abcadfssadfadssadfxa&amp;nonce=RP2GxoOygBT23R5Ma&amp;prompt=none&amp;id_token_hint=" rel="nofollow noopener">http://localhost:4444/oauth2/auth?client_id=my_client&amp;response_type=code&amp;scope=openid&amp;redirect_uri=https://my-service-provider&amp;state=abcadfssadfadssadfxa&amp;nonce=RP2GxoOygBT23R5Ma&amp;prompt=none&amp;id_token_hint=</a>…’</p>
+<p>Result:<br/>
+&lt; HTTP/1.1 302 Found<br/>
+&lt; Location: <a href="https://my-service-provider?error=login_required&amp;error_debug=Prompt+%22none%22+was+requested%2C+but+no+existing+login+session+was+found&amp;error_description=The+Authorization+Server+requires+End-User+authentication&amp;state=abcadfssadfadssadfxa" rel="nofollow noopener">https://my-service-provider?error=login_required&amp;error_debug=Prompt+"none"+was+requested%2C+but+no+existing+login+session+was+found&amp;error_description=The+Authorization+Server+requires+End-User+authentication&amp;state=abcadfssadfadssadfxa</a></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>I would recommend reading up on “prompt=none” and silent refresh. Given that you use CURL without any cookies it’s impossible for ORY Hydra to know the login session, which is why this fails.</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Debian package repo?</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Debian package repo?</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/260_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">ghenry</div>
+          <div class="post_content">
+<p>Hi all,</p>
+<p>Has anyone built a deb or host one somewhere?</p>
+<p>Thanks.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/260_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">ghenry</div>
+          <div class="post_content">
+<p>After some research it looks like this is the recommended way for any golang things:</p>
+<aside class="onebox allowlistedgeneric">
+<header class="source">
+<img class="site-icon" height="32" src="../../../images/missing_image.png" width="32"/>
+<a href="https://github.com/Debian/dh-make-golang" rel="noopener nofollow ugc" target="_blank">GitHub</a>
+</header>
+<article class="onebox-body">
+<img class="thumbnail onebox-avatar" height="400" src="../../../images/81505aeccbf5c28f2d397f00e485561370158751.png" width="400"/>
+<h3><a href="https://github.com/Debian/dh-make-golang" rel="noopener nofollow ugc" target="_blank">Debian/dh-make-golang</a></h3>
+<p>Automatically creates Debian packaging for Go packages - Debian/dh-make-golang</p>
+</article>
+<div class="onebox-metadata">
+</div>
+<div style="clear: both"></div>
+</aside>
+<br/>
+<aside class="onebox allowlistedgeneric">
+<header class="source">
+<a href="https://go-team.pages.debian.net/packaging.html" rel="noopener nofollow ugc" target="_blank">go-team.pages.debian.net</a>
+</header>
+<article class="onebox-body">
+<img class="thumbnail" height="" src="../../../images/missing_image.png" width=""/>
+<h3><a href="https://go-team.pages.debian.net/packaging.html" rel="noopener nofollow ugc" target="_blank">Debian Go Packaging</a></h3>
+</article>
+<div class="onebox-metadata">
+</div>
+<div style="clear: both"></div>
+</aside>
+<p>Thanks.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Not yet but it would be interesting to support that! Looks also like goreleaser can support this: <a href="https://goreleaser.com/customization/nfpm/">https://goreleaser.com/customization/nfpm/</a></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/260_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">ghenry</div>
+          <div class="post_content">
+<p>That looks good. It’s just for an inbetween stage for us and having an official deb repo for Buster would be amazing.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>I have never submitted a deb to the official package repo. Is there any reason you don’t want to use the shell script install method or docker?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/260_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">ghenry</div>
+          <div class="post_content">
+<p>I want to run it via systemd as a server process and all the other things. I’ll do it via ansible and the related systemd things. It’s perfect for a Raspberry PI debian.</p>
+<p>I want to run this on a very light VM for now with little storage, so Docker will fill up as we move forward. It will live in a Docker Swarm in the new year, which will then become a new k8s deployment.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>I see - so right now we don’t really have a process here but contribs would be welcomed!</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

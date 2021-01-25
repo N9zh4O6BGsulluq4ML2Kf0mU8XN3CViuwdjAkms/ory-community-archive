@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Oathkeeper Docker + JWT -&gt; certificate signed by unknown authority</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Oathkeeper Docker + JWT -&gt; certificate signed by unknown authority</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/673_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">trietsch</div>
+          <div class="post_content">
+<p>I’m trying out ORY Oathkeeper with a JWT authenticator. After I’ve configured a rule and pass a valid JWT to Oathkeeper, unfortunately it fails, due to the following:</p>
+<pre><code class="lang-auto">ERRO[2020-12-10T12:13:48Z] Unable to fetch JSON Web Key Set from remote  audience=application error=map[debug: message:An internal server error occurred, please contact the system administrator reason:Unable to fetch JSON Web Keys from location "https://example.com/jwks" because "Get "https://example.com/jwks": x509: certificate signed by unknown authority". status:Internal Server Error status_code:500] reason=Unable to fetch JSON Web Keys from location "https://example.com/jwks" because "Get "https://example.com/jwks": x509: certificate signed by unknown authority". service_name=ORY Oathkeeper service_version=v0.38.4-beta.1 stack=rid=
+error=An internal server error occurred, please contact the system administrator
+reason=Unable to fetch JSON Web Keys from location "https://example.com/jwks" because "Get "https://example.com/jwks": x509: certificate signed by unknown authority".
+</code></pre>
+<p>I’ve replace the domain in this code, but that shouldn’t matter. What matters is, that the certificate cannot be verified. Probably because <code>golang:alpine</code> images do not contain <code>ca-certificates</code> by default.<br/>
+Important to note: the <code>jwks</code> URI is publicly accessible over the internet.</p>
+<p>How can I circumvent this?</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

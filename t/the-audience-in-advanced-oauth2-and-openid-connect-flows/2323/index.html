@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>The &ldquo;Audience&rdquo; in Advanced OAuth2 and OpenID Connect Flows</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">The &ldquo;Audience&rdquo; in Advanced OAuth2 and OpenID Connect Flows</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/226_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">tacurran</div>
+          <div class="post_content">
+<p>I want to set/add an entry in ID token’s <code>aud</code> claim, but I can’t figure it out (its value is always just the <code>client_id</code>). I’ve followed the <a href="https://www.ory.sh/hydra/docs/v1.7/advanced/#audience">https://www.ory.sh/hydra/docs/v1.7/advanced/#audience</a> and managed to set the audience for the Access Token, but that does not reflect in the ID token. Any ideas?</p>
+<p><a href="https://app.slack.com/team/U01CNJCJNT0">Uros Trebec</a><br/>
+(20201117:hydra#slack(<a href="mailto:uros@reciprocitylabs.com">mailto:uros@reciprocitylabs.com</a>))<br/>
+<a href="https://ory-community.slack.com/archives/C012RBW0F18/p1605603819342400">https://ory-community.slack.com/archives/C012RBW0F18/p1605603819342400</a></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/226_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">tacurran</div>
+          <div class="post_content">
+<p>This is explained here: <a href="https://www.ory.sh/hydra/docs/v1.7/advanced/#audience">https://www.ory.sh/hydra/docs/v1.7/advanced/#audience</a></p>
+<p>There are two types of audience concept in the context of OAuth 2.0 and OpenID Connect:</p>
+<ol>
+<li>OAuth 2.0: Access and Refresh Tokens are “internal-facing”. The <code>aud</code>  claim of an OAuth 2.0 Access and Refresh token defines at which <em>endpoints</em>  the token can be used.</li>
+<li>OpenID Connect: The ID Token is “external-facing”. The <code>aud</code>  claim of an OpenID Connect ID Token defines which <em>clients</em>  should accept it.</li>
+</ol>
+<p>While modifying the audience of an ID Token is not desirable, specifying the audience of an OAuth 2.0 Access Token is. This is not defined as an IETF Standard but is considered good practice in certain environments.</p>
+<p>For this reason, Hydra allows you to control the aud claim of the access token. To do so, you must specify the intended audiences in the OAuth 2.0 Client’s metadata on a per-client basis:</p>
+<pre><code class="lang-auto">{
+    "client_id": "...",
+    "audience": ["https://api.my-cloud.com/user", "https://some-tenant.my-cloud.com/"]
+}
+</code></pre>
+<p>The audience is a list of case-sensitive URLs. <strong>URLs must not contain whitespaces</strong>.</p>
+<p>The Access Token audience does not translate to ID token because its value is enforced by the library.</p>
+<p>The implementation is here: <a href="https://github.com/ory/hydra/blob/master/oauth2/handler.go">https://github.com/ory/hydra/blob/master/oauth2/handler.go</a></p>
+<pre><code class="lang-auto">func (h *Handler) AuthHandler(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	var ctx = r.Context()
+</code></pre>
+<p>The following people provided support:</p>
+<p><a href="https://app.slack.com/team/U019F8P1R5F">Paul Harman</a> <img alt=":nerd_face:" class="emoji" src="../../../images/nerd_face.png" title=":nerd_face:"/></p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

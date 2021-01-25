@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Managing user flow when updating settings after time-out</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Managing user flow when updating settings after time-out</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">jcamp</div>
+          <div class="post_content">
+<p>I’ve noticed that the possibility to update user settings and passwords times out after x minutes. However, the session cookie is still valid, so that in my understanding the user would still be logged in.</p>
+<p>If this is correct, how should one direct the user flow? Kratos tells him to log in another time, even though he is still logged in.</p>
+<p>I only tested this in a very easy development setup, so I might be missing something. But it looked pretty weird to me.</p>
+<p>Thanks already for the replies!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Check out <a href="https://www.ory.sh/kratos/docs/self-service/flows/user-settings/user-profile-management">https://www.ory.sh/kratos/docs/self-service/flows/user-settings/user-profile-management</a> and <a href="https://www.ory.sh/kratos/docs/self-service/flows/user-settings/change-password">https://www.ory.sh/kratos/docs/self-service/flows/user-settings/change-password</a></p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

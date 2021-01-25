@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Can Hydra realized that flow?</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Can Hydra realized that flow?</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/656_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">Ksael</div>
+          <div class="post_content">
+<p>Hello.<br/>
+I want to conveniently manage my API clients.</p>
+<p>I now have a service that can issue a JWT token, encrypted with a public key. The client that received this token makes a request to the application, and the application already validates the token itself.</p>
+<p>The hydra documentation says that it is not recommended to work with JWT tokens, and it is better to look towards oathkeeper.</p>
+<p>Then 2 questions arise</p>
+<ol>
+<li>Will oathkeeper be able to issue JWT tokens, or should the logic for issuing tokens lie on Hydra?</li>
+<li>Is it possible to create clients using Kratos, give them details to receive a token, or do you need to write your own client manager for oathkeeper.</li>
+</ol>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Yes, ORY Oathkeeper can issue JWTs! So with Kratos this would not work for programmatic clients, more for users, but if you want you can use e.g. OAuth2 Client Credentials in combination with ORY Hydra to achieve this!</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

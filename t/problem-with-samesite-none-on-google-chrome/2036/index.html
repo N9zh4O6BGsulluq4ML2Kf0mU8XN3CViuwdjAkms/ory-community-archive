@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Problem with SameSite=None on Google Chrome</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Problem with SameSite=None on Google Chrome</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">trungdq</div>
+          <div class="post_content">
+<p>Hi,</p>
+<p>I actually have a problem with the update of google chrome: <a href="https://www.chromium.org/updates/same-site" rel="nofollow noopener">https://www.chromium.org/updates/same-site</a><br/>
+Hope somebody can help me.</p>
+<p>First, I will describe a bit about my problem:<br/>
+I have a login page that included my consent app inside an iframe. Today, I cannot login anymore. Ory hydra always returns an error: “Noo CSRF value…”.<br/>
+I research and see the article: <a href="https://web.dev/samesite-cookie-recipes/" rel="nofollow noopener">https://web.dev/samesite-cookie-recipes/</a>. I understand it means my consent app is a third-party and I have to mark the cookie session with SameSite=None; Secure.</p>
+<p>I continue to research and luckily, Ory Hydra has supported “samesite” config.<br/>
+So I add  more 2 configs: serve.cookies.same_site_mode=none, serve.cookies.same_site_legacy_workaround=true.</p>
+<p>Now I can login success. But I still receive some report cannot login with “No CSRF error…”. They have to clear the cookie, try login again and it’s work then.</p>
+<p>Somebody can explain me about this? What can I do to fix the issue completely?<br/>
+I’m using OryHydra docker version 1.5.2.</p>
+<p>Thanks.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>This might help: <a href="https://github.com/ory/hydra/issues/1844#issuecomment-666283875">https://github.com/ory/hydra/issues/1844#issuecomment-666283875</a></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">trungdq</div>
+          <div class="post_content">
+<p>Thanks for your help. I try to set config “serve.cookies.same_site_mode=Lax” and it’s work.</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

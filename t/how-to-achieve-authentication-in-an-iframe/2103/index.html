@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>How to achieve authentication in an iframe</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">How to achieve authentication in an iframe</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/416_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">markope</div>
+          <div class="post_content">
+<p>I have a setup where I have a parent window in my browser running on a domain for which I set up an oauth2 client with hydra and have an authenticated session.<br/>
+In the parent window I want to display an iframe whose content comes from a different domain but should be authenticated by hydra as well. Both domains are ours.</p>
+<p>My first idea was to create an oauth2 client with hydra for the iframe’s domain and do an authorization code flow on that domain. If I am authenticated in the parent domain, hydra would know and I could skip the verification and consent in the iframes domain. Just, this does not work in an iframe. The reason seems to be that it is not possible to set a cookie in an iframe.</p>
+<p>What would work is to quickly redirect to the iframes domain with the parent browser tab, do the auth flow, which sets the cookie in the browser on the iframe’s domain and the go back and load the iframe. The iframe can then see the cookie. This is however undesirable because we have a single page app and would loose all front end state in the process.</p>
+<p>Maybe I can get an access token from hydra with the parent domain and pass it down in the GET request in the iframe. However I don’t understand the security issues I create when passing around access_tokens like that.</p>
+<p>I also thought about a different approach using traffik to do some fancy routing within one domain, but this kind of architecture has some other issues with my setup.</p>
+<p>I’m out of ideas how to address my problem. If anyone could point me in the right direction here, this would be great.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/423_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">tttp</div>
+          <div class="post_content">
+<aside class="quote no-group" data-post="1" data-topic="2103" data-username="markope">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" class="avatar" height="20" src="../../../images/416_2.png" width="20"/> markope:</div>
+<blockquote>
+<p>Just, this does not work in an iframe. The reason seems to be that it is not possible to set a cookie in an iframe.</p>
+</blockquote>
+</aside>
+<p>If I had to guess, it is likely more an issue of third party cookies being blocked. Check how your cookie is set and specifically if you have “SameSite” and “Secure” params (and read more about what is the magic combination that would work for your use case)</p>
+<p>Could you use subdomains of a same parent domain? It’s easier to convince the browser to share cookies between subdomains than between two different domains.</p>
+<aside class="quote no-group" data-post="1" data-topic="2103" data-username="markope">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" class="avatar" height="20" src="../../../images/416_2.png" width="20"/> markope:</div>
+<blockquote>
+<p>Maybe I can get an access token from hydra with the parent domain and pass it down in the GET request in the iframe.</p>
+</blockquote>
+</aside>
+<p>If you need to pass things between the parent and the iframe, postMessage works fine in pretty much every modern browser.</p>
+<p>I don’t fully understand either the security implications, not even sure the token isn’t already pegged to a specific domain.</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

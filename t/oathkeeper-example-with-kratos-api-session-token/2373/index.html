@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Oathkeeper example with Kratos API session_token</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Oathkeeper example with Kratos API session_token</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/667_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">wezzle</div>
+          <div class="post_content">
+<p>Is there any example yet on how to validate a user that is authenticating through the session_token provided by the Kratos API login flow?</p>
+<p>As far as I can tell, just like the cookie_session authenticator, the <code>Authorization: Bearer &lt;session_token&gt;</code> should be forwarded to kratos’s <code>/sessions/whoami</code> endpoint. According to the docs there is no authenticator available yet to handle a bearer token by simple checking with an endpoint?</p>
+<p>Can the <code>oauth2_introspection</code> perhaps be used to accomplish this? It’s not an oauth2 flow but as long as there is no issue with checking scopes this might work? The <code>extra_from</code> and <code>subject_from</code> configuration options are missing though.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/667_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">wezzle</div>
+          <div class="post_content">
+<p>I’ve decided to submit a pull request for a new authenticator that works just like cookie_session but uses the <code>Authorization: bearer &lt;token&gt;</code> header:</p>
+<aside class="onebox githubpullrequest">
+<header class="source">
+<a href="https://github.com/ory/oathkeeper/pull/613" rel="noopener nofollow ugc" target="_blank">github.com/ory/oathkeeper</a>
+</header>
+<article class="onebox-body">
+<div class="github-row">
+<div class="github-icon-container" title="Pull Request">
+<svg aria-hidden="true" class="github-icon" height="60" viewbox="0 0 12 16" width="60"><path d="M11 11.28V5c-.03-.78-.34-1.47-.94-2.06C9.46 2.35 8.78 2.03 8 2H7V0L4 3l3 3V4h1c.27.02.48.11.69.31.21.2.3.42.31.69v6.28A1.993 1.993 0 0 0 10 15a1.993 1.993 0 0 0 1-3.72zm-1 2.92c-.66 0-1.2-.55-1.2-1.2 0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2zM4 3c0-1.11-.89-2-2-2a1.993 1.993 0 0 0-1 3.72v6.56A1.993 1.993 0 0 0 2 15a1.993 1.993 0 0 0 1-3.72V4.72c.59-.34 1-.98 1-1.72zm-.8 10c0 .66-.55 1.2-1.2 1.2-.65 0-1.2-.55-1.2-1.2 0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2zM2 4.2C1.34 4.2.8 3.65.8 3c0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2z"></path></svg>
+</div>
+<div class="github-info-container">
+<h4>
+<a href="https://github.com/ory/oathkeeper/pull/613" rel="noopener nofollow ugc" target="_blank">feat: add simple bearer authenticator</a>
+</h4>
+<div class="branches">
+<code>ory:master</code> ← <code>wezzle:feat/simple_bearer_authenticator</code>
+</div>
+<div class="github-info">
+<div class="date">
+        opened <span class="discourse-local-date" data-date="2020-12-10" data-format="ll" data-time="12:00:25" data-timezone="UTC">12:00PM - 10 Dec 20 UTC</span>
+</div>
+<div class="user">
+<a href="https://github.com/wezzle" rel="noopener nofollow ugc" target="_blank">
+<img alt="wezzle" class="onebox-avatar-inline" height="20" src="../../../images/ab304a6b4628e6c712dad2343e0bb5cb43193490.jpeg" width="20"/>
+          wezzle
+        </a>
+</div>
+<div class="lines" title="2 commits changed 5 files with 431 additions and 0 deletions">
+<a href="https://github.com/ory/oathkeeper/pull/613/files" rel="noopener nofollow ugc" target="_blank">
+<span class="added">+431</span>
+<span class="removed">-0</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</article>
+<div class="onebox-metadata">
+</div>
+<div style="clear: both"></div>
+</aside>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/669_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">vinckr</div>
+          <div class="post_content">
+<p>Thanks for being so proactive and coming right out with a pull request, wezzle!</p>
+<p>I am not qualified to comment on your work here, but I am sure hackerman will look over the pull request once he is free <img alt=":wink:" class="emoji" src="../../../images/wink.png" title=":wink:"/> .</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

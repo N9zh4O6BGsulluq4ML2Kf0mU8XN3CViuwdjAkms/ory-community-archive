@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Subject type of an OAuth token</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Subject type of an OAuth token</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/221_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">ArthurKnoep</div>
+          <div class="post_content">
+<p>Hi everyone,</p>
+<p>In our stack we use hydra, oathkeeper and keto. I’ve configured oathkeeper to pass the  <code>subject</code>  of the request to our API and then I use it as the user ID in our services. This works well for the authorization code grant and the implicit grant but the problem is that now, I would like to implement the client credentials flow in our API. Obviously hydra already handles this mechanism but the problem I have is that the subject I get is now a client id (and not a user id).</p>
+<p>So my question is, is there a way to know if a token represent a user or an application ?</p>
+<p>If there is not, do you think that adding a field nammed <code>subject_type</code> in the introspection response would be a good idea ?</p>
+<p>Thank you in advance for your answers</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>No there is not, I guess what you want is some type of Service Account or Account Impersonation feature?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/221_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">ArthurKnoep</div>
+          <div class="post_content">
+<p>We will probably do something like this in the end but for now I found that way too complicated for the size of our API.</p>
+<p>I was planning to detect if the token represent an application (hence my question) and then use the owner of the application as the subject of the query.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Ok, I would however be very careful when implementing it like so, because the client does not usually act on the owner’s behalf but on it’s own! If you however have that in mind whenever you do implement this it should be ok.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/221_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">ArthurKnoep</div>
+          <div class="post_content">
+<p>As said our API is quite simple for the moment, I think it should be ok. We will implement a stronger mechanism (probably service account) later.</p>
+<p>So since there is no way for determining the subject type of a token, do you think adding a <code>subject_type</code> in the introspection answer would be a good idea ?<br/>
+If needed I could be up for developing the feature for hydra (and updating the authenticator in oathkeeper for storing the value in the session context)</p>
+<p>Edit: Getting this value in the introspection (and consequently in oathkeeper) could be helpful to create special permissions with keto</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>That would be very uncommon and quite bespoke for your use case. Since you have access to the access token payload for regular users, why don’t you take the absence of a specific field as an indicator for what the token expresses in your system?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/221_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">ArthurKnoep</div>
+          <div class="post_content">
+<p>What do you mean by “access token payload” ? I’m not using jwt if this is what you are saying.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>The stuff you set with <code>session.access_token</code> when accepting a consent request</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/221_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">ArthurKnoep</div>
+          <div class="post_content">
+<p>Ok nice, I’m gonna try that</p>
+<p>Thanks</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">mbalsam</div>
+          <div class="post_content">
+<p>Can’t you simply check if <code>client_id</code> and <code>sub</code> claim are equal in the introspect response?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>That could work also</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/221_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">ArthurKnoep</div>
+          <div class="post_content">
+<p>In the end, that’s what I’ve done.<br/>
+And for integrating everything correctly with oathkeeper I used an hydrator</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/586_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">tnm0113</div>
+          <div class="post_content">
+<p>I dont get that, i think they always are equal, can u explain that case for me ? tks in advance</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/586_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">tnm0113</div>
+          <div class="post_content">
+<p>so you used a hydrator to get user id and then check with keto ? i have same case with you</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/221_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">ArthurKnoep</div>
+          <div class="post_content">
+<p>For any request my hydrator is called, then there are few different cases:<br/>
+Either the subject is “anonymous”, in this case I just forward the request and set an extra variable to the subect<br/>
+Either the subject is different from the client_id, in this case I also forward the request and set an extra variable to the current subject<br/>
+Either the subject is equal to the client_id, in that case, I request hydra to return me the oauth client (using the client_id) and then I set the extra variable to the field “Owner” of the oauth client</p>
+<p>After that, with oathkeeper, I use a header mutator to forward my extra variable to my micro-services</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/586_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">tnm0113</div>
+          <div class="post_content">
+<p>tks for answering me, i have one more question, as i know hydrator hasnt been implemented, what’s version you use now ? i mean the one has hydrator step before authorization</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/221_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">ArthurKnoep</div>
+          <div class="post_content">
+<p>Hi, sorry I did not see your reply</p>
+<p>As far as I know we are using the latest version of keto and in the version we use the hydration is after the authentication</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/586_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">tnm0113</div>
+          <div class="post_content">
+<p>can you give me version of oathkeeper which you used ? current release of oathkeeper doesnt have hydration between authentication and authorization</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/221_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">ArthurKnoep</div>
+          <div class="post_content">
+<p>My bad, I made a mistake. I was talking of oathkeeper in my previous message.</p>
+<p>I finally achieved to find the version number: ORY Oathkeeper v0.38.3-beta.1</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/586_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">tnm0113</div>
+          <div class="post_content">
+<p>Thanks, can you show me your configuration of hydration and rules ?</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

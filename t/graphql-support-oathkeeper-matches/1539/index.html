@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>GraphQL support Oathkeeper matches</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">GraphQL support Oathkeeper matches</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/340_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">GRoguelon</div>
+          <div class="post_content">
+<p>Hi,</p>
+<p>I’m reading the documentation and I have to say it is really attractive on the paper to mix Oathkeeper, Keto and Hydra. However, for a personal project, my API is a GraphQL and it seems that the matches offered by Oathkeeper are limited to host, path and query for restful resources. After searching for the keyword in this forum and on the documentation, I couldn’t find any answer.</p>
+<p>Is there any plan to match on GraphQL query, mutation and subscription? I guess it would be very interesting to have access to the type of request (query, mutation and subscription), the name of the request and its arguments?</p>
+<p>Regards,</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/343_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">deshetti</div>
+          <div class="post_content">
+<p><span class="mention">@GRoguelon</span> Were you able to figure this out? I had the same question on if Oathkeeper could support our GraphQL APIs.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/669_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">vinckr</div>
+          <div class="post_content">
+<p>Hey there,<br/>
+it’s been a while, but yes Oathkeeper does support GraphQL.<br/>
+You can process GraphQL requests with Oathkeeper.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/340_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">GRoguelon</div>
+          <div class="post_content">
+<p>Hi <span class="mention">@vinckr</span>, thank you! Any documentation where it is described?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/662_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">kostanos</div>
+          <div class="post_content">
+<p>There is the open issue in <a href="https://github.com/ory/oathkeeper/issues/470" rel="noopener nofollow ugc">github</a> regarding GraphQL support, as I understand from it, the is no GraphQL support yet.</p>
+<p><span class="mention">@vinckr</span> can you please share any example for GraphQL matches?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/669_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">vinckr</div>
+          <div class="post_content">
+<p>Sorry, can’t help you there. I just read that on the forum, but I was wrong.<br/>
+So what is stated in the issue is completely right.</p>
+<blockquote>
+<p>oathkeeper isn’t able to analyze graphql queries atm.</p>
+</blockquote>
+<blockquote>
+<p>Oathkeeper secures different endpoints with different rules, and GraphQL uses just one endpoint</p>
+</blockquote>
+<p>Some more from hackerman on the topic.</p>
+<p><a href="https://ory-community.slack.com/archives/C01340V8KSM/p1592576442126100">slack</a></p>
+<blockquote>
+<p>" The case for filtering data is really very very difficult. Not allowing access based on REST keywords (path, method, …) is quite easy but it gets much more complex when accessing e.g. collections. Other projects also struggle with this, for example OPA. I think they added capabilities into Rego to output SQL but honestly - who wants to run SQL statements from some remote server and write some logic in Rego to baseically add <code>WHERE owner=...</code> ?<br/>
+I have thought about this also for a while now and wasn’t able to come up with a good solution. I think Oathkeeper goes a good mile and removes at least some logic from your actual backend code but it simply can’t solve these use cases</p>
+</blockquote>
+<blockquote>
+<p>I think what oathkeeper is most useful for is to take many types of credentials, do some basic checking, and then forward with e.g. a token that the backend can easily work with. I think it’s a long shot to expect the reverse proxy to completely dis/allow application logic<br/>
+Another idea I had was to add more capabilities to Oathkeeper - ones where you wouldn’t just authorize incoming request but could actually make outgoing calls to e.g. Google APIs and so on - the credentials would be configured in oathkeeper and all you need is to call google through the reverse proxy - the credentials are appended to the request automatically. I don’t think this will be super helpful for systems that have great SDKs and stuff in place but more for APIs where this is not as easy/transparent. Imagine making e.g. an authenticated request to GitHub’s API! We’re actually thinking along that route for the ory cloud product but haven’t made a decision yet"</p>
+</blockquote>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

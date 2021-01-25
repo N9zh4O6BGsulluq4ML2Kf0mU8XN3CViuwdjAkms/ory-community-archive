@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Multisite single hydra instance support</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Multisite single hydra instance support</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">odeltoro</div>
+          <div class="post_content">
+<p>Hi, we have a site that is served under various locale domains site .com, uk .site .co, site .nl, site .es, site .mx…+50 more, docs mention that hydra needs a login url (and other urls) to init auth_code oauth login flow, based on <a class="inline-onebox" href="https://community.ory.sh/t/best-practise-to-support-subdomain-based-multi-tenancy/349/9">Best practise to support subdomain-based multi-tenancy</a> seems like relative paths are no longer supported and full login domain url has to be specified, is there a way to avoid having multiple hydra instances supporting this where the login service &amp; users are the same for all sites and living under /login path for all? (e.g. site .com/login, uk.site .co/login)</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>The proper way of doing this would be to have one authZ server/domain and one login server/domain. The other websites would then simply call that one server instead of esch on their own domain, which is what OAuth is for. If you want true multi-tenancy (individual oauth2 clients per domain, …) you need multiple deployments.</p>
+<p>Another option is to have a redirect in your login app to the login app of the domain. You control it, you can program whatever you want.</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

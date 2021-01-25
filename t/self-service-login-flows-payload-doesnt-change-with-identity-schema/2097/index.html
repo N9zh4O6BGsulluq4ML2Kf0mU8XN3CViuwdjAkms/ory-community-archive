@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Self-Service Login flow&rsquo;s payload doesn&rsquo;t change with Identity Schema</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Self-Service Login flow&rsquo;s payload doesn&rsquo;t change with Identity Schema</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/379_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">zhming0</div>
+          <div class="post_content">
+<p>I came across this <a href="https://www.ory.sh/kratos/docs/self-service/flows/user-login-user-registration/username-email-password/#login" rel="nofollow noopener">on the doc</a>.</p>
+<blockquote>
+<p>In contrast to the Registration sequence, this payload does not change when the Identity JSON Schema changes</p>
+</blockquote>
+<p>Just wondering why? When I make the UI for login flow, I basically have to partially ignore the kratos payload? e.g. I’d like the identifier field to be an email field instead of text field.</p>
+<p>Any help will be great and I’d be more than happy to dump the info I gathered here into the doc later.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/669_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">vinckr</div>
+          <div class="post_content">
+<p>Hey,<br/>
+Here is some information on what up/downsides the different identifiers have: <a href="https://www.ory.sh/kratos/docs/concepts/credentials/username-email-password/#choosing-between-username-email-phone-number">click</a>.</p>
+<p>Here is the JSON Schema for using email address as the login identifier: <a href="https://www.ory.sh/kratos/docs/concepts/credentials/username-email-password/#use-case-email-and-password">click</a></p>
+<p>As to why the login payload does not change when the Identity JSON Schema changes, I’ll have to get back to you later/refer this to hackerman <img alt=":slight_smile:" class="emoji" src="../../../images/slight_smile.png" title=":slight_smile:"/> .</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<aside class="quote no-group" data-post="1" data-topic="2097" data-username="zhming0">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" class="avatar" height="20" src="../../../images/379_2.png" width="20"/> zhming0:</div>
+<blockquote>
+<p>Just wondering why? When I make the UI for login flow, I basically have to partially ignore the kratos payload? e.g. I’d like the identifier field to be an email field instead of text field.</p>
+</blockquote>
+</aside>
+<p>Changing an identity schema is something that does not happen very often. Actually, it probably only happens during development. Managing the complexity of updating all the requests for that schema is quite large, and therefore not implemented.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/379_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">zhming0</div>
+          <div class="post_content">
+<aside class="quote no-group" data-post="3" data-topic="2097" data-username="hackerman">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" class="avatar" height="20" src="../../../images/5_2.png" width="20"/> hackerman:</div>
+<blockquote>
+<p>Managing the complexity of updating all the requests for that schema is quite large, and therefore not implemented.</p>
+</blockquote>
+</aside>
+<p>Thanks hackerman, But I feel this statement can apply to Registration flow as well. Is there any particular reason that registration and login flow are treated differently here?</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Kratos SMTP configuration issue: can not use credentials with slashes</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Kratos SMTP configuration issue: can not use credentials with slashes</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/593_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">emanmks</div>
+          <div class="post_content">
+<p>I am really happy that our integration with the Ory environment (Kratos, Oathkeeper, Hydra, Keto) working smoothly.</p>
+<p>Now since we are ready to go live, we will use AWS SES for the email service. As far as I know, Kratos works with SMTP connection, so we prepare the SMTP configuration on SES, and yeah normally the credentials contain forward slashes.</p>
+<p>The issue is the Kratos container is failed with an error that can not parse the SMTP URL configuration. The escaping (replace / with %2F) did not solve the issue, instead, I got a connection problem.</p>
+<p>Is this a possible issue with Krato’s approach to parsing the configuration? I tried a combination of credentials:</p>
+<blockquote>
+<pre><code>- smtp://alphanumeric:alphanumeric@server:25 [OK]
+- smtp://alphanumeric@alphanumeric:alphanumeric@alphanumeric@server:25 [OK]
+- smtp://alphanumericwith/:alphanumericwith/@server:25 [FAILED]
+- smtp://alphanumericwith%2F:alphanumericwith%2F@server:25 [FAILED]
+</code></pre>
+</blockquote>
+<p>The tests were also being done, using another popular email service with SMTP support.</p>
+<p>The only way to make sure is from the Kratos test to test these cases. I wish I have time to spare to investigate this directly from the Kratos code base. Or any idea/trick as a workaround?</p>
+<p>My next question is, what is the technical reason for using this format for SMTP configuration?</p>
+<blockquote>
+<pre><code>courier:
+  smtp:
+    connection_uri: smtp://test:test@mailslurper:2525/?skip_ssl_verify=true
+</code></pre>
+</blockquote>
+<p>Can we have something like this?</p>
+<pre><code> courier:
+      smtp:
+        username: ...
+        password: ...
+        port: ...
+        host: ...
+        ssl: false/true</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/593_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">emanmks</div>
+          <div class="post_content">
+<p>So after investigation:</p>
+<blockquote>
+<p>No issue with parsing credentials with a forward slash. You can escape it and replace <code>/</code> with <code>%2F</code>.</p>
+</blockquote>
+<p>To the Ory team, I’m sorry for the inconvenience.</p>
+<p>But this kind of configuration:</p>
+<blockquote>
+<pre><code>courier:
+      smtp:
+        username: ...
+        password: ...
+        port: ...
+        host: ...
+        ssl: false/true
+</code></pre>
+</blockquote>
+<p>Seems more readable for me. Just a small feedback.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Thank you for the ideas and suggestions and the solution! I think this is very helpful for many <img alt=":slight_smile:" class="emoji" src="../../../images/slight_smile.png" title=":slight_smile:"/> Maybe you’d like to contribute your finding to: <a href="https://www.ory.sh/kratos/docs/concepts/email-sms">https://www.ory.sh/kratos/docs/concepts/email-sms</a> - that would be awesome!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/593_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">emanmks</div>
+          <div class="post_content">
+<p>Sure, I will be happy to contribute.</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Hydra: checksum mismatch compiling from source</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Hydra: checksum mismatch compiling from source</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">bselu-cso</div>
+          <div class="post_content">
+<p>I’m trying to compile the latest Hydra v1.9.0-alpha.2 on an ARM64 platform running a Fedora 33 Linux. But the steps from the Install guide seem to be wrong:</p>
+<pre><code>[pine]{root}:/opt# go get -d -u github.com/ory/hydra
+[pine]{root}:/opt# go install github.com/gobuffalo/packr/v1.9.0-alpha.2/packr2
+cannot find package "github.com/gobuffalo/packr/v1.9.0-alpha.2/packr2" in any of:
+	/usr/lib/golang/src/github.com/gobuffalo/packr/v1.9.0-alpha.2/packr2 (from $GOROOT)
+	/opt/src/github.com/gobuffalo/packr/v1.9.0-alpha.2/packr2 (from $GOPATH)
+</code></pre>
+<p>I figured a copy/paste error, so I found /opt/src/github.com/gobuffalo/packr/v2/packr2 in my GOPATH directory, so I tried this:</p>
+<pre><code>[pine](1) {root}:/opt# go install github.com/gobuffalo/packr/v2/packr2
+src/github.com/gobuffalo/packr/v2/packr2/cmd/fix/imports.go:16:2: cannot find package "golang.org/x/tools/go/ast/astutil" in any of:
+	/usr/lib/golang/src/golang.org/x/tools/go/ast/astutil (from $GOROOT)
+	/opt/src/golang.org/x/tools/go/ast/astutil (from $GOPATH)
+</code></pre>
+<p>I tried to satisfy this missing dependency by</p>
+<p><code>go get github.com/gobuffalo/packr/v2/packr2</code></p>
+<p>which succeeded and then continued with the installation guide steps:</p>
+<pre><code>[pine]{root}:/opt# cd $(go env GOPATH)/src/github.com/ory/hydra
+[pine]{root}:/opt/src/github.com/ory/hydra# GO111MODULE=on make install-stable
+HYDRA_LATEST=$(git describe --abbrev=0 --tags)
+git checkout $HYDRA_LATEST
+Your branch is up to date with 'origin/master'.
+make pack
+make[1]: Entering directory '/opt/src/github.com/ory/hydra'
+GOBIN=/opt/src/github.com/ory/hydra/.bin/ go install  github.com/gobuffalo/packr/v2/packr2
+verifying github.com/oleiade/reflections@v1.0.0/go.mod: checksum mismatch
+	downloaded: h1:rdFxbxq4QXVZWj0F+e9jqjDkc7dbp97vkRixKo2JR60=
+	go.sum:     h1:RbATFBbKYkVdqmSFtx13Bb/tVhR0lgOBXunWTZKeL4w=
+
+SECURITY ERROR
+This download does NOT match an earlier download recorded in go.sum.
+The bits may have been replaced on the origin server, or an attacker may
+have intercepted the download attempt.
+
+For more information, see 'go help module-auth'.
+make[1]: *** [Makefile:24: .bin/packr2] Error 1
+make[1]: Leaving directory '/opt/src/github.com/ory/hydra'
+make: *** [Makefile:123: install-stable] Error 2
+[pine](2){root}:/opt/src/github.com/ory/hydra# 
+</code></pre>
+<p>Please help!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<pre><code class="lang-auto">go get -d -u github.com/ory/hydra
+</code></pre>
+<p>THIS DOES NOT WORK WITH GO MODULES.</p>
+<p>Just use go modules:</p>
+<pre><code class="lang-auto">go get github.com/ory/hydra@v1.2.3
+</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">bselu-cso</div>
+          <div class="post_content">
+<p>Thanks for the reply. I tried that, but failed again:</p>
+<pre><code>[pine]{root}:/opt# go get github.com/ory/hydra@v1.9.0-alpha.2
+go: cannot use path@version syntax in GOPATH mode
+</code></pre>
+<p>After some googeling I came up with <code>GO111MODULE=on</code> so I tried this:</p>
+<pre><code>[pine]{root}:/opt# GO111MODULE=on go get github.com/ory/hydra@v1.9.0-alpha.2
+go: downloading github.com/ory/hydra v1.9.0-alpha.2
+go get: github.com/ory/hydra@v1.9.0-alpha.2 requires
+	github.com/ory/cli@v0.0.28 requires
+	github.com/gobuffalo/fizz@v1.13.1-0.20200903094245-046abeb7de46: invalid version: unknown revision 046abeb7de46
+</code></pre>
+<p>I also tried an old release:</p>
+<pre><code>[pine](1) {root}:/opt# GO111MODULE=on go get github.com/ory/hydra@v1.8.5
+go: downloading github.com/ory/hydra v1.8.5
+go get: github.com/ory/hydra@v1.8.5 requires
+	github.com/ory/cli@v0.0.28 requires
+	github.com/gobuffalo/fizz@v1.13.1-0.20200903094245-046abeb7de46: invalid version: unknown revision 046abeb7de46
+</code></pre>
+<p>What can I do?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>What does <code>go version</code> say?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">bselu-cso</div>
+          <div class="post_content">
+<p><code>go version go1.15.5 linux/arm64</code></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Yeah looks like one of the deps changed something. This will be hard to fix - please just download one of the prebuilt binaries: <a href="https://github.com/ory/hydra/releases">https://github.com/ory/hydra/releases</a></p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

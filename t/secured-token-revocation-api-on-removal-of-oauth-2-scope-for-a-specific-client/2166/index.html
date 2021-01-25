@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Secured token revocation API on removal of OAuth 2 scope for a specific client</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Secured token revocation API on removal of OAuth 2 scope for a specific client</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/589_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">sagarshah1983</div>
+          <div class="post_content">
+<p>Is there any secured API to revoke all the tokens for an OAuth 2 client?<br/>
+Use case: A client has been previously authorized by the user to access various APIs, which are now being removed. As part of that, client would no longer be able to obtain user tokens with that removed scope, but what happens to previously issued tokens with the original scopes.<br/>
+Can those be revoked somehow? Doesn’t that need to be revoked?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">asaf000</div>
+          <div class="post_content">
+<p><span class="mention">@sagarshah1983i</span> don’t think that this is supported,  there are delete sessions APIs for login / consent for a specific user. I assume that requires extending the login/consent manager with a method such <code>RevokeClientConsentSession</code> but maybe <span class="mention">@hackerman</span> can say more.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Yes, revoke the consent for the client. There is an API for that!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/589_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">sagarshah1983</div>
+          <div class="post_content">
+<p><span class="mention">@hackerman</span><br/>
+Can you please point me to that page?<br/>
+The API that I referred was capable of revoking it for client for a user. I am thinking, if we should have a secured API that enables to delete/revoke the tokens for a specific client in general without looking at subject/user.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Delete the client if you wish to remove all tokens</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Refresh token and logout</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Refresh token and logout</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/232_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">eskava</div>
+          <div class="post_content">
+<p>Hi there,</p>
+<p>When using the logout api /auth/sessions/logout the user is requested it’s credentials when asking for a new token as expected but I am surprised that he can request a new access token using the refresh token issued at login time.</p>
+<ul>
+<li>request token /oauth2/auth</li>
+<li>enter credentials using a custom form</li>
+<li>call /oauth2/token with code to get access, id and refresh token</li>
+<li>request token /oauth2/auth send code directly without getting credential (remember set to true)</li>
+<li>call /oauth2/sessions/logout to logout</li>
+<li>request token /oauth2/auth redirect to form (ok logged out)</li>
+<li>call /oauth2/token with refresh token return get access, id and refresh token (should no as logged out)</li>
+</ul>
+<p>Am I missing something?</p>
+<p>Hydra version: 1.4.9</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p><strong>Yes, OAuth2 is not a login protocol.</strong> Logging out of GitHub does not log you out of this forum (or CircleCI, TravisCI, …).</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/232_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">eskava</div>
+          <div class="post_content">
+<p>Ok, I assume I’ll need to do a logout and call revoke token for one client. The other clients won’t be affected by the logout.</p>
+<p>Assuming that a user is signed in on one client, he is signed in on the other clients (when remember set to true). I naïvely thought that when he would signout of one client he would be signed out of the other client as well (which is the case as the cookies are destroyed) but he can still use a refresh token to get an access token.<br/>
+So you tell me that hydra is not a login protocol but you provide the “skip” boolean on “login request” which look to me like a part of a login protocol…</p>
+<p>All of this is confusing.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>OAuth2 is not a login protocol. Access Tokens are not a session. There are ways to solve what you want with OpenID Connect such as OpenID Connect Front-/Backchannel logout, which Hydra supports. I’d recommend using something like <a href="https://github.com/panva/node-openid-client">https://github.com/panva/node-openid-client</a> if you want that.</p>
+<p>To me it sounds like you really are looking for a Single Sign On solution. Maybe give ORY Kratos a try, it will also support tokens for API authorization. You can add Hydra with OAuth2 later if you really need OAuth2.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/519_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">har07</div>
+          <div class="post_content">
+<p>Hi <span class="mention">@hackerman</span>,  I stumbled upon your comment while looking for information about implementing single sign on using Hydra. Does it mean that Hydra does not support Single Sign On?</p>
+<p>I also found this old pull request, but nothing else about SSO+Hydra: <a href="https://github.com/ory/hydra/pull/6" rel="nofollow noopener">https://github.com/ory/hydra/pull/6</a></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>OpenID is a federated SSO protocol. If you want that, Hydra solves that.</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

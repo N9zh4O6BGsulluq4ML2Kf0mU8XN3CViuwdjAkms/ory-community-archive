@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>How to define kid in .well-known config?</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">How to define kid in .well-known config?</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/309_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">rasouza</div>
+          <div class="post_content">
+<p>Everytime I create a new client credentials on hydra, it serves a different auto generated <code>kid</code> in <a href="http://localhost:4444/.well-known/jwks.json" rel="nofollow noopener">http://localhost:4444/.well-known/jwks.json</a> endpoint.</p>
+<p>Example: <code>"kid":"public:ef5f012e-10bc-4b66-a88b-5fcde520dc1f"</code></p>
+<p>Is it possible to define a constant kid like <code>my-client-id</code> using <code>hydra clients create</code> cli?</p>
+<p>I’m currently using:</p>
+<pre><code class="lang-auto">hydra clients create
+      --endpoint http://idp:4445
+      --id diary-users
+      --name diary-users
+      --secret secret
+      --grant-types authorization_code,refresh_token
+      --callbacks http://localhost:8000/oauth2/callback
+      --response-types code,id_token
+      --scope openid,offline
+      --token-endpoint-auth-method client_secret_post
+</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Thank you for contributing to this repository by creating an issue!</p>
+<p>Unfortunately, your issue lacks vital information, such as log files, the error message, the software version, your configuration or other pieces of the puzzle.</p>
+<p>Helping you with your problem is only possible if you share this information, and it will save a lot of time of back and forth on your as well as our end!</p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>

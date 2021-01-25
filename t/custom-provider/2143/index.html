@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Custom Provider</title>
+    <link rel="stylesheet" href="../../../archived.css" />
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+  </head>
+  
+  <body>
+    <header class="header">
+      <div class="title-span">
+        <a href="../../../">
+          <img src="../../../images/site-logo.png" height="66" alt="ORY Community" id="site-logo" />
+        </a>
+      </div>
+    </header>
+
+    <div class="main">
+    <h3>This is an archive of the community.ory.sh Discourse which is read-only.</h3>
+It has been moved to GitHub Discussions, refer here:
+<br><br>
+<a href="https://github.com/ory/kratos/discussions">ORY Kratos Discussions</a><br>
+<a href="https://github.com/ory/hydra/discussions">ORY Hydra Discussions</a><br>
+<a href="https://github.com/ory/oathkeeper/discussions">ORY Oathkeeper Discussions</a><br>
+<a href="https://github.com/ory/keto/discussions">ORY Keto Discussions</a><br>
+
+    <h1 class="topic-title">Custom Provider</h1>
+            <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/573_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">cristiandley</div>
+          <div class="post_content">
+<p>Hi</p>
+<p>First i must say im amazed with the ORY stack.</p>
+<p>In the other hand, im a noob in what security matters, saying that in my company we are trying to migrate our security made over Keycloak with a custom provider that communicates to an Ahuthenticator.</p>
+<p>Is this possible with ORY ? iv seen Hydra specs:</p>
+<aside class="onebox allowlistedgeneric">
+<header class="source">
+<img class="site-icon" height="32" src="../../../images/missing_image.png" width="32"/>
+<a href="https://github.com/ory/kratos#ory-hydra-oauth2--openid-connect-server" rel="nofollow noopener" target="_blank">GitHub</a>
+</header>
+<article class="onebox-body">
+<img class="thumbnail onebox-avatar" height="400" src="../../../images/62c69f1a413ce0499f0ba2ab6c57e2451bf6c33b.png" width="400"/>
+<h3><a href="https://github.com/ory/kratos#ory-hydra-oauth2--openid-connect-server" rel="nofollow noopener" target="_blank">ory/kratos</a></h3>
+<p>Never build user login, user registration, 2fa, profile management ever again! Works on any operating system, cloud, with any programming language, user interface, and user experience! Written in G...</p>
+</article>
+<div class="onebox-metadata">
+</div>
+<div style="clear: both"></div>
+</aside>
+<blockquote>
+<p>ORY Hydra is an OpenID Certified™ OAuth2 and OpenID Connect Provider can connect to any existing identity database (LDAP, AD, KeyCloak, PHP+MySQL, …) and user interface.</p>
+</blockquote>
+<p>But is hard to find documentation regarding to the quote, and what even means “user interface” ?</p>
+<p>Thanks.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>I don’t understand the question, you want to use Hydra and Keycloak together?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/573_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">cristiandley</div>
+          <div class="post_content">
+<p>No, as i said we are trying to migrate from Keycloak to Hydra.The issue, we own a custom provider over Keycloak (so authentication occurs in other platform). Is that possible on Hydra?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>Yes, that is the core concept behind Hydra <img alt=":slight_smile:" class="emoji" src="../../../images/slight_smile.png" title=":slight_smile:"/></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/573_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">cristiandley</div>
+          <div class="post_content">
+<p>But i couldn’t find documentation about integrations or code examples on how to do it. Also if you search stuff on the docs seems to be broken. <img alt=":frowning_face:" class="emoji" src="../../../images/frowning_face.png" title=":frowning_face:"/></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<aside class="onebox allowlistedgeneric">
+<header class="source">
+<img class="site-icon" data-small-upload="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/f7dbb79e0119eda4ffea81b3b681c6363ba05bb3_2_10x10.png" height="500" src="../../../images/f7dbb79e0119eda4ffea81b3b681c6363ba05bb3_2_499x500.png" srcset="//ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/f7dbb79e0119eda4ffea81b3b681c6363ba05bb3_2_499x500.png, //ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/f7dbb79e0119eda4ffea81b3b681c6363ba05bb3_2_748x750.png 1.5x, //ory-community-discourse-uploads.s3.dualstack.us-west-2.amazonaws.com/optimized/1X/f7dbb79e0119eda4ffea81b3b681c6363ba05bb3_2_998x1000.png 2x" width="499"/>
+<a href="https://www.ory.sh/hydra/docs/concepts/login/" rel="noopener" target="_blank">ory.sh</a>
+</header>
+<article class="onebox-body">
+<img class="thumbnail" height="" src="../../../images/missing_image.png" width=""/>
+<h3><a href="https://www.ory.sh/hydra/docs/concepts/login/" rel="noopener" target="_blank">Login Flow | ORY Hydra</a></h3>
+<p>OAuth2 and OpenID Connect require an authenticated End-User session for all</p>
+</article>
+<div class="onebox-metadata">
+</div>
+<div style="clear: both"></div>
+</aside>
+<p>What is broken for you wrt search?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/573_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">cristiandley</div>
+          <div class="post_content">
+<p>I did search for “LDAP” but couldnt find anything regarding to it.</p>
+<p>The Login Flow and Consent Flow, if im not wrong both talk about connecting two OAuth services basically. What i need is a Authorization Provider (without OAuth). To own the login screen on ORY and then ask if the credencials are OK in other platform.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/5_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">hackerman</div>
+          <div class="post_content">
+<p>No, you misunderstood. Please re-read the relevant parts in the docs and check out the 5 minute quickstart guide etc!</p>
+<p>There is no mention of LDAP because we do not support LDAP directly, you have to implement the „bridge“ between Hydra and your login solution yourself!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/573_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">cristiandley</div>
+          <div class="post_content">
+<aside class="quote no-group" data-post="1" data-topic="2143" data-username="cristiandley">
+<div class="title">
+<div class="quote-controls"></div>
+<img alt="" class="avatar" height="20" src="../../../images/573_2.png" width="20"/> cristiandley:</div>
+<blockquote>
+<p>ORY Hydra is an OpenID Certified™ OAuth2 and OpenID Connect Provider can connect to any existing identity database (LDAP, AD, KeyCloak, PHP+MySQL, …) and user interface.</p>
+</blockquote>
+</aside>
+<p>Yes i misunderstood, the Hydra details say that ^ so i got Confused. I will try to read more about the “bridge” (provider) implementation.</p>
+<p>Thanks.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">asaf000</div>
+          <div class="post_content">
+<p><span class="mention">@cristiandley</span> KeyCloak is different because it’s a full identity stack while Hydra just orchestrate the OAuth workflows with some level of session management.</p>
+<p>What <span class="mention">@hackerman</span> means by “bridge” is this:</p>
+<ul>
+<li>You have to configure hydra to redirect to a login service (you have to write this one on your own)</li>
+<li>In your login service, you should perform the auth (trough LDAP or whatever protocol you are using) and based on the auth result accept or deny the login request.</li>
+</ul>
+<p>Cheers,</p>
+<p>Asaf.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/573_2.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">cristiandley</div>
+          <div class="post_content">
+<p><span class="mention">@asaf000</span> first, thanks (when i said custom provider, i refered to the concept of “bridge”, we are on the same page now).</p>
+<blockquote>
+<p>You have to configure hydra to redirect to a login service (you have to write this one on your own)</p>
+</blockquote>
+<p>Is this example the same thing? <a href="https://github.com/ory/hydra-login-consent-node" rel="nofollow noopener">https://github.com/ory/hydra-login-consent-node</a></p>
+<p>Thanks</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="post_container">
+        <div class="avatar_container">
+          <img src="../../../images/{size}.png" class="avatar" />
+        </div>
+        <div class="post">
+          <div class="user_name">asaf000</div>
+          <div class="post_content">
+<p><span class="mention">@cristiandley</span> yea if you like node, you can fork this and  your own logic <a href="https://github.com/ory/hydra-login-consent-node/blob/master/src/routes/login.ts#L72" rel="nofollow noopener">instead of this</a></p>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </body>
+</html>
